@@ -1,0 +1,14 @@
+!!!
+%html
+  %head
+    %title Gotv
+    = stylesheet_link_tag :all
+    = javascript_include_tag :defaults
+    = csrf_meta_tag
+  %body
+    %section#content
+      #flash
+        - [:notice, :alert].each do |type|
+          - if flash[type]
+            %p(class=type)= flash[type]
+      = yield
