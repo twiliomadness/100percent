@@ -1,0 +1,29 @@
+# We store credentials in heroku.yml and we NEVER check that into the repository.
+# When you need to add/change a credential, do this:
+#
+# 1. For new settings, add a placeholder to heroku.yml.template
+#
+# 2. Set the value in heroku.yml
+#
+# 3. Run::
+#      rake heroku:config[environment]
+#    where environment is one of: staging, production to push the settings to heroku
+#    for that environment.
+
+common: &common
+  TWILIO_ACCOUNT_SID:
+  TWILIO_ACCOUNT_TOKEN:
+
+development:
+  <<: *common
+
+test:
+  <<: *common
+
+staging:
+  app_name: wigotv-staging
+  <<: *common
+  
+production:
+  app_name: wigotv
+  <<: *common

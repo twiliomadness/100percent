@@ -1,0 +1,14 @@
+common: &common
+  TWILIO_CALLER_ID: (414) 939-8633
+  
+development:
+  <<: *common
+
+test:
+  <<: *common
+  
+staging:
+  <<: *common
+
+environment:
+  <<: *common

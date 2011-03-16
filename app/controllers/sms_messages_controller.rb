@@ -14,15 +14,15 @@ class SmsMessagesController < ApplicationController
   end
 
   def send_text(to, content)
-      twilio = Twilio::RestAccount.new(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_ACCOUNT_TOKEN'])
+      twilio = Twilio::RestAccount.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
 
       d = {
-        'From' => ENV['TWILIO_CALLER_ID'],
+        'From' => APP_CONFIG[:TWILIO_CALLER_ID],
         'To' => to,
         'Body' => content
       }
 
-      path = "/2010-04-01/Accounts/#{ENV['TWILIO_ACCOUNT_SID']}/SMS/Messages"
+      path = "/2010-04-01/Accounts/#{APP_CONFIG[:TWILIO_ACCOUNT_SID]}/SMS/Messages"
       resp = twilio.request(path, 'POST', d)
 
       resp.error! unless resp.kind_of? Net::HTTPSuccess
