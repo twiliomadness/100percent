@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
   private
   
     def save_message(message)
-      incoming_messages.create!(:text => incoming_text)
+      incoming_messages.create!(:text => message)
     end
 
 end
