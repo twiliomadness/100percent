@@ -1,14 +1,11 @@
 class SmsMessagesController < ApplicationController
   def incoming
+    # TODO: Validate that this is actually from twilio.
     incoming_text = params[:Body]
     phone_number = params[:From]
     @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
-    @incoming_message = @user.incoming_messages.create!(:text => incoming_text)
-    if @user.incoming_messages.size == 1
-      outgoing_text = 'Welcome!'
-    else
-      outgoing_text = 'Hi again!'
-    end
+    # TODO: Save outgoing message too, inside process_message()?
+    outgoing_text = @user.process_message(incoming_text)
     send_text params[:From], outgoing_text
     head 200
   end
