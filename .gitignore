@@ -1,4 +1,5 @@
 .bundle
+config/credentials.rb
 db/*.sqlite3
 log/*.log
 tmp/
