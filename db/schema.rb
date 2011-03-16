@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110316024131) do
+ActiveRecord::Schema.define(:version => 20110316214132) do
 
   create_table "incoming_messages", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20110316024131) do
     t.string   "city"
     t.string   "state"
     t.string   "zip"
+    t.date     "date_of_birth"
   end
 
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
