@@ -101,9 +101,11 @@ class User < ActiveRecord::Base
   def summary
     # TODO: Trim whitespace
     <<-eof
-      First Name: #{self.first_name}
-      Last Name: #{self.last_name}
-      Date of Birth: #{self.date_of_birth}
+Here's what we have so far:
+
+First Name: #{self.first_name}
+Last Name: #{self.last_name}
+Date of Birth: #{self.date_of_birth.strftime('%m/%d/%Y')}
     eof
   end
 
