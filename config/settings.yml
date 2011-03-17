@@ -1,5 +1,7 @@
 common: &common
   TWILIO_CALLER_ID: (414) 939-8633
+  VOTER_SEARCH_URL: https://vpa.wi.gov/VoterSearchScreen.aspx
+  ADDRESS_SEARCH_URL: https://vpa.wi.gov/AddressSearchScreen.aspx
   
 development:
   <<: *common

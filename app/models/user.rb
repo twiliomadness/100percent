@@ -99,7 +99,6 @@ class User < ActiveRecord::Base
   end
   
   def summary
-    # TODO: Trim whitespace
     <<-eof
 Here's what we have so far:
 
@@ -109,6 +108,54 @@ Date of Birth: #{self.date_of_birth}
     eof
   end
 
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
+
+  def search_for_voter_record
+    agent = Mechanize.new
+
+    # Get the flickr sign in page
+    page = agent.get(APP_CONFIG[:VOTER_SEARCH_URL])
+
+    # Fill out the login form
+    form = page.form_with(:name => 'Form1')
+    form.txtLastName = self.last_name
+    form.txtFirstName = self.first_name
+    form.txtDateOfBirth = self.date_of_birth.strftime("%d/%m/%Y")
+    
+    page = form.click_button
+    
+    result_page = Nokogiri.HTML(page.content)
+    
+    # Another approach is to look for links with href that contains VoterSummaryScreen in the link
+    path = "//a[text() = '#{self.full_name.upcase}']"
+    
+    link = result_page.xpath(path)
+    if link.present?
+      # TODO: Handle possibility of more than one record
+      url = link.first.get_attribute("href")
+      next_page = page.link_with(:href => url).click
+      voter_info = Nokogiri.HTML(next_page.content)
+      user_address = voter_info.xpath("//input[@id = 'txtAddressLine1']").first.get_attribute("value")
+      user_address_line_2 = voter_info.xpath("//input[@id = 'txtAddressline2']").first.get_attribute("value")
+      user_city = voter_info.xpath("//input[@id = 'txtCity']").first.get_attribute("value")
+      user_zip = voter_info.xpath("//input[@id = 'txtZipcode']").first.get_attribute("value")
+      
+      if self.address.blank?
+        self.address = user_address
+      end
+      if self.city.blank?
+        self.city = user_city
+      end
+      if self.zip.blank?
+        self.zip = user_zip
+      end
+      self.save
+    end
+    
+  end
+  
   private
 
     def save_message(message)
