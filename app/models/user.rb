@@ -83,6 +83,7 @@ class User < ActiveRecord::Base
 
   def process_message(message)
     save_message(message)
+    # TODO: Check whether message is non-state specific (e.g., help, quit, status, etc.)
     process_message_by_state(message)
     # TODO: Do we ever have more than one valid transition?
     next_event = state_transitions.first
@@ -90,10 +91,12 @@ class User < ActiveRecord::Base
       self.send(next_event.event)
     end
     save
+    # TODO: Save outgoing messages?
     prompt
   end
   
   def summary
+    # TODO: Trim whitespace
     <<-eof
       First Name: #{self.first_name}
       Last Name: #{self.last_name}
