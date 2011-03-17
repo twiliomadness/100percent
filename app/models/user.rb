@@ -83,6 +83,9 @@ class User < ActiveRecord::Base
       def no
         self.reset_all!
       end
+      def prompt
+        "Is this you? (YES, NO)"
+      end
     end
 
     state :pending_address_confirmation do
@@ -107,6 +110,10 @@ class User < ActiveRecord::Base
         "No more steps for now"
       end
     end
+  end
+  
+  def status
+    # noop, since summary displays status
   end
 
   def reset_address!
