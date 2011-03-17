@@ -138,7 +138,7 @@ class User < ActiveRecord::Base
       process_message_by_status(message)
     end
     # TODO: Do we ever have more than one valid transition?
-    next_event = state_transitions.first
+    next_event = status_transitions.first
     if !next_event.nil?
       # For each transition, check can_#{transition}?
       self.send(next_event.event)
