@@ -31,6 +31,7 @@ GEM
     arel (2.0.9)
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
+    chronic (0.3.0)
     compass (0.10.6)
       haml (>= 3.0.4)
     configuration (1.2.0)
@@ -93,12 +94,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  chronic (= 0.3.0)
   compass (= 0.10.6)
   devise (= 1.1.8)
   haml (= 3.0.25)
   heroku (= 1.18.3)
-  mechanize
-  nokogiri
+  mechanize (= 1.0.0)
+  nokogiri (= 1.4.4)
   pg (= 0.10.1)
   rails (= 3.0.5)
   state_machine (= 0.9.4)

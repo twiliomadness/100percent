@@ -34,9 +34,16 @@ class User < ActiveRecord::Base
       transition :pending_date_of_birth => :pending_voter_info_confirmation
     end
 
+    event :confirm_voter_info do
+      transition :pending_voter_info_confirmation => :pending_address_confirmation
+    end
+
     state :welcome do
       def process_message_by_status(message)
         # noop
+      end
+      def summary
+        "Welcome!"
       end
       def prompt
         "First Name?"
@@ -46,6 +53,9 @@ class User < ActiveRecord::Base
     state :pending_first_name do
       def process_message_by_status(message)
         self.first_name = message.strip
+      end
+      def summary
+        "Welcome!"
       end
       def prompt
         "First Name?"
@@ -57,6 +67,9 @@ class User < ActiveRecord::Base
       def process_message_by_status(message)
         self.last_name = message.strip
       end
+      def summary
+        "First Name: #{self.first_name}"
+      end
       def prompt
         "Last Name?"
       end
@@ -65,7 +78,10 @@ class User < ActiveRecord::Base
     state :pending_date_of_birth do
       validates_presence_of :last_name
       def process_message_by_status(message)
-        self.date_of_birth = Time.parse(message)
+        self.date_of_birth = Chronic.parse(message)
+      end
+      def summary
+        "Last Name: #{self.last_name}"
       end
       def prompt
         "Date of Birth?"
@@ -77,14 +93,19 @@ class User < ActiveRecord::Base
       def process_message_by_status(message)
         # noop
       end
-      def yes
-        self.search_for_voter_record
+      def sms_yes
+        # TODO: Log?
+        result = self.search_for_voter_record
+        logger.info("Searched for voter record result: #{result}")
       end
-      def no
+      def sms_no
         self.reset_all!
       end
+      def summary
+        "Date of Birth: #{self.date_of_birth_friendly}"
+      end
       def prompt
-        "Is this you? (YES, NO)"
+        "Is this you?"
       end
     end
 
@@ -93,10 +114,20 @@ class User < ActiveRecord::Base
       def process_message_by_status(message)
         # noop
       end
-      def yes
+      def sms_yes
       end
-      def no
+      def sms_no
         self.reset_address!
+      end
+      def summary
+        <<-eof
+Here's what we have so far:
+
+Address Line 1: #{self.address_line_1}
+Address Line 2: #{self.address_line_2}
+City: #{self.city}
+Zip: #{self.zip}
+        eof
       end
       def prompt
         "Is this your current address?"
@@ -106,10 +137,27 @@ class User < ActiveRecord::Base
     state :address_confirmed do
       def process_message_by_status(message)
       end
+      def summary
+        "Thanks for confirming your address!"
+      end
       def prompt
         "No more steps for now"
       end
     end
+  end
+
+  
+  def sms_help
+    "You can send: help, reset, status"
+  end
+
+  def sms_reset
+    reset_all!
+    "Reset"
+  end
+
+  def sms_status
+    "Current status: #{self.human_status_name}"
   end
 
   def reset_address!
@@ -135,36 +183,25 @@ class User < ActiveRecord::Base
     message.strip!
     save_message(message)
     # This is for things like:  reset, help, quit, status, back
-    if self.respond_to?(message.downcase)
-      self.send(message.downcase)
+    message_as_method = "sms_#{message.downcase}"
+    summary_text = nil
+    if self.respond_to?(message_as_method)
+      summary_text = self.send(message_as_method)
     else
       process_message_by_status(message)
     end
     # TODO: Do we ever have more than one valid transition?
     next_event = status_transitions.first
+    logger.info(next_event)
     if !next_event.nil?
       # For each transition, check can_#{transition}?
       self.send(next_event.event)
     end
     save
+    summary_text ||= self.summary
     # TODO: Save outgoing messages?
-    prompt
-  end
-  
-  # TODO: Make summary state-specific?
-  def summary
-    <<-eof
-Here's what we have so far:
-
-First Name: #{self.first_name}
-Last Name: #{self.last_name}
-Date of Birth: #{self.date_of_birth_friendly}
-Address Line 1: #{self.address_line_1}
-Address Line 2: #{self.address_line_2}
-City: #{self.city}
-Zip: #{self.zip}
-
-    eof
+    # TODO: Check for character limit (160).
+    "#{summary_text}\n#{prompt}"
   end
 
   def full_name
@@ -186,12 +223,12 @@ Zip: #{self.zip}
     form = page.form_with(:name => 'Form1')
     form.txtLastName = self.last_name
     form.txtFirstName = self.first_name
-    form.txtDateOfBirth = self.date_of_birth.strftime("%d/%m/%Y")
+    form.txtDateOfBirth = self.date_of_birth.strftime("%m/%d/%Y")
     
     page = form.click_button
     
     result_page = Nokogiri.HTML(page.content)
-    
+
     # Another approach is to look for links with href that contains VoterSummaryScreen in the link
     path = "//a[text() = '#{self.full_name.upcase}']"
     

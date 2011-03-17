@@ -5,27 +5,25 @@ class SmsMessagesController < ApplicationController
     phone_number = params[:From]
     @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
     # TODO: Save outgoing message too, inside process_message()?
-    prompt = @user.process_message(incoming_text)
-    summary = @user.summary
-    outgoing_text = "#{summary}\n#{prompt}"
-    send_text params[:From], outgoing_text
+    outgoing_text = @user.process_message(incoming_text)
+    send_text(params[:From], outgoing_text)
     head 200
   end
 
   def send_text(to, content)
-      twilio = Twilio::RestAccount.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
+    twilio = Twilio::RestAccount.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
 
-      d = {
-        'From' => APP_CONFIG[:TWILIO_CALLER_ID],
-        'To' => to,
-        'Body' => content
-      }
+    data = {
+      'From' => APP_CONFIG[:TWILIO_CALLER_ID],
+      'To' => to,
+      'Body' => content
+    }
 
-      path = "/2010-04-01/Accounts/#{APP_CONFIG[:TWILIO_ACCOUNT_SID]}/SMS/Messages"
-      resp = twilio.request(path, 'POST', d)
+    path = "/2010-04-01/Accounts/#{APP_CONFIG[:TWILIO_ACCOUNT_SID]}/SMS/Messages"
+    twilio_response = twilio.request(path, 'POST', data)
+    
+    logger.info("Sent #{data} to #{path} and got response code: #{twilio_response.code} and response body: #{twilio_response.body}")
 
-      resp.error! unless resp.kind_of? Net::HTTPSuccess
-      puts "code: %s\nbody: %s" % [resp.code, resp.body]
-
+    twilio_response.error! unless twilio_response.kind_of? Net::HTTPSuccess
   end
 end
