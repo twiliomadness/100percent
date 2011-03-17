@@ -16,9 +16,8 @@ class User < ActiveRecord::Base
   has_many :incoming_messages
 
   # TODO: help, quit, reset, back, other verbs?
-  # TODO: Using :state as the state_machine field conflicts with :state as in Wisconsin
 
-  state_machine :state, :initial => :welcome do
+  state_machine :status, :initial => :welcome do
     event :start_collecting do
       transition :welcome => :pending_first_name
     end
@@ -32,11 +31,11 @@ class User < ActiveRecord::Base
     end
 
     event :save_date_of_birth do
-      transition :pending_date_of_birth => :pending_voter_search
+      transition :pending_date_of_birth => :pending_voter_info_confirmation
     end
 
     state :welcome do
-      def process_message_by_state(message)
+      def process_message_by_status(message)
         # noop
       end
       def prompt
@@ -45,7 +44,7 @@ class User < ActiveRecord::Base
     end
 
     state :pending_first_name do
-      def process_message_by_state(message)
+      def process_message_by_status(message)
         self.first_name = message.strip
       end
       def prompt
@@ -55,7 +54,7 @@ class User < ActiveRecord::Base
 
     state :pending_last_name do
       validates_presence_of :first_name
-      def process_message_by_state(message)
+      def process_message_by_status(message)
         self.last_name = message.strip
       end
       def prompt
@@ -65,32 +64,83 @@ class User < ActiveRecord::Base
 
     state :pending_date_of_birth do
       validates_presence_of :last_name
-      def process_message_by_state(message)
+      def process_message_by_status(message)
         self.date_of_birth = Time.parse(message)
       end
       def prompt
         "Date of Birth?"
       end
     end
-
-    state :pending_voter_search do
+    
+    state :pending_voter_info_confirmation do
       validates_presence_of :date_of_birth
-      def process_message_by_state(message)
+      def process_message_by_status(message)
         # noop
       end
+      def yes
+        self.search_for_voter_record
+      end
+      def no
+        self.reset_all!
+      end
+    end
+
+    state :pending_address_confirmation do
+      validates_presence_of :address_line_1, :city, :zip
+      def process_message_by_status(message)
+        # noop
+      end
+      def yes
+      end
+      def no
+        self.reset_address!
+      end
       def prompt
-        "Next step is not yet implemented"
+        "Is this your current address?"
       end
     end
   end
 
+  state :address_confirmed do
+    def process_message_by_status(message)
+    end
+    def prompt
+      "No more steps for now"
+    end
+  end
+
+  def reset_address!
+    self.address_line_1 = nil
+    self.address_line_2 = nil
+    self.city = nil
+    self.zip = nil
+  end
+  
+  def reset_all!
+    self.first_name = nil
+    self.last_name = nil
+    self.date_of_birth = nil
+    self.address_line_1 = nil
+    self.address_line_2 = nil
+    self.city = nil
+    self.zip = nil
+    self.status = "welcome"
+    self.save!
+  end
+
   def process_message(message)
+    message.strip!
     save_message(message)
-    # TODO: Check whether message is non-state specific (e.g., help, quit, status, etc.)
-    process_message_by_state(message)
+    # This is for things like:  reset, help, quit, status, back
+    if self.respond_to?(message.downcase)
+      self.send(message.downcase)
+    else
+      process_message_by_status(message)
+    end
     # TODO: Do we ever have more than one valid transition?
     next_event = state_transitions.first
     if !next_event.nil?
+      # For each transition, check can_#{transition}?
       self.send(next_event.event)
     end
     save
@@ -105,18 +155,28 @@ Here's what we have so far:
 
 First Name: #{self.first_name}
 Last Name: #{self.last_name}
-Date of Birth: #{self.date_of_birth}
+Date of Birth: #{self.date_of_birth_friendly}
+Address Line 1: #{self.address_line_1}
+Address Line 2: #{self.address_line_2}
+City: #{self.city}
+Zip: #{self.zip}
+
     eof
   end
 
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
+  
+  def date_of_birth_friendly
+    if date_of_birth
+      date_of_birth.strftime('%B %d, %Y')
+    end
+  end
 
   def search_for_voter_record
     agent = Mechanize.new
 
-    # Get the flickr sign in page
     page = agent.get(APP_CONFIG[:VOTER_SEARCH_URL])
 
     # Fill out the login form
@@ -138,13 +198,16 @@ Date of Birth: #{self.date_of_birth}
       url = link.first.get_attribute("href")
       next_page = page.link_with(:href => url).click
       voter_info = Nokogiri.HTML(next_page.content)
-      user_address = voter_info.xpath("//input[@id = 'txtAddressLine1']").first.get_attribute("value")
+      user_address_line_1 = voter_info.xpath("//input[@id = 'txtAddressLine1']").first.get_attribute("value")
       user_address_line_2 = voter_info.xpath("//input[@id = 'txtAddressline2']").first.get_attribute("value")
       user_city = voter_info.xpath("//input[@id = 'txtCity']").first.get_attribute("value")
       user_zip = voter_info.xpath("//input[@id = 'txtZipcode']").first.get_attribute("value")
       
-      if self.address.blank?
-        self.address = user_address
+      if self.address_line_1.blank?
+        self.address_line_1 = user_address_line_1
+      end
+      if self.address_line_2.blank?
+        self.address_line_2 = user_address_line_2
       end
       if self.city.blank?
         self.city = user_city
