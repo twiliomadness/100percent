@@ -111,9 +111,11 @@ class User < ActiveRecord::Base
       end
     end
   end
+
+  def debug
+  end
   
-  def status
-    # noop, since summary displays status
+  def info
   end
 
   def reset_address!
