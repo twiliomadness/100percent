@@ -37,16 +37,20 @@ class User < ActiveRecord::Base
     event :confirm_voter_info do
       transition :pending_voter_info_confirmation => :pending_address_confirmation
     end
+    
+    event :confirm_address do
+      transition :pending_address_confirmation => :address_confirmed
+    end
 
     state :welcome do
       def process_message_by_status(message)
         # noop
       end
       def summary
-        "Welcome!"
+        # noop
       end
       def prompt
-        "First Name?"
+        # noop
       end
     end
 
@@ -58,7 +62,7 @@ class User < ActiveRecord::Base
         "Welcome!"
       end
       def prompt
-        "First Name?"
+        "What is your first name?"
       end
     end
 
@@ -68,10 +72,10 @@ class User < ActiveRecord::Base
         self.last_name = message.strip
       end
       def summary
-        "First Name: #{self.first_name}"
+        "Thanks, #{self.first_name}"
       end
       def prompt
-        "Last Name?"
+        "What is your last name?"
       end
     end
 
@@ -81,10 +85,10 @@ class User < ActiveRecord::Base
         self.date_of_birth = Chronic.parse(message)
       end
       def summary
-        "Last Name: #{self.last_name}"
+        "OK, #{self.full_name}"
       end
       def prompt
-        "Date of Birth?"
+        "What is your date of birth (mm/dd/yyyy)?"
       end
     end
     
@@ -97,15 +101,17 @@ class User < ActiveRecord::Base
         # TODO: Log?
         result = self.search_for_voter_record
         logger.info("Searched for voter record result: #{result}")
+        nil
       end
       def sms_no
+        # TODO: This seems drastic, but not sure what else to do.
         self.reset_all!
       end
       def summary
-        "Date of Birth: #{self.date_of_birth_friendly}"
+        "We have:\n#{self.full_name}\n#{self.date_of_birth_friendly}"
       end
       def prompt
-        "Is this you?"
+        "Is this correct? Yes or No"
       end
     end
 
@@ -115,18 +121,21 @@ class User < ActiveRecord::Base
         # noop
       end
       def sms_yes
+        # TODO: Get the polling place.
       end
       def sms_no
         self.reset_address!
       end
       def summary
+        address = self.address_line_1
+        if self.address_line_2
+          address = "#{address}\n#{self.address_line_2}"
+        end
         <<-eof
-Here's what we have so far:
+You are currently registered at:
 
-Address Line 1: #{self.address_line_1}
-Address Line 2: #{self.address_line_2}
-City: #{self.city}
-Zip: #{self.zip}
+#{address}
+#{self.city} #{self.zip}
         eof
       end
       def prompt
@@ -155,6 +164,11 @@ Zip: #{self.zip}
     reset_all!
     "Reset"
   end
+  
+  def sms_resetaddress
+    reset_address!
+    nil
+  end
 
   def sms_status
     "Current status: #{self.human_status_name}"
@@ -165,6 +179,8 @@ Zip: #{self.zip}
     self.address_line_2 = nil
     self.city = nil
     self.zip = nil
+    self.status = "pending_voter_info_confirmation"
+    self.save!
   end
   
   def reset_all!
@@ -201,7 +217,7 @@ Zip: #{self.zip}
     summary_text ||= self.summary
     # TODO: Save outgoing messages?
     # TODO: Check for character limit (160).
-    "#{summary_text}\n#{prompt}"
+    "#{summary_text}\n\n#{prompt}"
   end
 
   def full_name

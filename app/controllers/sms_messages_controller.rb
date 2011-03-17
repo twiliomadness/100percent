@@ -3,6 +3,12 @@ class SmsMessagesController < ApplicationController
     # TODO: Validate that this is actually from twilio.
     incoming_text = params[:Body]
     phone_number = params[:From]
+    # TODO: Take this out once we're live.
+    if incoming_text == 'xxx'
+      user = User.find_by_phone_number(phone_number)
+      user.incoming_messages.destroy_all
+      user.destroy
+    end
     @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
     # TODO: Save outgoing message too, inside process_message()?
     outgoing_text = @user.process_message(incoming_text)
