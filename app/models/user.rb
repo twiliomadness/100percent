@@ -112,12 +112,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def debug
-  end
-  
-  def info
-  end
-
   def reset_address!
     self.address_line_1 = nil
     self.address_line_2 = nil
