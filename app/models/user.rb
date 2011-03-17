@@ -75,8 +75,11 @@ class User < ActiveRecord::Base
 
     state :pending_voter_search do
       validates_presence_of :date_of_birth
+      def process_message_by_state(message)
+        # noop
+      end
       def prompt
-        "Not defined yet"
+        "Next step is not yet implemented"
       end
     end
   end
