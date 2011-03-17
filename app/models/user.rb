@@ -98,6 +98,7 @@ class User < ActiveRecord::Base
     prompt
   end
   
+  # TODO: Make summary state-specific?
   def summary
     <<-eof
 Here's what we have so far:
