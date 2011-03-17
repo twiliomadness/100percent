@@ -99,13 +99,13 @@ class User < ActiveRecord::Base
         "Is this your current address?"
       end
     end
-  end
-
-  state :address_confirmed do
-    def process_message_by_status(message)
-    end
-    def prompt
-      "No more steps for now"
+    
+    state :address_confirmed do
+      def process_message_by_status(message)
+      end
+      def prompt
+        "No more steps for now"
+      end
     end
   end
 
