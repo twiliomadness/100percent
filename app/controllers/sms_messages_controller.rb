@@ -5,7 +5,9 @@ class SmsMessagesController < ApplicationController
     phone_number = params[:From]
     @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
     # TODO: Save outgoing message too, inside process_message()?
-    outgoing_text = @user.process_message(incoming_text)
+    prompt = @user.process_message(incoming_text)
+    summary = @user.summary
+    outgoing_text = "#{summary}\n#{prompt}"
     send_text params[:From], outgoing_text
     head 200
   end

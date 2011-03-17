@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable
 
@@ -11,10 +12,17 @@ class User < ActiveRecord::Base
 
   # TODO: Once :token_authenticatable is added, re-enable this:
   # before_save :reset_authentication_token
-  
+
   has_many :incoming_messages
 
-  state_machine :state, :initial => :pending_first_name do
+  # TODO: help, quit, reset, back, other verbs?
+  # TODO: Using :state as the state_machine field conflicts with :state as in Wisconsin
+
+  state_machine :state, :initial => :welcome do
+    event :start_collecting do
+      transition :welcome => :pending_first_name
+    end
+    
     event :save_first_name do
       transition :pending_first_name => :pending_last_name
     end
@@ -27,57 +35,74 @@ class User < ActiveRecord::Base
       transition :pending_date_of_birth => :pending_voter_search
     end
 
+    state :welcome do
+      def process_message_by_state(message)
+        # noop
+      end
+      def prompt
+        "First Name?"
+      end
+    end
+
     state :pending_first_name do
-      def process_message(message)
-        save_message(message)
+      def process_message_by_state(message)
         self.first_name = message.strip
-        if self.valid?
-          save_first_name
-          self.save!
-          'Last Name?'
-        else
-          'oops, try again; First Name?'
-        end
+      end
+      def prompt
+        "First Name?"
       end
     end
 
     state :pending_last_name do
       validates_presence_of :first_name
-      def process_message(message)
-        save_message(message)
+      def process_message_by_state(message)
         self.last_name = message.strip
-        if self.valid?
-          save_last_name
-          self.save!
-          'Date of Birth?'
-        else
-          'oops, try again; Last Name?'
-        end
+      end
+      def prompt
+        "Last Name?"
       end
     end
-    
+
     state :pending_date_of_birth do
       validates_presence_of :last_name
-      def process_message(message)
-        save_message(message)
+      def process_message_by_state(message)
         self.date_of_birth = Time.parse(message)
-        if self.valid?
-          save_date_of_birth
-          self.save!
-          'done for now'
-        else
-          'oops, try again; Date of Birth?'
-        end
+      end
+      def prompt
+        "Date of Birth?"
       end
     end
-    
+
     state :pending_voter_search do
       validates_presence_of :date_of_birth
+      def prompt
+        "Not defined yet"
+      end
     end
   end
 
-  private
+  def process_message(message)
+    save_message(message)
+    process_message_by_state(message)
+    # TODO: Do we ever have more than one valid transition?
+    next_event = state_transitions.first
+    if !next_event.nil?
+      self.send(next_event.event)
+    end
+    save
+    prompt
+  end
   
+  def summary
+    <<-eof
+      First Name: #{self.first_name}
+      Last Name: #{self.last_name}
+      Date of Birth: #{self.date_of_birth}
+    eof
+  end
+
+  private
+
     def save_message(message)
       incoming_messages.create!(:text => message)
     end
