@@ -204,7 +204,7 @@ class User < ActiveRecord::Base
         end
       end
       def process_yes
-        # TODO: At this point, there's no more interaction needed from the user.
+        self.confirmed_voting_history_but_unable_to_find
       end
       def process_no
         self.reset_all!
