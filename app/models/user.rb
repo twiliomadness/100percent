@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
 
     state :welcome do
       def process_message_by_status(message)
-        # noop
+        start_collecting
       end
       def summary
         # noop
@@ -61,6 +61,7 @@ class User < ActiveRecord::Base
     state :pending_first_name do
       def process_message_by_status(message)
         self.first_name = message.strip
+        save_first_name
       end
       def summary
         "Welcome!"
@@ -74,10 +75,13 @@ class User < ActiveRecord::Base
       validates_presence_of :first_name
       def process_message_by_status(message)
         self.last_name = message.strip
+        save_last_name
       end
+
       def summary
         "Thanks, #{self.first_name}"
       end
+
       def prompt
         "What is your last name?"
       end
@@ -87,10 +91,13 @@ class User < ActiveRecord::Base
       validates_presence_of :last_name
       def process_message_by_status(message)
         self.date_of_birth = TextParser.parse_date(message)
+        save_date_of_birth
       end
+
       def summary
         "OK, #{self.full_name}"
       end
+
       def prompt
         "What is your date of birth (mm/dd/yyyy)?"
       end
@@ -101,10 +108,16 @@ class User < ActiveRecord::Base
       def process_message_by_status(message)
         try_text = TextParser.parse_yes_or_no(message)
         if !try_text.nil?
-          self.send('sms_#{try_text}')
+          case try_text
+          when "yes"
+            self.process_yes
+          when "no"
+            self.process_no
+          end
         end
       end
-      def sms_yes
+
+      def process_yes
         voter = Voter.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
         if voter
           self.address_line_1 = voter.address_line_1
@@ -116,7 +129,8 @@ class User < ActiveRecord::Base
         end
         nil
       end
-      def sms_no
+
+      def process_no
         # TODO: This seems drastic, but not sure what else to do.
         self.reset_all!
         nil
@@ -240,18 +254,14 @@ You are currently registered at:
     # This is for things like:  reset, help, quit, status, back
     message_as_method = "sms_#{message.downcase}"
     summary_text = nil
-    if self.respond_to?(message_as_method)
-      self.send(message_as_method)
-    else
-      process_message_by_status(message)
-    end
-    # TODO: Do we ever have more than one valid transition?
-    next_event = status_transitions.first
-    if !next_event.nil?
-      # For each transition, check can_#{transition}?
-      self.send(next_event.event)
-    end
+    #if self.respond_to?(message_as_method)
+    #  self.send(message_as_method)
+    #else
+    process_message_by_status(message)
+    #end
+
     save
+
     summary_text ||= self.summary
     # TODO: Save outgoing messages?
     # TODO: Check for character limit (160).
@@ -269,6 +279,14 @@ You are currently registered at:
   end
 
   def search_for_voter_record
+  end
+  
+  def self.default_attributes(attrs = {})
+    {:first_name => "John",
+      :last_name => "Smith",
+      :phone_number => "+15555551111",
+      :date_of_birth => 20.years.ago}.merge(attrs)
+
   end
   
   private
