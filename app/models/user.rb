@@ -127,13 +127,10 @@ class User < ActiveRecord::Base
         else
           self.failed_voter_lookup
         end
-        nil
       end
-
       def process_no
         # TODO: This seems drastic, but not sure what else to do.
         self.reset_all!
-        nil
       end
       def summary
         "We have:\n#{self.full_name}\n#{self.date_of_birth_friendly}"
@@ -147,14 +144,19 @@ class User < ActiveRecord::Base
       def process_message_by_status(message)
         try_text = TextParser.parse_yes_or_no(message)
         if !try_text.nil?
-          self.send('sms_#{try_text}')
+          case try_text
+          when "yes"
+            self.process_yes
+          when "no"
+            self.process_no
+          end
         end
       end
-      def sms_yes
-        "you said yes"
+      def process_yes
+        # TODO: Send to state that indicates we need help finding the record.
       end
-      def sms_no
-        "you said no"
+      def process_no
+        # TODO: Collect address.
       end
       def summary
         "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
@@ -169,15 +171,20 @@ class User < ActiveRecord::Base
       def process_message_by_status(message)
         try_text = TextParser.parse_yes_or_no(message)
         if !try_text.nil?
-          self.send('sms_#{try_text}')
+          case try_text
+          when "yes"
+            self.process_yes
+          when "no"
+            self.process_no
+          end
         end
       end
-      def sms_yes
+      def process_yes
         # TODO: Get the polling place.
       end
-      def sms_no
+      def process_no
+        # TODO: This seems drastic.
         self.reset_address!
-        nil
       end
       def summary
         address = self.address_line_1
@@ -208,23 +215,22 @@ You are currently registered at:
     end
   end
 
-  
   def sms_help
     "You can send: help, reset, status"
   end
 
   def sms_reset
     reset_all!
-    "Reset"
+    "Your record was reset"
   end
   
   def sms_resetaddress
     reset_address!
-    nil
+    "Your address was reset"
   end
 
   def sms_status
-    "Current status: #{self.human_status_name}"
+    "Your current status is '#{self.human_status_name}'"
   end
 
   def reset_address!
@@ -253,19 +259,23 @@ You are currently registered at:
     save_message(message)
     # This is for things like:  reset, help, quit, status, back
     message_as_method = "sms_#{message.downcase}"
-    summary_text = nil
-    #if self.respond_to?(message_as_method)
-    #  self.send(message_as_method)
-    #else
-    process_message_by_status(message)
-    #end
+    outgoing_text = nil
+    if self.respond_to?(message_as_method)
+      outgoing_text = self.send(message_as_method)
+    else
+      process_message_by_status(message)
+    end
 
     save
 
-    summary_text ||= self.summary
     # TODO: Save outgoing messages?
     # TODO: Check for character limit (160).
-    "#{summary_text.strip}\n\n#{prompt}"
+    
+    if outgoing_text
+      outgoing_text
+    else
+      "#{self.summary.strip}\n\n#{prompt}"
+    end
   end
 
   def full_name
@@ -278,15 +288,11 @@ You are currently registered at:
     end
   end
 
-  def search_for_voter_record
-  end
-  
   def self.default_attributes(attrs = {})
     {:first_name => "John",
       :last_name => "Smith",
       :phone_number => "+15555551111",
       :date_of_birth => 20.years.ago}.merge(attrs)
-
   end
   
   private
