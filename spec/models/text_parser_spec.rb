@@ -34,6 +34,12 @@ describe TextParser do
       result.should == Time.new(1969, 7, 4)
     end
 
+    it "handles all digits with any non-alpha characters as separators" do
+      text = "07*04*1969"
+      result = TextParser.parse_date(text)
+      result.should == Time.new(1969, 7, 4)
+    end
+
   end
   
   describe "#parse_yes_or_no" do

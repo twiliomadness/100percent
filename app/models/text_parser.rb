@@ -7,8 +7,8 @@ class TextParser
       # noop
     end
     if result.nil?
-      if text =~ /^[\d\s]+$/
-        text = text.gsub(' ', '')
+      if text =~ /^[^a-zA-Z]+$/
+        text = text.gsub(/[^\d]/, '')
       end
       if text =~ /^\d{8}$/
         try_text = "#{text[0..1]}/#{text[2..3]}/#{text[4..7]}"
