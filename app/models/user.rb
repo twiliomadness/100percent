@@ -235,7 +235,6 @@ You are currently registered at:
   end
 
   def process_message(message)
-    self.chunks = []
     message.strip!
     save_message(message)
     # This is for things like:  reset, help, quit, status, back
