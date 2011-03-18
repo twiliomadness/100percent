@@ -42,6 +42,10 @@ class User < ActiveRecord::Base
       transition :pending_voter_history_confirmation => :pending_voter_info_confirmation_retry
     end
     
+    event :confirmed_voting_history_but_unable_to_find do
+      transition :pending_voter_info_confirmation_retry => :pending_assistance_finding_voter_record
+    end
+    
     event :confirmed_nonvoting_history do
       transition :pending_voter_history_confirmation => :pending_address_line_1
     end
@@ -200,7 +204,7 @@ class User < ActiveRecord::Base
         end
       end
       def process_yes
-        # TODO
+        # TODO: At this point, there's no more interaction needed from the user.
       end
       def process_no
         self.reset_all!
@@ -210,6 +214,18 @@ class User < ActiveRecord::Base
       end
       def prompt
         "Plese verify your record? Yes or No"
+      end
+    end
+    
+    state :pending_assistance_finding_voter_record do
+      def process_message_by_status(message)
+        # noop
+      end
+      def summary
+        "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
+      end
+      def prompt
+        "One of our volunteers will contact you"
       end
     end
     
