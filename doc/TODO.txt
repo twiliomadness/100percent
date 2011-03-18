@@ -20,4 +20,4 @@ TODO:
 
 - Figure out why post-deploy failure is happening
 
-  http://devcenter.heroku.com/articles/using-compass
+  thttp://devcenter.heroku.com/articles/using-compass
