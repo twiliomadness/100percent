@@ -257,7 +257,7 @@ class User < ActiveRecord::Base
 
     state :pending_zip do
       def process_message_by_status(message)
-        self.zip = zip
+        self.zip = message
         self.save_zip
       end
       def summary
