@@ -1,7 +1,13 @@
 class Voter 
 
   attr_accessor :address_line_1, :address_line_2, :city, :zip
-
+  
+  def self.default_attributes(attrs = {})
+    {:address_line_1 => "123 MAIN ST.",
+      :city => "MADISON",
+      :zip => "53703"}.merge(attrs)
+  end
+    
   def self.find_by_name_and_date_of_birth(first_name, last_name, date_of_birth)
     # TODO: Record all searches, use as cache, etc.
     agent = Mechanize.new

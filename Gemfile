@@ -14,8 +14,6 @@ gem 'state_machine', '0.9.4'
 gem 'twiliolib', '2.0.7'
 
 group :cucumber do
-  gem "autotest"
-  gem "autotest-notification"
   gem 'capybara', '0.4.1.2'
   gem 'database_cleaner', '0.6.6'
   gem 'cucumber-rails', '0.3.2'
@@ -26,6 +24,8 @@ group :cucumber do
 end  
 
 group :cucumber, :development, :test do
+  gem "autotest"
+  gem "autotest-notification"
   gem 'faker', '0.9.5'
   gem 'rspec-rails', '2.5.0'
 end
