@@ -10,6 +10,9 @@ development:
   database: gotv_development
   <<: *global
 
-test:
+test: &test
   database: gotv_test
   <<: *global
+
+cucumber:
+  <<: *test

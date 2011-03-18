@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
     state :pending_date_of_birth do
       validates_presence_of :last_name
       def process_message_by_status(message)
-        self.date_of_birth = Chronic.parse(message)
+        self.date_of_birth = TextParser.parse_date(message)
       end
       def summary
         "OK, #{self.full_name}"
@@ -217,7 +217,7 @@ You are currently registered at:
     summary_text ||= self.summary
     # TODO: Save outgoing messages?
     # TODO: Check for character limit (160).
-    "#{summary_text}\n\n#{prompt}"
+    "#{summary_text.strip}\n\n#{prompt}"
   end
 
   def full_name
