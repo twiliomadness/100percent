@@ -243,6 +243,7 @@ class User < ActiveRecord::Base
     end
 
     state :pending_city do
+      validates_presence_of :address_line_1
       def process_message_by_status(message)
         self.city = message
         self.save_city
@@ -256,6 +257,7 @@ class User < ActiveRecord::Base
     end
 
     state :pending_zip do
+      validates_presence_of :address_line_1, :city
       def process_message_by_status(message)
         self.zip = message
         self.save_zip
