@@ -7,6 +7,9 @@ class TextParser
       # noop
     end
     if result.nil?
+      if text =~ /^[\d\s]+$/
+        text = text.gsub(' ', '')
+      end
       if text =~ /^\d{8}$/
         try_text = "#{text[0..1]}/#{text[2..3]}/#{text[4..7]}"
         result = Chronic.parse(try_text)
