@@ -244,7 +244,7 @@ class User < ActiveRecord::Base
 
     state :pending_city do
       def process_message_by_status(message)
-        self.city = city
+        self.city = message
         self.save_city
       end
       def summary
