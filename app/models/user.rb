@@ -37,6 +37,26 @@ class User < ActiveRecord::Base
     event :failed_voter_lookup do
       transition :pending_voter_info_confirmation => :pending_voter_history_confirmation
     end
+    
+    event :confirmed_voting_history do
+      transition :pending_voter_history_confirmation => :pending_voter_info_confirmation_retry
+    end
+    
+    event :confirmed_nonvoting_history do
+      transition :pending_voter_history_confirmation => :pending_address_line_1
+    end
+    
+    event :save_address_line_1 do
+      transition :pending_address_line_1 => :pending_city
+    end
+    
+    event :save_city do
+      transition :pending_city => :pending_zip
+    end
+    
+    event :save_zip do
+      transition :pending_zip => :pending_address_confirmation
+    end
 
     event :confirm_voter_info do
       transition :pending_voter_info_confirmation => :pending_address_confirmation
@@ -124,6 +144,7 @@ class User < ActiveRecord::Base
           self.address_line_2 = voter.address_line_2
           self.city = voter.city
           self.zip = voter.zip
+          self.confirm_voter_info
         else
           self.failed_voter_lookup
         end
@@ -153,16 +174,81 @@ class User < ActiveRecord::Base
         end
       end
       def process_yes
-        # TODO: Send to state that indicates we need help finding the record.
+        self.confirmed_voting_history
       end
       def process_no
-        # TODO: Collect address.
+        self.confirmed_nonvoting_history
       end
       def summary
         "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
       end
       def prompt
         "Have you voted in Wisconsin before? Yes or No"
+      end
+    end
+    
+    state :pending_voter_info_confirmation_retry do
+      def process_message_by_status(message)
+        try_text = TextParser.parse_yes_or_no(message)
+        if !try_text.nil?
+          case try_text
+          when "yes"
+            self.process_yes
+          when "no"
+            self.process_no
+          end
+        end
+      end
+      def process_yes
+        # TODO
+      end
+      def process_no
+        self.reset_all!
+      end
+      def summary
+        "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
+      end
+      def prompt
+        "Plese verify your record? Yes or No"
+      end
+    end
+    
+    state :pending_address_line_1 do
+      def process_message_by_status(message)
+        self.address_line_1 = message
+        self.save_address_line_1
+      end
+      def summary
+        ""
+      end
+      def prompt
+        "What is your street address?"
+      end
+    end
+
+    state :pending_city do
+      def process_message_by_status(message)
+        self.city = city
+        self.save_city
+      end
+      def summary
+        "Your street address is #{self.address_line_1}"
+      end
+      def prompt
+        "What is your city?"
+      end
+    end
+
+    state :pending_zip do
+      def process_message_by_status(message)
+        self.zip = zip
+        self.save_zip
+      end
+      def summary
+        "Your city is #{self.city}"
+      end
+      def prompt
+        "What is your zip?"
       end
     end
 
