@@ -33,6 +33,10 @@ class User < ActiveRecord::Base
     event :save_date_of_birth do
       transition :pending_date_of_birth => :pending_voter_info_confirmation
     end
+    
+    event :failed_voter_lookup do
+      transition :pending_voter_info_confirmation => :pending_voter_history_confirmation
+    end
 
     event :confirm_voter_info do
       transition :pending_voter_info_confirmation => :pending_address_confirmation
@@ -108,8 +112,7 @@ class User < ActiveRecord::Base
           self.city = voter.city
           self.zip = voter.zip
         else
-          # TODO: This seems drastic, but not sure what else to do.
-          self.reset_all!
+          self.failed_voter_lookup
         end
         nil
       end
@@ -123,6 +126,27 @@ class User < ActiveRecord::Base
       end
       def prompt
         "Is this correct? Yes or No"
+      end
+    end
+    
+    state :pending_voter_history_confirmation do
+      def process_message_by_status(message)
+        try_text = TextParser.parse_yes_or_no(message)
+        if !try_text.nil?
+          self.send('sms_#{try_text}')
+        end
+      end
+      def sms_yes
+        "you said yes"
+      end
+      def sms_no
+        "you said no"
+      end
+      def summary
+        "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
+      end
+      def prompt
+        "Have you voted in Wisconsin before? Yes or No"
       end
     end
 
@@ -211,13 +235,14 @@ You are currently registered at:
   end
 
   def process_message(message)
+    self.chunks = []
     message.strip!
     save_message(message)
     # This is for things like:  reset, help, quit, status, back
     message_as_method = "sms_#{message.downcase}"
     summary_text = nil
     if self.respond_to?(message_as_method)
-      summary_text = self.send(message_as_method)
+      self.send(message_as_method)
     else
       process_message_by_status(message)
     end

@@ -16,3 +16,7 @@ TODO:
 
 - Log searches
 
+- getexceptional
+
+- Figure out why post-deploy failure is happening
+

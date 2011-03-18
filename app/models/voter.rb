@@ -3,7 +3,7 @@ class Voter
   attr_accessor :address_line_1, :address_line_2, :city, :zip
 
   def self.find_by_name_and_date_of_birth(first_name, last_name, date_of_birth)
-    # TODO: Record all searches.
+    # TODO: Record all searches, use as cache, etc.
     agent = Mechanize.new
 
     page = agent.get(APP_CONFIG[:VOTER_SEARCH_URL])
