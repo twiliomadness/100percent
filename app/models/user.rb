@@ -95,12 +95,22 @@ class User < ActiveRecord::Base
     state :pending_voter_info_confirmation do
       validates_presence_of :date_of_birth
       def process_message_by_status(message)
-        # noop
+        try_text = TextParser.parse_yes_or_no(message)
+        if !try_text.nil?
+          self.send('sms_#{try_text}')
+        end
       end
       def sms_yes
-        # TODO: Log?
-        result = self.search_for_voter_record
-        logger.info("Searched for voter record result: #{result}")
+        voter = Voter.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
+        if voter
+          self.address_line_1 = voter.address_line_1
+          self.address_line_2 = voter.address_line_2
+          self.city = voter.city
+          self.zip = voter.zip
+        else
+          # TODO: This seems drastic, but not sure what else to do.
+          self.reset_all!
+        end
         nil
       end
       def sms_no
@@ -119,7 +129,10 @@ class User < ActiveRecord::Base
     state :pending_address_confirmation do
       validates_presence_of :address_line_1, :city, :zip
       def process_message_by_status(message)
-        # noop
+        try_text = TextParser.parse_yes_or_no(message)
+        if !try_text.nil?
+          self.send('sms_#{try_text}')
+        end
       end
       def sms_yes
         # TODO: Get the polling place.
@@ -141,7 +154,7 @@ You are currently registered at:
         eof
       end
       def prompt
-        "Is this your current address?"
+        "Is this your current address? Yes or No"
       end
     end
     
@@ -232,49 +245,6 @@ You are currently registered at:
   end
 
   def search_for_voter_record
-    agent = Mechanize.new
-
-    page = agent.get(APP_CONFIG[:VOTER_SEARCH_URL])
-
-    # Fill out the login form
-    form = page.form_with(:name => 'Form1')
-    form.txtLastName = self.last_name
-    form.txtFirstName = self.first_name
-    form.txtDateOfBirth = self.date_of_birth.strftime("%m/%d/%Y")
-    
-    page = form.click_button
-    
-    result_page = Nokogiri.HTML(page.content)
-
-    # Another approach is to look for links with href that contains VoterSummaryScreen in the link
-    path = "//a[text() = '#{self.full_name.upcase}']"
-    
-    link = result_page.xpath(path)
-    if link.present?
-      # TODO: Handle possibility of more than one record
-      url = link.first.get_attribute("href")
-      next_page = page.link_with(:href => url).click
-      voter_info = Nokogiri.HTML(next_page.content)
-      user_address_line_1 = voter_info.xpath("//input[@id = 'txtAddressLine1']").first.get_attribute("value")
-      user_address_line_2 = voter_info.xpath("//input[@id = 'txtAddressline2']").first.get_attribute("value")
-      user_city = voter_info.xpath("//input[@id = 'txtCity']").first.get_attribute("value")
-      user_zip = voter_info.xpath("//input[@id = 'txtZipcode']").first.get_attribute("value")
-      
-      if self.address_line_1.blank?
-        self.address_line_1 = user_address_line_1
-      end
-      if self.address_line_2.blank?
-        self.address_line_2 = user_address_line_2
-      end
-      if self.city.blank?
-        self.city = user_city
-      end
-      if self.zip.blank?
-        self.zip = user_zip
-      end
-      self.save
-    end
-    
   end
   
   private

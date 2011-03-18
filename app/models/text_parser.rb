@@ -6,7 +6,6 @@ class TextParser
     rescue TypeError
       # noop
     end
-    puts "result: #{result}"
     if result.nil?
       if text =~ /^\d{8}$/
         try_text = "#{text[0..1]}/#{text[2..3]}/#{text[4..7]}"
@@ -21,6 +20,16 @@ class TextParser
         result += 1900.years
       end
       result.at_beginning_of_day
+    end
+  end
+  
+  def self.parse_yes_or_no(text)
+    if text.downcase.starts_with?('y')
+      'yes'
+    elsif text.downcase.starts_with?('n')
+      'no'
+    else
+      nil
     end
   end
 end
