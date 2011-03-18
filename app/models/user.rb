@@ -106,6 +106,7 @@ class User < ActiveRecord::Base
       def sms_no
         # TODO: This seems drastic, but not sure what else to do.
         self.reset_all!
+        nil
       end
       def summary
         "We have:\n#{self.full_name}\n#{self.date_of_birth_friendly}"
@@ -125,6 +126,7 @@ class User < ActiveRecord::Base
       end
       def sms_no
         self.reset_address!
+        nil
       end
       def summary
         address = self.address_line_1
@@ -208,7 +210,6 @@ You are currently registered at:
     end
     # TODO: Do we ever have more than one valid transition?
     next_event = status_transitions.first
-    logger.info(next_event)
     if !next_event.nil?
       # For each transition, check can_#{transition}?
       self.send(next_event.event)
