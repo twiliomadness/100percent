@@ -4,7 +4,7 @@ class SmsMessagesController < ApplicationController
     incoming_text = params[:Body]
     phone_number = params[:From]
     # TODO: Take this out once we're live.
-    if incoming_text == 'xxx'
+    if incoming_text.strip.downcase == 'xxx'
       user = User.find_by_phone_number(phone_number)
       user.incoming_messages.destroy_all
       user.destroy
