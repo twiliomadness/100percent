@@ -47,5 +47,11 @@ Feature: Manage voter_lookups
     And I have entered an address that is not found
     Then I should be prompted "Is this your current address"
 
+  Scenario: Address lookup failed, and user confirms bad address
+    Given I have submitted my name and birthday
+    And I have entered an address that is not found
+    And I confirm that my address is correct
+    Then I should be shown "A volunteer will contact you shortly"
+
 
 

@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
     end
     
     event :failed_voter_name_and_dob_lookup do
-      transition :pending_voter_info_confirmation => :pending_address_line_1
+      transition any => :pending_address_line_1
     end
     
   
@@ -67,6 +67,10 @@ class User < ActiveRecord::Base
 
     event :confirmed_wrong_address_entered do 
       transition :pending_user_entered_voter_address_confirmation => :pending_address_line_1
+    end
+
+    event :confirmed_unknown_user_address_is_correct do 
+      transition :pending_user_entered_voter_address_confirmation => :need_help
     end
 
     state :welcome do
@@ -258,23 +262,15 @@ class User < ActiveRecord::Base
     state :pending_gab_voter_address_confirmation do
       validates_presence_of :address_line_1, :city, :zip
       def process_message_by_status(message)
-        try_text = TextParser.parse_yes_or_no(message)
-        if !try_text.nil?
-          case try_text
-          when "yes"
-            self.process_yes
-          when "no"
-            self.process_no
-          end
-        end
+        process_yes_no_message(message)
       end
       def process_yes
         self.voter_address_saved
       end
       def process_no
-        # TODO: This seems drastic.
-        self.reset_address!
+        self.failed_voter_name_and_dob_lookup
       end
+
       def summary
         self.address_confirmation_summary
       end
@@ -285,10 +281,11 @@ class User < ActiveRecord::Base
     
     state :pending_user_entered_voter_address_confirmation do 
       def process_message_by_status(message)
+        process_yes_no_message(message)
       end
 
       def process_yes
-        #TODO: they need help
+        self.confirmed_unknown_user_address_is_correct
       end
 
       def process_no
@@ -314,6 +311,16 @@ class User < ActiveRecord::Base
         "No more steps for now"
       end
     end
+
+    state :need_help do
+      def summary
+        "A volunteer will contact you shortly"
+      end
+
+      def prompt
+        ""
+      end
+    end
   end
 
   def sms_help
@@ -325,6 +332,7 @@ class User < ActiveRecord::Base
     "Your record was reset"
   end
   
+  #TODO: this is not used?
   def sms_resetaddress
     reset_address!
     "Your address was reset"
@@ -339,7 +347,7 @@ class User < ActiveRecord::Base
     self.address_line_2 = nil
     self.city = nil
     self.zip = nil
-    self.status = "pending_voter_info_confirmation"
+    self.status = "pending_address_line_1"
     self.save!
   end
   
@@ -428,6 +436,17 @@ You are currently registered at:
         eof
     end
 
+  def process_yes_no_message(message)
+    try_text = TextParser.parse_yes_or_no(message)
+    if !try_text.nil?
+      case try_text
+      when "yes"
+        self.process_yes
+      when "no"
+        self.process_no
+      end
+    end
+  end
   private
 
     def lookup_address

@@ -49,6 +49,11 @@ Given /^I have entered an address that is not found$/ do
   And "I enter my zip"
 end
 
+Given /^I confirm that my address is correct$/ do
+  @user.status= "pending_user_entered_voter_address_confirmation"
+  @user.process_message("yes")
+end
+
 When /^I enter my city$/ do
   @user.status = "pending_city"
   @user.process_message("Madison")
