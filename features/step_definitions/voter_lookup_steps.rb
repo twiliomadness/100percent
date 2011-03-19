@@ -41,6 +41,14 @@ Given /^I have entered an address that is found$/ do
   And "I enter my zip"
 end
 
+Given /^I have entered an address that is not found$/ do
+  @voter = Voter.new(Voter.default_attributes())
+  Voter.stub!(:lookup!).and_return(nil)
+  Given "I enter my street address"
+  And "I enter my city"
+  And "I enter my zip"
+end
+
 When /^I enter my city$/ do
   @user.status = "pending_city"
   @user.process_message("Madison")

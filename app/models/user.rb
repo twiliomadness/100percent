@@ -40,6 +40,7 @@ class User < ActiveRecord::Base
       transition :pending_voter_info_confirmation => :pending_address_line_1
     end
     
+  
     event :save_address_line_1 do
       transition :pending_address_line_1 => :pending_city
     end
@@ -53,11 +54,19 @@ class User < ActiveRecord::Base
     end
 
     event :confirm_voter_info do
-      transition :pending_voter_info_confirmation => :pending_voter_address_confirmation
+      transition :pending_voter_info_confirmation => :pending_gab_voter_address_confirmation
     end
     
     event :voter_address_saved do
-      transition [:pending_voter_address_confirmation, :pending_voter_address_lookup] => :voter_address_found 
+      transition [:pending_gab_voter_address_confirmation, :pending_voter_address_lookup] => :voter_address_found 
+    end
+
+    event :failed_voter_address_lookup do
+      transition :pending_voter_address_lookup => :pending_user_entered_voter_address_confirmation
+    end
+
+    event :confirmed_wrong_address_entered do 
+      transition :pending_user_entered_voter_address_confirmation => :pending_address_line_1
     end
 
     state :welcome do
@@ -246,7 +255,7 @@ class User < ActiveRecord::Base
       end
     end
 
-    state :pending_voter_address_confirmation do
+    state :pending_gab_voter_address_confirmation do
       validates_presence_of :address_line_1, :city, :zip
       def process_message_by_status(message)
         try_text = TextParser.parse_yes_or_no(message)
@@ -267,22 +276,34 @@ class User < ActiveRecord::Base
         self.reset_address!
       end
       def summary
-        address = self.address_line_1
-        if self.address_line_2
-          address = "#{address}\n#{self.address_line_2}"
-        end
-        <<-eof
-You are currently registered at:
-
-#{address}
-#{self.city} #{self.zip}
-        eof
+        self.address_confirmation_summary
       end
       def prompt
         "Is this your current address? Yes or No"
       end
     end
     
+    state :pending_user_entered_voter_address_confirmation do 
+      def process_message_by_status(message)
+      end
+
+      def process_yes
+        #TODO: they need help
+      end
+
+      def process_no
+        self.confrim_wrong_address_entered
+      end
+
+      def summary
+        self.address_confirmation_summary
+      end
+      
+      def prompt
+        "Is this your current address? Yes or No"
+      end
+    end
+
     state :voter_address_found do
       def process_message_by_status(message)
       end
@@ -393,7 +414,20 @@ You are currently registered at:
    self.city = voter.city
    self.zip = voter.zip
   end
- 
+
+  def address_confirmation_summary
+        address = self.address_line_1
+        if self.address_line_2
+          address = "#{address}\n#{self.address_line_2}"
+        end
+        <<-eof
+You are currently registered at:
+
+#{address}
+#{self.city} #{self.zip}
+        eof
+    end
+
   private
 
     def lookup_address

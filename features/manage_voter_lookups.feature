@@ -43,6 +43,9 @@ Feature: Manage voter_lookups
     Then I should be shown "You are registered to vote at"
 
   Scenario: Address lookup failed
+    Given I have submitted my name and birthday
+    And I have entered an address that is not found
+    Then I should be prompted "Is this your current address"
 
 
 
