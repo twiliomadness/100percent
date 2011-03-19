@@ -32,9 +32,6 @@ class Voter
     end
 
     # TODO: Handle possibility of more than one record
-    if links.size > 1
-      logger.warn("Found #{summary_links.size} for #{first_name} #{last_name} #{date_of_birth}")
-    end
 
     link = links.first
 
