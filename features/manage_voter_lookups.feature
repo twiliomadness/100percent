@@ -20,17 +20,29 @@ Feature: Manage voter_lookups
     When I confirm my voter info
     Then I should be prompted to confirm my address
 
-  Scenario: Let voter know we'll contact them if no voter record exists
+  Scenario: Prompt for address if voter confirms information
     Given I have submitted my name and birthday
     And I am not a registered voter
-    And I confirm I have voted in the past
-    When I confirm my voter info
-    Then I should be prompted "One of our volunteers will contact you"
+    And I confirm my name and birthday
+    Then I should be prompted "What is your street address?"
 
-  Scenario: Verify voter info when user has voted
+  Scenario: Propmpt for city after user enters address
     Given I have submitted my name and birthday
-    And I am not a registered voter
-    When I confirm I have voted in the past
-    Then I should be prompted "Please verify your record"
+    When I enter my street address
+    Then I should be prompted "City?"
+
+  Scenario: Prompt for zip after user enters city
+    Given I have submitted my name and birthday
+    When I enter my street address
+    And I enter my city
+    Then I should be prompted "Zip?"
+
+  Scenario: Address lookup succeeded
+    Given I have submitted my name and birthday
+    And I have entered an address that is found
+    Then I should be shown "You are registered to vote at"
+
+  Scenario: Address lookup failed
+
 
 

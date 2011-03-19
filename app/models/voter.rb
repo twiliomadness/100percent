@@ -15,6 +15,10 @@ class Voter
       :zip => "53703"}.merge(attrs)
   end
     
+  def self.lookup!(user)
+    #TODO: this should decide to lookup user by name and dob or address based on user passed in
+  end
+
   def self.find_by_name_and_date_of_birth(first_name, last_name, date_of_birth)
     # TODO: Record all searches, use as cache, etc.
     agent = Mechanize.new
