@@ -16,3 +16,10 @@ Feature: Manage voter_lookups
     And I have submitted my name and birthday correctly
     When I confirm my voter info for voter "John Smith"
     Then I should be prompted "Have you voted in Wisconsin before"
+
+  Scenario: Lookup voter who is not registered
+    Given user "John Smith" exists at phone # "+15555551212"
+    And voter "John Smith" is not registered to vote
+    And I have submitted my name and birthday correctly
+    When I say that I have voted in Wisconsin before
+    Then I should be prompted "Please verify your record"

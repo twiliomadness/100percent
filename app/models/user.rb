@@ -41,15 +41,15 @@ class User < ActiveRecord::Base
     event :confirmed_voting_history do
       transition :pending_voter_history_confirmation => :pending_voter_info_confirmation_retry
     end
-    
-    event :confirmed_voting_history_but_unable_to_find do
-      transition :pending_voter_info_confirmation_retry => :pending_assistance_finding_voter_record
-    end
-    
+
     event :confirmed_nonvoting_history do
       transition :pending_voter_history_confirmation => :pending_address_line_1
     end
     
+    event :confirmed_voting_history_but_unable_to_find do
+      transition :pending_voter_info_confirmation_retry => :pending_assistance_finding_voter_record
+    end
+
     event :save_address_line_1 do
       transition :pending_address_line_1 => :pending_city
     end
@@ -214,7 +214,7 @@ class User < ActiveRecord::Base
         "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
       end
       def prompt
-        "Plese verify your record? Yes or No"
+        "Please verify your record? Yes or No"
       end
     end
     
@@ -236,7 +236,7 @@ class User < ActiveRecord::Base
         self.save_address_line_1
       end
       def summary
-        ""
+        "We need to collect your current address"
       end
       def prompt
         "What is your street address?"
@@ -360,10 +360,21 @@ You are currently registered at:
   end
 
   def process_message(message)
+    # TODO: Somewhere we should have a begin/rescue block; ideally outermost and just say,
+    # "Oops, I did not understand that.  Can we try again"
+    # We need a "restate" global method.
+
     message.strip!
     save_message(message)
     # This is for things like:  reset, help, quit, status, back
     message_as_method = "sms_#{message.downcase}"
+    
+    # We either have a global, non-state specific message OR we have a message to process by status.
+    # Global non-state specific messages are methods that are called without argument.  We may want
+    # to fix that (e.g., help <arg>).  The non-state specific message return value (if not nil) is
+    # used as the entirety of the outgoing message.  For state-specific messages, the outgoing
+    # message is a concatenation of the state-specific summary and prompt.  The primary value
+    # of distinguishing summary and prompt is to facilitate thinking about the interaction.    
     outgoing_text = nil
     if self.respond_to?(message_as_method)
       outgoing_text = self.send(message_as_method)
@@ -371,6 +382,7 @@ You are currently registered at:
       process_message_by_status(message)
     end
 
+    # TODO: In some cases, global methods (e.g., reset) do save!  That's unnecessary now.
     save
 
     # TODO: Save outgoing messages?

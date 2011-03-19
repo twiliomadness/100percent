@@ -31,3 +31,6 @@ Then /^I should be prompted "([^"]*)"$/ do |arg1|
   @user.prompt =~ /arg1/
 end
 
+When /^I say that I have voted in Wisconsin before$/ do
+  @response = @user.process_message("yes")
+end
