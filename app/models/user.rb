@@ -179,6 +179,7 @@ class User < ActiveRecord::Base
         end
       end
       def process_yes
+        puts "\n\n\n\n Confirmed!"
         self.confirmed_voting_history
       end
       def process_no
