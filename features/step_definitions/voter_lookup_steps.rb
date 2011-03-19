@@ -33,11 +33,12 @@ When /^I confirm I have voted in the past$/ do
 end
 
 When /^I confirm my voter info$/ do
+  @user.status = "pending_voter_info_confirmation"
   @response = @user.process_message("yes")
 end
 
 Then /^I should be prompted to confirm my address$/ do
-  @response.should =~ /We have/
+  @response.should =~ /We have #{@user.first_name} #{@user.last_name}/
 end
 
 Then /^I should be in a status of "([^"]*)"$/ do |arg1|

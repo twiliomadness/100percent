@@ -2,6 +2,13 @@ class Voter
 
   attr_accessor :address_line_1, :address_line_2, :city, :zip
   
+  def initialize(attrs = {})
+    self.address_line_1 = attrs[:address_line_1]
+    self.address_line_2 = attrs[:address_line_2]
+    self.city = attrs[:city]
+    self.zip = attrs[:zip]
+  end
+
   def self.default_attributes(attrs = {})
     {:address_line_1 => "123 MAIN ST.",
       :city => "MADISON",
