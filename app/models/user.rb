@@ -148,6 +148,7 @@ class User < ActiveRecord::Base
           self.address_line_2 = voter.address_line_2
           self.city = voter.city
           self.zip = voter.zip
+          self.save
           self.confirm_voter_info
         else
           self.failed_voter_lookup
