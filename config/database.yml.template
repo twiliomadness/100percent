@@ -2,7 +2,7 @@ global: &global
   adapter: postgresql
   encoding: unicode
   pool: 5
-  username: mclark
+  username: postgres
   password:
   min_messages: warning
 
