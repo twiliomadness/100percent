@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
   # TODO: help, quit, reset, back, other verbs?
 
   state_machine :status, :initial => :welcome do
+    after_transition any => :pending_voter_address_lookup, :do => :lookup_address
+
     event :start_collecting do
       transition :welcome => :pending_first_name
     end
@@ -34,22 +36,11 @@ class User < ActiveRecord::Base
       transition :pending_date_of_birth => :pending_voter_info_confirmation
     end
     
-    event :failed_voter_lookup do
-      transition :pending_voter_info_confirmation => :pending_voter_history_confirmation
+    event :failed_voter_name_and_dob_lookup do
+      transition :pending_voter_info_confirmation => :pending_address_line_1
     end
     
-    event :confirmed_voting_history do
-      transition :pending_voter_history_confirmation => :pending_voter_info_confirmation_retry
-    end
-
-    event :confirmed_nonvoting_history do
-      transition :pending_voter_history_confirmation => :pending_address_line_1
-    end
-    
-    event :confirmed_voting_history_but_unable_to_find do
-      transition :pending_voter_info_confirmation_retry => :pending_assistance_finding_voter_record
-    end
-
+  
     event :save_address_line_1 do
       transition :pending_address_line_1 => :pending_city
     end
@@ -59,15 +50,23 @@ class User < ActiveRecord::Base
     end
     
     event :save_zip do
-      transition :pending_zip => :pending_address_confirmation
+      transition :pending_zip => :pending_voter_address_lookup
     end
 
     event :confirm_voter_info do
-      transition :pending_voter_info_confirmation => :pending_address_confirmation
+      transition :pending_voter_info_confirmation => :pending_gab_voter_address_confirmation
     end
     
-    event :confirm_address do
-      transition :pending_address_confirmation => :address_confirmed
+    event :voter_address_saved do
+      transition [:pending_gab_voter_address_confirmation, :pending_voter_address_lookup] => :voter_address_found 
+    end
+
+    event :failed_voter_address_lookup do
+      transition :pending_voter_address_lookup => :pending_user_entered_voter_address_confirmation
+    end
+
+    event :confirmed_wrong_address_entered do 
+      transition :pending_user_entered_voter_address_confirmation => :pending_address_line_1
     end
 
     state :welcome do
@@ -151,7 +150,7 @@ class User < ActiveRecord::Base
           self.save
           self.confirm_voter_info
         else
-          self.failed_voter_lookup
+          self.failed_voter_name_and_dob_lookup
         end
       end
       def process_no
@@ -163,33 +162,6 @@ class User < ActiveRecord::Base
       end
       def prompt
         "Is this correct? Yes or No"
-      end
-    end
-    
-    state :pending_voter_history_confirmation do
-      def process_message_by_status(message)
-        try_text = TextParser.parse_yes_or_no(message)
-        if !try_text.nil?
-          case try_text
-          when "yes"
-            self.process_yes
-          when "no"
-            self.process_no
-          end
-        end
-      end
-      def process_yes
-        puts "\n\n\n\n Confirmed!"
-        self.confirmed_voting_history
-      end
-      def process_no
-        self.confirmed_nonvoting_history
-      end
-      def summary
-        "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
-      end
-      def prompt
-        "Have you voted in Wisconsin before? Yes or No"
       end
     end
     
@@ -254,7 +226,7 @@ class User < ActiveRecord::Base
         "Your street address is #{self.address_line_1}"
       end
       def prompt
-        "What is your city?"
+        "City?"
       end
     end
 
@@ -268,11 +240,22 @@ class User < ActiveRecord::Base
         "Your city is #{self.city}"
       end
       def prompt
-        "What is your zip?"
+        "Zip?"
       end
     end
 
-    state :pending_address_confirmation do
+    state :pending_voter_address_lookup do 
+      validates_presence_of :address_line_1, :city, :zip
+      def summary
+        ""
+      end
+
+      def prompt
+        ""
+      end
+    end
+
+    state :pending_gab_voter_address_confirmation do
       validates_presence_of :address_line_1, :city, :zip
       def process_message_by_status(message)
         try_text = TextParser.parse_yes_or_no(message)
@@ -286,34 +269,46 @@ class User < ActiveRecord::Base
         end
       end
       def process_yes
-        # TODO: Get the polling place.
+        self.voter_address_saved
       end
       def process_no
         # TODO: This seems drastic.
         self.reset_address!
       end
       def summary
-        address = self.address_line_1
-        if self.address_line_2
-          address = "#{address}\n#{self.address_line_2}"
-        end
-        <<-eof
-You are currently registered at:
-
-#{address}
-#{self.city} #{self.zip}
-        eof
+        self.address_confirmation_summary
       end
       def prompt
         "Is this your current address? Yes or No"
       end
     end
     
-    state :address_confirmed do
+    state :pending_user_entered_voter_address_confirmation do 
+      def process_message_by_status(message)
+      end
+
+      def process_yes
+        #TODO: they need help
+      end
+
+      def process_no
+        self.confrim_wrong_address_entered
+      end
+
+      def summary
+        self.address_confirmation_summary
+      end
+      
+      def prompt
+        "Is this your current address? Yes or No"
+      end
+    end
+
+    state :voter_address_found do
       def process_message_by_status(message)
       end
       def summary
-        "Thanks for confirming your address!"
+        "You are registered to vote at:"# #{self.polling_station.name}"
       end
       def prompt
         "No more steps for now"
@@ -412,8 +407,37 @@ You are currently registered at:
       :phone_number => "+15555551111",
       :date_of_birth => 20.years.ago}.merge(attrs)
   end
-  
+
+  def update_attributes_from_voter(voter)
+   self.address_line_1 = voter.address_line_1
+   self.address_line_2 = voter.address_line_2
+   self.city = voter.city
+   self.zip = voter.zip
+  end
+
+  def address_confirmation_summary
+        address = self.address_line_1
+        if self.address_line_2
+          address = "#{address}\n#{self.address_line_2}"
+        end
+        <<-eof
+You are currently registered at:
+
+#{address}
+#{self.city} #{self.zip}
+        eof
+    end
+
   private
+
+    def lookup_address
+      if voter = Voter.lookup!(self)
+        self.update_attributes_from_voter(voter)
+        self.voter_address_saved
+      else  
+        self.failed_voter_address_lookup
+      end
+    end
 
     def save_message(message)
       incoming_messages.create!(:text => message)
