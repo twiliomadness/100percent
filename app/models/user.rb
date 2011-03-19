@@ -213,7 +213,7 @@ class User < ActiveRecord::Base
         "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
       end
       def prompt
-        "Plese verify your record? Yes or No"
+        "Please verify your record? Yes or No"
       end
     end
     
