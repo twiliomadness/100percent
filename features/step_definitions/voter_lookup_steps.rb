@@ -37,15 +37,15 @@ Given /^I enter my street address$/ do
 end
 
 Given /^I have entered an address that is found$/ do
-  @voter = VoterRecord.new(VoterRecord.default_attributes())
-  VoterRecord.stub!(:find_address_record).and_return(@voter)
+  @polling_place = PollingPlace.new(:id => 1)
+  VoterRecord.stub!(:find_address_record).and_return(@polling_place)
   Given "I enter my street address"
   And "I enter my city"
   And "I enter my zip"
 end
 
 Given /^I have entered an address that is not found$/ do
-  @voter = VoterRecord.new(VoterRecord.default_attributes())
+  @polling_place = PollingPlace.new(:id => 1)
   VoterRecord.stub!(:find_address_record).and_return(nil)
   Given "I enter my street address"
   And "I enter my city"

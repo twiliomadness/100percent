@@ -189,7 +189,7 @@ class SmsVoter < Voter
         self.save_address_line_1
       end
       def summary
-        "We need to collect your current address"
+        "Next step is to determine where you vote."
       end
       def prompt
         "What is your street address?"
@@ -426,8 +426,9 @@ You are currently registered at:
   private
 
     def lookup_address
-      if voter = VoterRecord.find_address_record(self)
-        self.update_attributes_from_voter(voter)
+      if polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
+        #self.update_attributes_from_voter(voter)
+        self.polling_place_id = polling_place.id
         self.voter_address_saved
       else  
         self.failed_voter_address_lookup

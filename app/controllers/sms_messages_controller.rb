@@ -6,7 +6,7 @@ class SmsMessagesController < ApplicationController
     # TODO: Take this out once we're live.
     if incoming_text.strip.downcase == 'xxx'
       user = User.find_by_phone_number(phone_number)
-      user.incoming_messages.destroy_all
+      user.sms_voter.incoming_messages.destroy_all
       user.destroy
     end
     # TODO: This line will fail once we implement Devise on the user class

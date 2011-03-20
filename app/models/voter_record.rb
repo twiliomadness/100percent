@@ -21,16 +21,16 @@ class VoterRecord
     # More than the provider deciding what the caller's gonna get
   end
   
-  def self.find_address_record(user)
+  def self.find_address_record(address_line_1, city, zip)
     agent = Mechanize.new
 
     page = agent.get(APP_CONFIG[:ADDRESS_SEARCH_URL])
 
     form = page.form_with(:name => 'Form1')
-    form.txtHouseNum = self.house_number(user)
-    form.txtStreetName = self.street_name(user)
-    form.txtCity = user.city
-    form.txtZipcode = user.zip
+    form.txtHouseNum = house_number(address_line_1)
+    form.txtStreetName = street_name(address_line_1)
+    form.txtCity = city
+    form.txtZipcode = zip
     
     page = form.click_button
     
@@ -45,7 +45,7 @@ class VoterRecord
     if links.size > 1
       link_row_path = "//td[text() = '#{self.house_number_odd_even(user).capitalize!}']/.."
       link = link_row_path.search(path)
-      logger.warn("Unable to find proper address for #{summary_links.size} for #{first_name} #{last_name} #{date_of_birth}")
+      logger.warn("Multiple address records for #{address_line_1} #{city} #{zip}")
       # If we don't have a link, something is really wrong.
     else
       link = links.first
@@ -86,16 +86,16 @@ class VoterRecord
     
   end
 
-  def self.find_by_name_and_date_of_birth(user)
+  def self.find_by_name_and_date_of_birth(first_name, last_name, date_of_birth)
     # TODO: Record all searches, use as cache, etc.
     agent = Mechanize.new
 
     page = agent.get(APP_CONFIG[:VOTER_SEARCH_URL])
 
     form = page.form_with(:name => 'Form1')
-    form.txtLastName = user.last_name
-    form.txtFirstName = user.first_name
-    form.txtDateOfBirth = user.date_of_birth.strftime("%m/%d/%Y")
+    form.txtLastName = last_name
+    form.txtFirstName = first_name
+    form.txtDateOfBirth = date_of_birth.strftime("%m/%d/%Y")
     
     page = form.click_button
     
@@ -111,7 +111,7 @@ class VoterRecord
 
     # TODO: Handle possibility of more than one record
     if links.size > 1
-      logger.warn("Found #{summary_links.size} for #{user.first_name} #{user.last_name} #{user.date_of_birth}")
+      logger.warn("Found #{summary_links.size} for #{first_name} #{last_name} #{date_of_birth}")
     end
 
     link = links.first
@@ -129,19 +129,19 @@ class VoterRecord
 
   end
   
-  def self.house_number(user)
+  def self.house_number(address_line_1)
     # TODO: Make this smart
-    if user.address_line_1.present?
-      user.address_line_1.split(" ").first
+    if address_line_1.present?
+      address_line_1.split(" ").first
     end
   end
   
-  def self.street_name(user)
-    user.address_line_1.gsub(house_number(user), "").strip
+  def self.street_name(address_line_1)
+    address_line_1.gsub(house_number(address_line_1), "").strip
   end
   
-  def self.house_number_odd_even(user)
-    number = house_number(user)
+  def self.house_number_odd_even(address_line_1)
+    number = house_number(address_line_1)
     if number.to_i%2 == 0
       "even"
     else
