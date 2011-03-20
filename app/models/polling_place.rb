@@ -1,4 +1,6 @@
 class PollingPlace < ActiveRecord::Base
+  has_many :voters
+  
   validates_presence_of :polling_place_id
   
   before_save :clean_polling_place_name
@@ -11,7 +13,7 @@ class PollingPlace < ActiveRecord::Base
     # https://vpa.wi.gov/PollingPlaceAccessibilityPage.aspx?Language=en-us&PPLID=593214&DistrictComboID=100012276&JurisdictionID=448
   end
   
-  def clean_polling_place_name(polling_place_name)
+  def clean_polling_place_name
     # 058-04 MUNICIPAL BUILDING
     # 35 - WIL-MAR NEIGHBORHOOD CENTER
   end
