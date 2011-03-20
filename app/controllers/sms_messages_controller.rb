@@ -9,6 +9,7 @@ class SmsMessagesController < ApplicationController
       user.incoming_messages.destroy_all
       user.destroy
     end
+    # TODO: This line will fail once we implement Devise on the user class
     @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
     @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter  : @user.sms_voter
     # TODO: Save outgoing message too, inside process_message()?

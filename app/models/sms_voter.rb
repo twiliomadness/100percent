@@ -426,7 +426,7 @@ You are currently registered at:
   private
 
     def lookup_address
-      if voter = VoterRecord.lookup!(self)
+      if voter = VoterRecord.find_address_record(self)
         self.update_attributes_from_voter(voter)
         self.voter_address_saved
       else  
