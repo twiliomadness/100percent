@@ -44,7 +44,7 @@ class VoterRecord
     
     # If street is on border of district, two rows returned - Odd side and Even side
     if links.size > 1
-      link_row_path = "//td[text() = '#{self.house_number_odd_even(user).capitalize!}']/.."
+      link_row_path = "//td[text() = '#{self.house_number_odd_even(address_line_1).capitalize!}']/.."
       link = link_row_path.search(path)
       logger.warn("Multiple address records for #{address_line_1} #{city} #{zip}")
       # If we don't have a link, something is really wrong.
