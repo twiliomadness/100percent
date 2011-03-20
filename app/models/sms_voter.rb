@@ -281,7 +281,7 @@ class SmsVoter < Voter
       def process_message_by_status(message)
       end
       def summary
-        "You are registered to vote at:"# #{self.polling_station.name}"
+        "You are registered to vote at:"# #{self.polling_place.sms_description}"
       end
       def prompt
         "No more steps for now"
