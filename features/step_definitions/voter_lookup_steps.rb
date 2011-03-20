@@ -1,16 +1,19 @@
 Given /^I have submitted my first and last name$/ do
-  @user = User.create!(User.default_attributes(:birthday => nil))
-  @user.status = "pending_date_of_birth"
+  #TODO: clean up users and sms voters here
+  @user = User.create!(User.default_attributes())
+  @sms_voter = @user.create_sms_voter(SmsVoter.default_attributes(:date_of_birth => nil))
+  @sms_voter.status = "pending_date_of_birth"
 end
 
 Given /^I have submitted my name and birthday$/ do
   @user = User.create!(User.default_attributes())
-  @user.status = "pending_voter_info_confirmation"
+  @sms_voter = @user.create_sms_voter(SmsVoter.default_attributes())
+  @sms_voter.status = "pending_voter_info_confirmation"
 end
 
 Given /^I am a registered voter$/ do
-  @voter = VoterRecord.new(VoterRecord.default_attributes())
-  VoterRecord.stub!(:find_by_name_and_date_of_birth).and_return(@voter)
+  @voter_record = VoterRecord.new(VoterRecord.default_attributes())
+  VoterRecord.stub!(:find_by_name_and_date_of_birth).and_return(@voter_record)
 end
 
 Given  /^I can't be found in the voter lookup system$/ do 
@@ -24,13 +27,13 @@ Given /^I am not a registered voter$/ do
 end
 
 Given /^I confirm my name and birthday$/ do
-  @user.status = "pending_voter_info_confirmation"
-  @user.process_yes
+  @sms_voter.status = "pending_voter_info_confirmation"
+  @sms_voter.process_yes
 end
 
 Given /^I enter my street address$/ do
-  @user.status = "pending_address_line_1"
-  @user.process_message("123 Main St.")
+  @sms_voter.status = "pending_address_line_1"
+  @sms_voter.process_message("123 Main St.")
 end
 
 Given /^I have entered an address that is found$/ do
@@ -50,27 +53,27 @@ Given /^I have entered an address that is not found$/ do
 end
 
 Given /^I confirm that my address is correct$/ do
-  @user.status= "pending_user_entered_voter_address_confirmation"
-  @user.process_message("yes")
+  @sms_voter.status= "pending_user_entered_voter_address_confirmation"
+  @sms_voter.process_message("yes")
 end
 
 When /^I enter my city$/ do
-  @user.status = "pending_city"
-  @user.process_message("Madison")
+  @sms_voter.status = "pending_city"
+  @sms_voter.process_message("Madison")
 end
 
 When /^I enter my zip$/ do
-  @user.status = "pending_zip"
-  @user.process_message("53798")
+  @sms_voter.status = "pending_zip"
+  @sms_voter.process_message("53798")
 end
 
 When /^I submit my birthday$/ do
-  @user.process_message("6/12/1919")
+  @sms_voter.process_message("6/12/1919")
 end
 
 When /^I confirm my voter info$/ do
-  @user.status = "pending_voter_info_confirmation"
-  @response = @user.process_message("yes")
+  @sms_voter.status = "pending_voter_info_confirmation"
+  @response = @sms_voter.process_message("yes")
 end
 
 Then /^I should be prompted to confirm my address$/ do
@@ -78,13 +81,13 @@ Then /^I should be prompted to confirm my address$/ do
 end
 
 Then /^I should be in a status of "([^"]*)"$/ do |arg1|
-  @user.status.should == arg1
+  @sms_voter.status.should == arg1
 end
 
 Then /^I should be prompted "([^"]*)"$/ do |arg1|
- @user.prompt.should =~ /#{arg1}/
+ @sms_voter.prompt.should =~ /#{arg1}/
 end
 
 Then /^I should be shown "([^"]*)"$/ do |arg1|
-  @user.summary.should =~ /#{arg1}/
+  @sms_voter.summary.should =~ /#{arg1}/
 end

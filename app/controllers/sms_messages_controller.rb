@@ -10,8 +10,9 @@ class SmsMessagesController < ApplicationController
       user.destroy
     end
     @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
+    @sms_voter = @user.sms_voter.nil? ? @user.sms_voter.create  : @user.sms_voter
     # TODO: Save outgoing message too, inside process_message()?
-    outgoing_text = @user.process_message(incoming_text)
+    outgoing_text = @sms_voter.process_message(incoming_text)
     send_text(params[:From], outgoing_text)
     head 200
   end
