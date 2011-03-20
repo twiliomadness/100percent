@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
     after_transition any => :pending_voter_address_lookup, :do => :lookup_address
 
     event :start_collecting do
-      transition :welcome => :pending_first_name
+      transition any => :pending_first_name
     end
     
     event :save_first_name do
@@ -40,7 +40,6 @@ class User < ActiveRecord::Base
       transition any => :pending_address_line_1
     end
     
-  
     event :save_address_line_1 do
       transition :pending_address_line_1 => :pending_city
     end
@@ -158,7 +157,6 @@ class User < ActiveRecord::Base
         end
       end
       def process_no
-        # TODO: This seems drastic, but not sure what else to do.
         self.reset_all!
       end
       def summary
@@ -192,18 +190,6 @@ class User < ActiveRecord::Base
       end
       def prompt
         "Please verify your record? Yes or No"
-      end
-    end
-    
-    state :pending_assistance_finding_voter_record do
-      def process_message_by_status(message)
-        # noop
-      end
-      def summary
-        "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
-      end
-      def prompt
-        "One of our volunteers will contact you"
       end
     end
     
@@ -359,7 +345,7 @@ class User < ActiveRecord::Base
     self.address_line_2 = nil
     self.city = nil
     self.zip = nil
-    self.status = "welcome"
+    self.start_collecting
     self.save!
   end
 
