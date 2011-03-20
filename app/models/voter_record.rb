@@ -58,7 +58,7 @@ class VoterRecord
     city = voter_info.xpath("//input[@id = 'txtCity']").first.get_attribute("value")
     zip = voter_info.xpath("//input[@id = 'txtZipcode']").first.get_attribute("value")
 
-    Voter.new(:address_line_1 => address_line_1, :address_line_2 => address_line_2, :city => city, :zip => zip)
+    VoterRecord.new(:address_line_1 => address_line_1, :address_line_2 => address_line_2, :city => city, :zip => zip)
 
   end
 end
