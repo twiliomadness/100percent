@@ -12,6 +12,7 @@ gem 'mechanize', '1.0.0'
 gem 'nokogiri', '1.4.4'
 gem 'state_machine', '0.9.4'
 gem 'twiliolib', '2.0.7'
+gem "html5-boilerplate"
 
 group :cucumber do
   gem 'capybara', '0.4.1.2'
@@ -21,7 +22,7 @@ group :cucumber do
   # TODO: Consider using this.
   # gem 'spork', '0.8.4'
   gem 'launchy', '0.3.7'
-end  
+end
 
 group :cucumber, :development, :test do
   gem "autotest"
@@ -36,3 +37,4 @@ end
 group :test do
   gem 'shoulda', '2.11.3'
 end
+
