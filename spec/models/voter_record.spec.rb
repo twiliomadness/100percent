@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe Voter do
+describe VoterRecord do
 
   describe "#find_by_name_and_date_of_birth" do
 
     it "returns a Voter object when the voter is found" do
-      result = Voter.find_by_name_and_date_of_birth('Mark', 'McEahern', TextParser.parse_date('7/4/1969'))
-      expected = Voter.new(:address_line_1 => '2829 OAKRIDGE AVE', :city => 'MADISON', :zip => '53704')
+      result = VoterRecord.find_by_name_and_date_of_birth('Mark', 'McEahern', TextParser.parse_date('7/4/1969'))
+      expected = VoterRecord.new(:address_line_1 => '2829 OAKRIDGE AVE', :city => 'MADISON', :zip => '53704')
       result.address_line_1.should == expected.address_line_1
       result.address_line_2.should == expected.address_line_2
       result.city.should == expected.city
