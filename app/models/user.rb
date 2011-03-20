@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   # TODO: help, quit, reset, back, other verbs?
 
   has_many :voters
-  has_one :sms_voter, :conditions => {:type => 'sms_voter'} 
+  has_one :sms_voter, :conditions => {:type => 'SmsVoter'} 
 
   def self.default_attributes(attrs = {})
     {:first_name => "John",
