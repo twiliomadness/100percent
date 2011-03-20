@@ -22,6 +22,7 @@ class VoterRecord
   end
   
   def self.find_address_record(address_line_1, city, zip)
+    
     agent = Mechanize.new
 
     page = agent.get(APP_CONFIG[:ADDRESS_SEARCH_URL])
@@ -68,7 +69,7 @@ class VoterRecord
     polling_place_link = address_info.xpath("//a[starts-with(@href, 'PollingPlaceAccessibilityPage')]").first.get_attribute("href")
     polling_place_id = PollingPlace.polling_place_id_from_link(polling_place_link)
 
-    polling_place = PollingPlace.find_or_create_by_polling_place_id(polling_place_id)
+    polling_place = PollingPlace.find_by_polling_place_id(polling_place_id)
     
     # TODO: We're always updating PollingPlaces.  They sometimes change.
     if polling_place.blank?
