@@ -144,7 +144,7 @@ class User < ActiveRecord::Base
       end
 
       def process_yes
-        voter = Voter.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
+        voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
         if voter
           self.address_line_1 = voter.address_line_1
           self.address_line_2 = voter.address_line_2
@@ -436,7 +436,7 @@ You are currently registered at:
   private
 
     def lookup_address
-      if voter = Voter.lookup!(self)
+      if voter = VoterRecord.lookup!(self)
         self.update_attributes_from_voter(voter)
         self.voter_address_saved
       else  

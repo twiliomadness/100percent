@@ -1,4 +1,4 @@
-class Voter 
+class VoterRecord
 
   attr_accessor :address_line_1, :address_line_2, :city, :zip
   

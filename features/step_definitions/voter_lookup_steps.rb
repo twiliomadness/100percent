@@ -9,8 +9,8 @@ Given /^I have submitted my name and birthday$/ do
 end
 
 Given /^I am a registered voter$/ do
-  @voter = Voter.new(Voter.default_attributes())
-  Voter.stub!(:find_by_name_and_date_of_birth).and_return(@voter)
+  @voter = VoterRecord.new(VoterRecord.default_attributes())
+  VoterRecord.stub!(:find_by_name_and_date_of_birth).and_return(@voter)
 end
 
 Given  /^I can't be found in the voter lookup system$/ do 
@@ -20,7 +20,7 @@ end
 
 Given /^I am not a registered voter$/ do
   Given "I have submitted my name and birthday"
-  Voter.stub!(:find_by_name_and_date_of_birth).and_return(nil)
+  VoterRecord.stub!(:find_by_name_and_date_of_birth).and_return(nil)
 end
 
 Given /^I confirm my name and birthday$/ do
@@ -34,16 +34,16 @@ Given /^I enter my street address$/ do
 end
 
 Given /^I have entered an address that is found$/ do
-  @voter = Voter.new(Voter.default_attributes())
-  Voter.stub!(:lookup!).and_return(@voter)
+  @voter = VoterRecord.new(VoterRecord.default_attributes())
+  VoterRecord.stub!(:lookup!).and_return(@voter)
   Given "I enter my street address"
   And "I enter my city"
   And "I enter my zip"
 end
 
 Given /^I have entered an address that is not found$/ do
-  @voter = Voter.new(Voter.default_attributes())
-  Voter.stub!(:lookup!).and_return(nil)
+  @voter = VoterRecord.new(VoterRecord.default_attributes())
+  VoterRecord.stub!(:lookup!).and_return(nil)
   Given "I enter my street address"
   And "I enter my city"
   And "I enter my zip"
