@@ -268,7 +268,7 @@ class SmsVoter < Voter
       end
 
       def process_no
-        self.confrim_wrong_address_entered
+        self.confirmed_wrong_address_entered
       end
 
       def summary
