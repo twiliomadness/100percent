@@ -1,6 +1,7 @@
 class SmsMessagesController < ApplicationController
   def incoming
     # TODO: Validate that this is actually from twilio.
+    # TODO: help, quit, reset, back, other verbs?
     incoming_text = params[:Body]
     phone_number = params[:From]
     # TODO: Take this out once we're live.
@@ -9,12 +10,14 @@ class SmsMessagesController < ApplicationController
       user.sms_voter.incoming_messages.destroy_all
       user.destroy
     end
-    # TODO: This line will fail once we implement Devise on the user class
+    
     @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
     @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter  : @user.sms_voter
-    # TODO: Save outgoing message too, inside process_message()?
+    
     outgoing_text = @sms_voter.process_message(incoming_text)
     send_text(params[:From], outgoing_text)
+    
+    @sms_voter.outgoing_messages.create(:text => outgoing_text)
     head 200
   end
 
