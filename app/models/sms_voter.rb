@@ -189,7 +189,7 @@ class SmsVoter < Voter
         self.save_address_line_1
       end
       def summary
-        "We need to collect your current address"
+        "Next step is to determine where you vote."
       end
       def prompt
         "What is your street address?"
@@ -203,7 +203,7 @@ class SmsVoter < Voter
         self.save_city
       end
       def summary
-        "Your street address is #{self.address_line_1}"
+        "Got it."
       end
       def prompt
         "City?"
@@ -217,7 +217,7 @@ class SmsVoter < Voter
         self.save_zip
       end
       def summary
-        "Your city is #{self.city}"
+        "OK."
       end
       def prompt
         "Zip?"
@@ -241,6 +241,9 @@ class SmsVoter < Voter
         process_yes_no_message(message)
       end
       def process_yes
+        # We just got the address from the GAB in this path, so we could have assigned polling_place_id then.  This should still work.
+        polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
+        self.update_attribute(:polling_place_id, polling_place.id)
         self.voter_address_saved
       end
       def process_no
@@ -265,7 +268,7 @@ class SmsVoter < Voter
       end
 
       def process_no
-        self.confrim_wrong_address_entered
+        self.confirmed_wrong_address_entered
       end
 
       def summary
@@ -281,7 +284,7 @@ class SmsVoter < Voter
       def process_message_by_status(message)
       end
       def summary
-        "You are registered to vote at:"# #{self.polling_station.name}"
+        "You are registered to vote at: #{self.polling_place.sms_description}"
       end
       def prompt
         "No more steps for now"
@@ -426,8 +429,9 @@ You are currently registered at:
   private
 
     def lookup_address
-      if voter = VoterRecord.lookup!(self)
-        self.update_attributes_from_voter(voter)
+      if polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
+        #self.update_attributes_from_voter(voter)
+        self.polling_place_id = polling_place.id
         self.voter_address_saved
       else  
         self.failed_voter_address_lookup

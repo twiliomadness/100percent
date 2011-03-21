@@ -10,11 +10,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110320001935) do
+ActiveRecord::Schema.define(:version => 20110320202335) do
 
   create_table "incoming_messages", :force => true do |t|
     t.integer  "voter_id",   :null => false
     t.string   "text",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "polling_places", :force => true do |t|
+    t.string   "location_name"
+    t.string   "address"
+    t.string   "city"
+    t.string   "zip"
+    t.string   "hours"
+    t.integer  "polling_place_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -31,6 +42,7 @@ ActiveRecord::Schema.define(:version => 20110320001935) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "authentication_token"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "phone_number"
@@ -60,6 +72,7 @@ ActiveRecord::Schema.define(:version => 20110320001935) do
     t.string   "address_line_2"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "polling_place_id"
   end
 
 end
