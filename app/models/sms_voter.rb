@@ -203,7 +203,7 @@ class SmsVoter < Voter
         self.save_city
       end
       def summary
-        "Your street address is #{self.address_line_1}"
+        "Got it."
       end
       def prompt
         "City?"
@@ -217,7 +217,7 @@ class SmsVoter < Voter
         self.save_zip
       end
       def summary
-        "Your city is #{self.city}"
+        "OK."
       end
       def prompt
         "Zip?"

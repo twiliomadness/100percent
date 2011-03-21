@@ -22,7 +22,7 @@ class VoterRecord
   end
   
   def self.find_address_record(address_line_1, city, zip)
-    
+    # TODO: Rename this to find_polling_place.  yo.
     agent = Mechanize.new
 
     page = agent.get(APP_CONFIG[:ADDRESS_SEARCH_URL])
@@ -44,10 +44,11 @@ class VoterRecord
     
     # If street is on border of district, two rows returned - Odd side and Even side
     if links.size > 1
-      link_row_path = "//td[text() = '#{self.house_number_odd_even(address_line_1).capitalize!}']/.."
-      link = link_row_path.search(path)
-      logger.warn("Multiple address records for #{address_line_1} #{city} #{zip}")
-      # If we don't have a link, something is really wrong.
+      # Grab the <td> with Odd as content
+      link_row_path = "//td[text() = '#{self.house_number_odd_even(address_line_1).capitalize!}']"
+      td = result_page.xpath(link_row_path)
+      # the link is within the parent (the <tr>) of the selected <td>  like this:  <table><tr><td>Odd</td><td><a href="AddressDetailsScreen..."
+      link = td.first.parent.search("td/a").first
     else
       link = links.first
     end
