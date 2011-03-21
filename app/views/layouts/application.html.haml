@@ -1,6 +1,6 @@
 !!! 5
 = render :partial => 'layouts/head'
-%body{ :lang => 'en', :class => "#{controller.controller_name}" }
+%body{ :lang => 'en', :class => "#{controller.controller_name} #{controller.action_name}" }
   .container#container
     %header#header
       = render :partial => 'layouts/header'

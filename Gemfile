@@ -12,7 +12,8 @@ gem 'mechanize', '1.0.0'
 gem 'nokogiri', '1.4.4'
 gem 'state_machine', '0.9.4'
 gem 'twiliolib', '2.0.7'
-gem "html5-boilerplate"
+gem 'html5-boilerplate'
+gem 'formtastic'
 
 group :cucumber do
   gem 'capybara', '0.4.1.2'

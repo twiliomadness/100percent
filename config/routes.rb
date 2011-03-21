@@ -16,7 +16,8 @@ Gotv::Application.routes.draw do
     get 'signout' => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
-  get "welcome/index"
-  root :to => "welcome#index"
+  get "/namedob" => 'content#namedob', :as => :namedob
+
+  root :to => "content#index"
 end
 
