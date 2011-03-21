@@ -40,7 +40,7 @@ Feature: Manage voter_lookups
   Scenario: Address lookup succeeded
     Given I have submitted my name and birthday
     And I have entered an address that is found
-    Then I should be shown "You are registered to vote at: GroundZero, 123 Main, Anywhere"
+    Then I should be shown "You are registered to vote at: Ground Zero, 123 Main, Anywhere"
 
   Scenario: Address lookup failed
     Given I have submitted my name and birthday
