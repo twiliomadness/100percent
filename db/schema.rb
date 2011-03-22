@@ -10,7 +10,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110321232705) do
+ActiveRecord::Schema.define(:version => 20110322021614) do
+
+  create_table "county_clerks", :force => true do |t|
+    t.string   "location_name"
+    t.string   "address"
+    t.string   "city"
+    t.string   "zip"
+    t.string   "county"
+    t.string   "phone_number"
+    t.string   "email_address"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "polling_places", :force => true do |t|
     t.string   "location_name"
