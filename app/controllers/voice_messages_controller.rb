@@ -25,7 +25,7 @@ class VoiceMessagesController < ApplicationController
    # logging.info(FIXME - report that the caller called)
  end
 
- def recording(to, content)
+ def recording
    phone_number = params[:Caller]
    @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
    recording_URL = params[:RecordingUrl]
