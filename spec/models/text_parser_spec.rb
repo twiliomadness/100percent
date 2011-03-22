@@ -90,5 +90,19 @@ describe TextParser do
       result.should == expected
     end
 
+    it "treats # as a secondary unit designator" do
+      address = '101 S MAIN #5'
+      expected = "101 S MAIN"
+      result = TextParser.parse_address(address)
+      result.should == expected
+    end
+
+    it "treats # as a secondary unit designator" do
+      address = '101 S. MAIN ST.'
+      expected = "101 S. MAIN ST"
+      result = TextParser.parse_address(address)
+      result.should == expected
+    end
+
   end
 end
