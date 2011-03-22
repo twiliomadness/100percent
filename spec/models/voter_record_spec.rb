@@ -14,7 +14,7 @@ describe VoterRecord do
     end
 
     it "returns nil when voter is not found" do
-      result = VoterRecord.find_by_name_and_date_of_birth('Mark', 'McEahern', TextParser.parse_date('7/4/1968'))
+      result = VoterRecord.find_by_name_and_date_of_birth('Scott', 'Walker', TextParser.parse_date('11/2/1968'))
       result.should be_nil
     end
     
