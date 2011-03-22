@@ -46,4 +46,8 @@ class TextParser
     end
     result.strip
   end
+  
+  def self.normalize_whitespace(text)
+    text.split.join(' ')
+  end
 end

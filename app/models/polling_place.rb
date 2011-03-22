@@ -22,17 +22,16 @@ class PollingPlace < ActiveRecord::Base
   end
   
   def clean_fields
-    clean_polling_place_name
+    clean_location_name
     clean_address
   end
   
-  def clean_polling_place_name
-    # 058-04 MUNICIPAL BUILDING
-    # 35 - WIL-MAR NEIGHBORHOOD CENTER
+  def clean_location_name
+    self.location_name = self.location_name.sub(/^[^a-z]*/i, '')
   end
   
   def clean_address
-    self.address = self.address.gsub("  "," ").strip
+    self.address = TextParser.normalize_whitespace(self.address)
   end
   
 end
