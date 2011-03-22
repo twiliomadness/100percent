@@ -10,6 +10,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+ActiveRecord::Schema.define(:version => 20110322032559) do
+
   create_table "county_clerks", :force => true do |t|
     t.string   "location_name"
     t.string   "address"
@@ -21,7 +23,7 @@
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-  
+
   create_table "polling_places", :force => true do |t|
     t.string   "location_name"
     t.string   "address"
@@ -53,6 +55,7 @@
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "authentication_token"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "first_name"

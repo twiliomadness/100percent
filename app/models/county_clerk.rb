@@ -4,97 +4,53 @@ class CountyClerk < ActiveRecord::Base
   validates_presence_of :location_name
   validates_presence_of :city
   
-  before_save :clean_fields
-  
   # TODO: have VoterRecord get the HTML for the voter, then PolingPlace and CountyClerk can go from there?
   
-  def self.find_address_record(address_line_1, city, zip)
-    # TODO: Rename this to find_polling_place.  yo.
-    agent = Mechanize.new
+  def self.get_county_clerk(mechanize_page)
+    # get html for the clerk details then
+    
+    address_info_html = Nokogiri.HTML(mechanize_page.content)
+    
+    county_clerk_td = address_info_html.xpath("//td[starts-with(text(), 'COUNTY CLERK')]")
+    clerk_link = county_clerk_td.first.parent.search("td/a").first
+    url = clerk_link.get_attribute("href")
+    county_name = county_clerk_td.first.parent.search("td[ends-with(text(), 'County')]").first.gsub(" County", "")
+    next_page = mechanize_page.link_with(:href => url).click
+    county_clerk_html = Nokogiri.HTML(next_page.content)
+    
+    county_clerk = self.get_clerk_from_html(county_clerk_html, county_name)
+  end
+  
+  def self.get_clerk_from_html(page_html, county)
+    page_object = Nokogiri.HTML(page_html)
+    
+    location_name_address = page_object.xpath("//input[@id = 'txtAddress1']").first.get_attribute("value")
+    city_state_zip = page_object.xpath("//input[@id = 'txtAddress2']").first.get_attribute("value")
+    phone_number = page_object.xpath("//input[@id = 'txtPhoneNumber']").first.get_attribute("value")
+    clerk_email = page_object.xpath("//input[@id = 'txtEMailAddress']").first.get_attribute("value")
 
-    page = agent.get(APP_CONFIG[:ADDRESS_SEARCH_URL])
-
-    form = page.form_with(:name => 'Form1')
-    form.txtHouseNum = house_number(address_line_1)
-    form.txtStreetName = street_name(address_line_1)
-    form.txtCity = city
-    form.txtZipcode = zip
-    
-    page = form.click_button
-    
-    result_page = Nokogiri.HTML(page.content)
-    
-    # Another approach is to look for links with href that contains VoterSummaryScreen in the link
-    path = "//a[starts-with(@href, 'AddressDetailsScreen')]"
-
-    links = result_page.xpath(path)
-    
-    # If street is on border of district, two rows returned - Odd side and Even side
-    if links.size > 1
-      # Grab the <td> with Odd as content
-      link_row_path = "//td[text() = '#{self.house_number_odd_even(address_line_1).capitalize!}']"
-      td = result_page.xpath(link_row_path)
-      # the link is within the parent (the <tr>) of the selected <td>  like this:  <table><tr><td>Odd</td><td><a href="AddressDetailsScreen..."
-      link = td.first.parent.search("td/a").first
-    else
-      link = links.first
-    end
-    
-    if links.empty?
-      return nil
-    end
-    
-    url = link.get_attribute("href")
-    next_page = page.link_with(:href => url).click
-    address_info = Nokogiri.HTML(next_page.content)
-
-    polling_place_name = address_info.xpath("//input[@id = 'PollingPlaceSummarySection1_txtName']").first.get_attribute("value")
-    polling_place_address_line_a = address_info.xpath("//input[@id = 'PollingPlaceSummarySection1_txtAddressLineA']").first.get_attribute("value")
-    poling_place_city = address_info.xpath("//input[@id = 'PollingPlaceSummarySection1_txtAddressLineB']").first.get_attribute("value")
-    polling_place_zip = address_info.xpath("//input[@id = 'PollingPlaceSummarySection1_txtAddressLineC']").first.get_attribute("value")
-    polling_place_hours = address_info.xpath("//input[@id = 'PollingPlaceSummarySection1_txtHours']").first.get_attribute("value")
-    
-    polling_place_link = address_info.xpath("//a[starts-with(@href, 'PollingPlaceAccessibilityPage')]").first.get_attribute("href")
-    polling_place_id = PollingPlace.polling_place_id_from_link(polling_place_link)
-
-    polling_place = PollingPlace.find_by_polling_place_id(polling_place_id)
+    county_clerk = CountyClerk.find_by_county(county)
     
     # TODO: We're always updating PollingPlaces.  They sometimes change.
-    if polling_place.blank?
-      polling_place = PollingPlace.new
-      polling_place.location_name = polling_place_name
-      polling_place.address = polling_place_address_line_a
-      polling_place.city = poling_place_city
-      polling_place.zip = polling_place_zip
-      polling_place.hours = polling_place_hours
-      polling_place.polling_place_id = polling_place_id
-      polling_place.save
+    if county_clerk.blank?
+      county_clerk = CountyClerk.new
+      county_clerk.location_name = location_name_address
+      county_clerk.address = ""
+      city, state_zip = city_state_zip.split(',')
+      county_clerk.city = city
+      county_clerk.zip = state_zip.split()[state_zip.split().size - 1]
+      county_clerk.phone_number = phone_number
+      county_clerk.email_address = clerk_email
+      county_clerk.save
     end
 
-    polling_place
+    county_clerk
     
   end
   
   def sms_description
-    "#{self.location_name}, #{self.address}, #{self.city}".titleize
+    # Update this if we end up splitting location_name and address
+    "#{self.location_name}, #{self.city}".titleize
   end
   
-  def clean_fields
-    location_name_into_location_name_and_address
-    split_city_state_zip
-  end
-  
-  def location_name_into_location_name_and_address
-    # CITY-COUNTY BLDG RM 106A  210 MARTIN LUTHER KING JR BLVD
-    # This is what the strings look like.  Separate into location name:CITY-COUNTY BLDG RM 106A  and address:210 MARTIN LUTHER KING JR BLVD
-    
-    # For now, I'm storing this whole thing in the location_name field.
-  end
-  
-  def split_city_state_zip
-    # MADISON, WI 53703
-    # Split this into city, state, zip
-    
-    # For now, I'm storing this whole thing in the city field.
-  end
 end
