@@ -8,59 +8,38 @@ module SmsVoterLookupStateMachine
         transition any => :welcome
       end
 
+      event :next_prompt do
+        transition :pending_first_name => :pending_last_name
+        transition :pending_last_name => :pending_date_of_birth
+        transition :pending_date_of_birth => :pending_voter_info_confirmation
+        transition :pending_voter_info_confirmation => :pending_gab_voter_address_confirmation
+        transition :pending_address_line_1 => :pending_city
+        transition :pending_city => :pending_zip
+        transition :pending_zip => :pending_voter_address_lookup
+        transition [:pending_gab_voter_address_confirmation, :pending_voter_address_lookup] => :voter_address_found 
+      end
+
+      event :branch_yes do
+        transition :pending_user_entered_voter_address_confirmation => :unknown_address_needs_volunteer_help
+      end
+
+      event :branch_no do
+        transition :pending_user_entered_voter_address_confirmation => :pending_address_line_1
+        transition :pending_voter_info_confirmation => :welcome
+      end
+
       event :start_collecting do
         transition any => :pending_first_name
-      end
-      
-      event :save_first_name do
-        transition :pending_first_name => :pending_last_name
-      end
-  
-      event :save_last_name do
-        transition :pending_last_name => :pending_date_of_birth
-      end
-  
-      event :save_date_of_birth do
-        transition :pending_date_of_birth => :pending_voter_info_confirmation
       end
       
       event :failed_voter_name_and_dob_lookup do
         transition any => :pending_address_line_1
       end
       
-      event :save_address_line_1 do
-        transition :pending_address_line_1 => :pending_city
-      end
-      
-      event :save_city do
-        transition :pending_city => :pending_zip
-      end
-      
-      event :save_zip do
-        transition :pending_zip => :pending_voter_address_lookup
+      event :failed_user_entered_voter_address_lookup do
+        transition any => :pending_user_entered_voter_address_confirmation
       end
   
-      event :confirm_voter_info do
-        transition :pending_voter_info_confirmation => :pending_gab_voter_address_confirmation
-      end
-      
-      event :voter_address_saved do
-        transition [:pending_gab_voter_address_confirmation, :pending_voter_address_lookup] => :voter_address_found 
-      end
-  
-      event :failed_voter_address_lookup do
-        transition :pending_voter_address_lookup => :pending_user_entered_voter_address_confirmation
-      end
-  
-      event :confirmed_wrong_address_entered do 
-        transition :pending_user_entered_voter_address_confirmation => :pending_address_line_1
-      end
-  
-      event :confirmed_unknown_user_address_is_correct do 
-        transition :pending_user_entered_voter_address_confirmation => :unknown_address_needs_volunteer_help
-      end
-      
-      
   
       state :welcome do
         def process_message_by_status(message)
@@ -91,7 +70,7 @@ module SmsVoterLookupStateMachine
         validates_presence_of :first_name
         def process_message_by_status(message)
           self.last_name = message.strip
-          save_last_name
+          self.next_prompt
         end
   
         def summary
@@ -107,7 +86,7 @@ module SmsVoterLookupStateMachine
         validates_presence_of :last_name
         def process_message_by_status(message)
           self.date_of_birth = TextParser.parse_date(message)
-          save_date_of_birth
+          self.next_prompt
         end
   
         def summary
@@ -124,12 +103,7 @@ module SmsVoterLookupStateMachine
         def process_message_by_status(message)
           try_text = TextParser.parse_yes_or_no(message)
           if !try_text.nil?
-            case try_text
-            when "yes"
-              self.process_yes
-            when "no"
-              self.process_no
-            end
+            process_yes_no_message(try_text, :yes => :process_yes)
           end
         end
   
@@ -141,14 +115,13 @@ module SmsVoterLookupStateMachine
             self.city = voter.city
             self.zip = voter.zip
             self.save
-            self.confirm_voter_info
+            self.next_prompt
           else
             self.failed_voter_name_and_dob_lookup
           end
         end
-        def process_no
-          self.reset_all!
-        end
+
+
         def summary
           "We have:\n#{self.full_name}\n#{self.date_of_birth_friendly}"
         end
@@ -186,7 +159,7 @@ module SmsVoterLookupStateMachine
       state :pending_address_line_1 do
         def process_message_by_status(message)
           self.address_line_1 = message
-          self.save_address_line_1
+          self.next_prompt
         end
         def summary
           "Next step is to determine where you vote."
@@ -200,7 +173,7 @@ module SmsVoterLookupStateMachine
         validates_presence_of :address_line_1
         def process_message_by_status(message)
           self.city = message
-          self.save_city
+          self.next_prompt
         end
         def summary
           "Got it."
@@ -214,7 +187,7 @@ module SmsVoterLookupStateMachine
         validates_presence_of :address_line_1, :city
         def process_message_by_status(message)
           self.zip = message
-          self.save_zip
+          self.next_prompt
         end
         def summary
           "OK."
@@ -238,21 +211,19 @@ module SmsVoterLookupStateMachine
       state :pending_gab_voter_address_confirmation do
         validates_presence_of :address_line_1, :city, :zip
         def process_message_by_status(message)
-          process_yes_no_message(message)
+          process_yes_no_message(message, :yes => :process_yes, :no => :failed_voter_name_and_dob_lookup)
         end
         def process_yes
           # We just got the address from the GAB in this path, so we could have assigned polling_place_id then.  This should still work.
           polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
           self.update_attribute(:polling_place_id, polling_place.id)
-          self.voter_address_saved
-        end
-        def process_no
-          self.failed_voter_name_and_dob_lookup
+          self.next_prompt
         end
   
         def summary
           self.address_confirmation_summary
         end
+
         def prompt
           "Is this your current address? Yes or No"
         end
@@ -264,11 +235,11 @@ module SmsVoterLookupStateMachine
         end
   
         def process_yes
-          self.confirmed_unknown_user_address_is_correct
+          self.branch_yes
         end
   
         def process_no
-          self.confirmed_wrong_address_entered
+          self.branch_no
         end
   
         def summary
@@ -314,4 +285,14 @@ module SmsVoterLookupStateMachine
       
     end
   end
+  def lookup_address
+    if polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
+       #self.update_attributes_from_voter(voter)
+       self.polling_place_id = polling_place.id
+       self.next_prompt
+     else  
+       self.failed_user_entered_voter_address_lookup
+     end
+  end
+
 end

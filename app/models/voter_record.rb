@@ -15,12 +15,6 @@ class VoterRecord
       :zip => "53703"}.merge(attrs)
   end
     
-  def self.lookup!(user)
-    #TODO: this should decide to lookup user by name and dob or address based on user passed in
-    # In general, I like to be explicit.  The caller should know what it is asking for
-    # More than the provider deciding what the caller's gonna get
-  end
-  
   def self.find_address_record(address_line_1, city, zip)
     # TODO: Rename this to find_polling_place.  yo.
     agent = Mechanize.new
