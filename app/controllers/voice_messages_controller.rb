@@ -30,7 +30,7 @@ class VoiceMessagesController < ApplicationController
    recording_URL = params[:RecordingUrl]
    
    voter = @user.voters.find_by_phone_number(phone_number)
-   voter.update_attribute(:voice_recording_url, recording_URL)
+   voter.update_attribute(:voice_recording_url, recording_URL) 
    
    #update the user/voter with this recording
    # logging.info(FIXME - report that we have this caller’s recording)
