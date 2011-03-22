@@ -28,7 +28,7 @@ end
 
 Given /^I confirm my name and birthday$/ do
   @sms_voter.status = "pending_voter_info_confirmation"
-  @sms_voter.process_yes
+  @sms_voter.process_message("yes")
 end
 
 Given /^I enter my street address$/ do
@@ -74,11 +74,11 @@ end
 
 When /^I confirm my voter info$/ do
   @sms_voter.status = "pending_voter_info_confirmation"
-  @response = @sms_voter.process_message("yes")
+  @sms_voter.process_message("yes")
 end
 
 Then /^I should be prompted to confirm my address$/ do
-  @response.should =~ /You are currently registered/
+  @sms_voter.last_summary.should =~ /You are currently registered/
 end
 
 Then /^I should be in a status of "([^"]*)"$/ do |arg1|
@@ -86,9 +86,9 @@ Then /^I should be in a status of "([^"]*)"$/ do |arg1|
 end
 
 Then /^I should be prompted "([^"]*)"$/ do |arg1|
- @sms_voter.prompt.should =~ /#{arg1}/
+  @sms_voter.last_prompt.should =~ /#{arg1}/
 end
 
 Then /^I should be shown "([^"]*)"$/ do |arg1|
-  @sms_voter.summary.should =~ /#{arg1}/
+  @sms_voter.last_summary.should =~ /#{arg1}/
 end

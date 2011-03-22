@@ -1,337 +1,65 @@
 class SmsVoter < Voter
   before_create :assure_single_sms_voter
+  
+  attr_accessor :last_summary, :last_prompt
+
+  include SmsVoterLookupStateMachine
+  include SmsVoterHelpStateMachine
+
+  state_machine :conversation_status, :initial => :voter_lookup, :namespace => "conversation" do 
+    after_transition any => :help do |sms_user, transition|
+      sms_user.user.asked_for_help
+    end
+
+    event :reset do
+      transition any => :voter_lookup
+    end
+
+    event :voter_lookup do
+      transition any => :voter_lookup
+    end
+
+    event :help_request do
+      transition any => :help
+    end
+
+    state :voter_lookup
+    state :help
+  end
+
+  def process_message(message)
+    # TODO: Somewhere we should have a begin/rescue block; ideally outermost and just say,
+    # "Oops, I did not understand that.  Can we try again"
+    # We need a "restate" global method.
+
+    message.strip!
+    save_message(message)
+
+    self.help_request_conversation if message.downcase == "help"    
+
+    if ["reset", "start over", "so"].include? message.downcase
+      self.voter_lookup_conversation
+      self.reset_help
+      self.reset
+    end
+
+    if self.conversation_status?(:help)
+      self.transition_help      
+      self.last_summary = self.help_summary.strip
+      self.last_prompt = self.help_prompt
+    else
+      process_message_by_status(message)
+      self.last_summary = self.summary.strip
+      self.last_prompt = self.prompt
+    end
+    return "#{self.last_summary.strip}\n\n#{self.last_prompt}"
+  end
+
 
   def assure_single_sms_voter
     unless user.sms_voter.nil?
       user.sms_voter.update_attribute(:type => nil)
     end
-  end
-
-  state_machine :status, :initial => :welcome do
-    after_transition any => :pending_voter_address_lookup, :do => :lookup_address
-
-    event :start_collecting do
-      transition any => :pending_first_name
-    end
-    
-    event :save_first_name do
-      transition :pending_first_name => :pending_last_name
-    end
-
-    event :save_last_name do
-      transition :pending_last_name => :pending_date_of_birth
-    end
-
-    event :save_date_of_birth do
-      transition :pending_date_of_birth => :pending_voter_info_confirmation
-    end
-    
-    event :failed_voter_name_and_dob_lookup do
-      transition any => :pending_address_line_1
-    end
-    
-    event :save_address_line_1 do
-      transition :pending_address_line_1 => :pending_city
-    end
-    
-    event :save_city do
-      transition :pending_city => :pending_zip
-    end
-    
-    event :save_zip do
-      transition :pending_zip => :pending_voter_address_lookup
-    end
-
-    event :confirm_voter_info do
-      transition :pending_voter_info_confirmation => :pending_gab_voter_address_confirmation
-    end
-    
-    event :voter_address_saved do
-      transition [:pending_gab_voter_address_confirmation, :pending_voter_address_lookup] => :voter_address_found 
-    end
-
-    event :failed_voter_address_lookup do
-      transition :pending_voter_address_lookup => :pending_user_entered_voter_address_confirmation
-    end
-
-    event :confirmed_wrong_address_entered do 
-      transition :pending_user_entered_voter_address_confirmation => :pending_address_line_1
-    end
-
-    event :confirmed_unknown_user_address_is_correct do 
-      transition :pending_user_entered_voter_address_confirmation => :unknown_address_needs_volunteer_help
-    end
-    
-    
-
-    state :welcome do
-      def process_message_by_status(message)
-        start_collecting
-      end
-      def summary
-        # noop
-      end
-      def prompt
-        # noop
-      end
-    end
-
-    state :pending_first_name do
-      def process_message_by_status(message)
-        self.first_name = message.strip
-        save_first_name
-      end
-      def summary
-        "Welcome!"
-      end
-      def prompt
-        "What is your first name?"
-      end
-    end
-
-    state :pending_last_name do
-      validates_presence_of :first_name
-      def process_message_by_status(message)
-        self.last_name = message.strip
-        save_last_name
-      end
-
-      def summary
-        "Thanks, #{self.first_name}"
-      end
-
-      def prompt
-        "What is your last name?"
-      end
-    end
-
-    state :pending_date_of_birth do
-      validates_presence_of :last_name
-      def process_message_by_status(message)
-        self.date_of_birth = TextParser.parse_date(message)
-        save_date_of_birth
-      end
-
-      def summary
-        "OK, #{self.full_name}"
-      end
-
-      def prompt
-        "What is your date of birth (mm/dd/yyyy)?"
-      end
-    end
-    
-    state :pending_voter_info_confirmation do
-      validates_presence_of :date_of_birth
-      def process_message_by_status(message)
-        try_text = TextParser.parse_yes_or_no(message)
-        if !try_text.nil?
-          case try_text
-          when "yes"
-            self.process_yes
-          when "no"
-            self.process_no
-          end
-        end
-      end
-
-      def process_yes
-        voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
-        if voter
-          self.address_line_1 = voter.address_line_1
-          self.address_line_2 = voter.address_line_2
-          self.city = voter.city
-          self.zip = voter.zip
-          self.save
-          self.confirm_voter_info
-        else
-          self.failed_voter_name_and_dob_lookup
-        end
-      end
-      def process_no
-        self.reset_all!
-      end
-      def summary
-        "We have:\n#{self.full_name}\n#{self.date_of_birth_friendly}"
-      end
-      def prompt
-        "Is this correct? Yes or No"
-      end
-    end
-    
-    state :pending_voter_info_confirmation_retry do
-      def process_message_by_status(message)
-        try_text = TextParser.parse_yes_or_no(message)
-        if !try_text.nil?
-          case try_text
-          when "yes"
-            self.process_yes
-          when "no"
-            self.process_no
-          end
-        end
-      end
-      def process_yes
-        self.confirmed_voting_history_but_unable_to_find
-      end
-      def process_no
-        self.reset_all!
-      end
-      def summary
-        "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
-      end
-      def prompt
-        "Please verify your record? Yes or No"
-      end
-    end
-    
-    state :pending_address_line_1 do
-      def process_message_by_status(message)
-        self.address_line_1 = message
-        self.save_address_line_1
-      end
-      def summary
-        "Next step is to determine where you vote."
-      end
-      def prompt
-        "What is your street address?"
-      end
-    end
-
-    state :pending_city do
-      validates_presence_of :address_line_1
-      def process_message_by_status(message)
-        self.city = message
-        self.save_city
-      end
-      def summary
-        "Got it."
-      end
-      def prompt
-        "City?"
-      end
-    end
-
-    state :pending_zip do
-      validates_presence_of :address_line_1, :city
-      def process_message_by_status(message)
-        self.zip = message
-        self.save_zip
-      end
-      def summary
-        "OK."
-      end
-      def prompt
-        "Zip?"
-      end
-    end
-
-    state :pending_voter_address_lookup do 
-      validates_presence_of :address_line_1, :city, :zip
-      def summary
-        ""
-      end
-
-      def prompt
-        ""
-      end
-    end
-
-    state :pending_gab_voter_address_confirmation do
-      validates_presence_of :address_line_1, :city, :zip
-      def process_message_by_status(message)
-        process_yes_no_message(message)
-      end
-      def process_yes
-        # We just got the address from the GAB in this path, so we could have assigned polling_place_id then.  This should still work.
-        polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
-        self.update_attribute(:polling_place_id, polling_place.id)
-        self.voter_address_saved
-      end
-      def process_no
-        self.failed_voter_name_and_dob_lookup
-      end
-
-      def summary
-        self.address_confirmation_summary
-      end
-      def prompt
-        "Is this your current address? Yes or No"
-      end
-    end
-    
-    state :pending_user_entered_voter_address_confirmation do 
-      def process_message_by_status(message)
-        process_yes_no_message(message)
-      end
-
-      def process_yes
-        self.confirmed_unknown_user_address_is_correct
-      end
-
-      def process_no
-        self.confirmed_wrong_address_entered
-      end
-
-      def summary
-        self.address_confirmation_summary
-      end
-      
-      def prompt
-        "Is this your current address? Yes or No"
-      end
-    end
-
-    state :voter_address_found do
-      def process_message_by_status(message)
-      end
-      def summary
-        "You are registered to vote at: #{self.polling_place.sms_description}"
-      end
-      def prompt
-        "No more steps for now"
-      end
-    end
-
-    state :need_help do
-      def summary
-        "A volunteer will contact you shortly"
-      end
-
-      def prompt
-        ""
-      end
-    end
-
-    state :unknown_address_needs_volunteer_help do
-      def summary
-        "We can't find your address in the database. So, a volunteer will contact you shortly to help out."
-      end
-
-      def prompt
-        ""
-      end
-    end
-    
-  end
-
-  def sms_help
-    "You can send: help, reset, status"
-  end
-
-  def sms_reset
-    reset_all!
-    "Your record was reset"
-  end
-  
-  #TODO: this is not used?
-  def sms_resetaddress
-    reset_address!
-    "Your address was reset"
-  end
-
-  def sms_status
-    "Your current status is '#{self.human_status_name}'"
   end
 
   def reset_address!
@@ -351,46 +79,9 @@ class SmsVoter < Voter
     self.address_line_2 = nil
     self.city = nil
     self.zip = nil
-    self.start_collecting
-    self.save!
   end
 
-  def process_message(message)
-    # TODO: Somewhere we should have a begin/rescue block; ideally outermost and just say,
-    # "Oops, I did not understand that.  Can we try again"
-    # We need a "restate" global method.
-
-    message.strip!
-    save_message(message)
-    # This is for things like:  reset, help, quit, status, back
-    message_as_method = "sms_#{message.downcase}"
-    
-    # We either have a global, non-state specific message OR we have a message to process by status.
-    # Global non-state specific messages are methods that are called without argument.  We may want
-    # to fix that (e.g., help <arg>).  The non-state specific message return value (if not nil) is
-    # used as the entirety of the outgoing message.  For state-specific messages, the outgoing
-    # message is a concatenation of the state-specific summary and prompt.  The primary value
-    # of distinguishing summary and prompt is to facilitate thinking about the interaction.    
-    outgoing_text = nil
-    if self.respond_to?(message_as_method)
-      outgoing_text = self.send(message_as_method)
-    else
-      process_message_by_status(message)
-    end
-
-    # TODO: In some cases, global methods (e.g., reset) do save!  That's unnecessary now.
-    save
-
-    # TODO: Save outgoing messages?
-    # TODO: Check for character limit (160).
-    
-    if outgoing_text
-      outgoing_text
-    else
-      "#{self.summary.strip}\n\n#{prompt}"
-    end
-  end
-
+  
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
