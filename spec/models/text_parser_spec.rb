@@ -67,4 +67,42 @@ describe TextParser do
     end
 
   end
+  
+  describe "#parse_address" do
+    
+    it "returns already normalized addresses without modification" do
+      address = "101 S MAIN ST"
+      result = TextParser.parse_address(address)
+      result.should == address
+    end
+
+    it "removes fractions" do
+      address = "101 1/2 S MAIN ST"
+      expected = "101 S MAIN ST"
+      result = TextParser.parse_address(address)
+      result.should == expected
+    end
+
+    it "removes everything after secondary unit designator, including the designator" do
+      address = "101 S MAIN ST APT 5"
+      expected = "101 S MAIN ST"
+      result = TextParser.parse_address(address)
+      result.should == expected
+    end
+
+    it "treats # as a secondary unit designator" do
+      address = '101 S MAIN #5'
+      expected = "101 S MAIN"
+      result = TextParser.parse_address(address)
+      result.should == expected
+    end
+
+    it "treats # as a secondary unit designator" do
+      address = '101 S. MAIN ST.'
+      expected = "101 S. MAIN ST"
+      result = TextParser.parse_address(address)
+      result.should == expected
+    end
+
+  end
 end

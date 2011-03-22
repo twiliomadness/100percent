@@ -23,5 +23,12 @@ class User < ActiveRecord::Base
       :last_name => "Smith"}.merge(attrs)
   end
 
+  state_machine :status, :initial => :new do
+    event :asked_for_help do
+      transition any => :needs_help
+    end
+
+    state :needs_help
+  end
 
 end

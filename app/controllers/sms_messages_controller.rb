@@ -7,8 +7,11 @@ class SmsMessagesController < ApplicationController
     # TODO: Take this out once we're live.
     if incoming_text.strip.downcase == 'xxx'
       user = User.find_by_phone_number(phone_number)
-      user.sms_voter.incoming_messages.destroy_all
-      user.destroy
+      if user
+        user.sms_voter.incoming_messages.destroy_all
+        user.sms_voter.outgoing_messages.destroy_all
+        user.destroy
+      end
     end
     
     @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
