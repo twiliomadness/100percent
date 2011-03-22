@@ -18,10 +18,14 @@ class CountyClerk < ActiveRecord::Base
     next_page = mechanize_page.link_with(:href => url).click
     county_clerk_html = Nokogiri.HTML(next_page.content)
     
-    county_clerk = self.get_clerk_from_html(county_clerk_html, county_name)
+    county_clerk = CountyClerk.find_by_county(county_clerk.county)
+    if county_clerk.blank?
+      county_clerk = self.create_from_html(county_clerk_html, county_name)
+    end
+    county_clerk
   end
   
-  def self.get_clerk_from_html(page_html, county)
+  def self.create_from_html(page_html, county)
     page_object = Nokogiri.HTML(page_html)
     
     location_name_address = page_object.xpath("//input[@id = 'txtAddress1']").first.get_attribute("value")
@@ -29,20 +33,15 @@ class CountyClerk < ActiveRecord::Base
     phone_number = page_object.xpath("//input[@id = 'txtPhoneNumber']").first.get_attribute("value")
     clerk_email = page_object.xpath("//input[@id = 'txtEMailAddress']").first.get_attribute("value")
 
-    county_clerk = CountyClerk.find_by_county(county)
-    
-    # TODO: We're always updating PollingPlaces.  They sometimes change.
-    if county_clerk.blank?
-      county_clerk = CountyClerk.new
-      county_clerk.location_name = location_name_address
-      county_clerk.address = ""
-      city, state_zip = city_state_zip.split(',')
-      county_clerk.city = city
-      county_clerk.zip = state_zip.split()[state_zip.split().size - 1]
-      county_clerk.phone_number = phone_number
-      county_clerk.email_address = clerk_email
-      county_clerk.save
-    end
+    county_clerk = CountyClerk.new
+    county_clerk.location_name = location_name_address.strip
+    county_clerk.address = ""
+    city, state_zip = city_state_zip.split(',')
+    county_clerk.city = city
+    county_clerk.zip = state_zip.split()[state_zip.split().size - 1]
+    county_clerk.phone_number = phone_number
+    county_clerk.email_address = clerk_email
+    county_clerk.save
 
     county_clerk
     
