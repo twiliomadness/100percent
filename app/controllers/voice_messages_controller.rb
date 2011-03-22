@@ -17,7 +17,7 @@ class VoiceMessagesController < ApplicationController
    
    @response = Twilio::Response.new
    @response.append(Twilio::Say.new("Hi, welcome to Vote Simple.  For help in voting and registering to vote, please leave your first and last name.", :voice => "woman", :loop => "1"))
-   @response.append(Twilio::Record.new(voice_messages_recording_url, :maxLength => record_length))
+   @response.append(Twilio::Record.new(:action => voice_messages_recording_url, :maxLength => record_length))
 
    render :xml => @response.respond
 
