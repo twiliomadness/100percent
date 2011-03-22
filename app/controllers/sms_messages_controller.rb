@@ -12,7 +12,7 @@ class SmsMessagesController < ApplicationController
     end
     
     @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
-    @sms_voter = @user.sms_voter.nil? ? @user.voters.create(:phone_number => phone_number, :type => "SmsVoter")  : @user.sms_voter
+    @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter(:phone_number => phone_number) : @user.sms_voter
     
     outgoing_text = @sms_voter.process_message(incoming_text)
     send_text(params[:From], outgoing_text)

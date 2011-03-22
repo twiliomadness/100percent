@@ -305,7 +305,7 @@ class SmsVoter < Voter
 
     state :unknown_address_needs_volunteer_help do
       def summary
-        "We can't find your address in the database. So, a volunteer will contact you shortly "
+        "We can't find your address in the database. So, a volunteer will contact you shortly to help out."
       end
 
       def prompt

@@ -51,7 +51,7 @@ Feature: Manage voter_lookups
     Given I have submitted my name and birthday
     And I have entered an address that is not found
     And I confirm that my address is correct
-    Then I should be shown "A volunteer will contact you shortly"
+    Then I should be shown "We can't find your address in the database. So, a volunteer will contact you shortly to help out."
 
 
 
