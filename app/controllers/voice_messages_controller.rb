@@ -9,12 +9,6 @@ class VoiceMessagesController < ApplicationController
    record_length = 360  # six minutes
    phone_number = params[:Caller]
 
-   # TODO: Needs update after Devise implementation.
-   # Need to create both user and voter
-   
-   @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
-   @voter = @user.voters.empty? ? @user.voters.create(:phone_number => phone_number, :type => "") : @user.voters.first
-   
    @response = Twilio::Response.new
    @response.append(Twilio::Say.new("Hi, welcome to Vote Simple.  For help in voting and registering to vote, please leave your first and last name and someone will get back with you shortly.", :voice => "woman", :loop => "1"))
    @response.append(Twilio::Record.new(:action => voice_messages_recording_url, :maxLength => record_length))
@@ -27,11 +21,14 @@ class VoiceMessagesController < ApplicationController
 
  def recording
    phone_number = params[:Caller]
+   
+   # TODO Fix user and voter find by number
    @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
+   @voter = @user.voters.empty? ? @user.voters.create(:phone_number => phone_number, :type => "") : @user.voters.first
+   
    recording_URL = params[:RecordingUrl]
    
-   voter = @user.voters.find_by_phone_number(phone_number)
-   voter.update_attribute(:voice_recording_url, recording_URL) 
+   @voter.update_attribute(:voice_recording_url, recording_URL) 
    
    head 200
 
