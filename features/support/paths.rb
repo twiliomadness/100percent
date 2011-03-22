@@ -10,6 +10,9 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
+    when /the new sms_help page/
+      new_sms_help_path
+
     when /the new voter_lookup page/
       new_voter_lookup_path
 

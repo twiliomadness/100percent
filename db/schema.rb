@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110321232705) do
+ActiveRecord::Schema.define(:version => 20110322032559) do
 
   create_table "polling_places", :force => true do |t|
     t.string   "location_name"
@@ -74,6 +74,8 @@ ActiveRecord::Schema.define(:version => 20110321232705) do
     t.boolean  "has_voted"
     t.string   "voice_recording_url"
     t.integer  "state_voter_id"
+    t.string   "help_status"
+    t.string   "conversation_status"
   end
 
 end

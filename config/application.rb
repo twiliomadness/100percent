@@ -40,3 +40,6 @@ module Gotv
     config.filter_parameters += [:password]
   end
 end
+
+require File.expand_path('../../lib/sms_voter_lookup_state_machine.rb',__FILE__)
+require File.expand_path('../../lib/sms_voter_help_state_machine.rb',__FILE__)
