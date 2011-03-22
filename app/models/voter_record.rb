@@ -37,7 +37,6 @@ class VoterRecord
     
     result_page = Nokogiri.HTML(page.content)
     
-    # Another approach is to look for links with href that contains VoterSummaryScreen in the link
     path = "//a[starts-with(@href, 'AddressDetailsScreen')]"
 
     links = result_page.xpath(path)
@@ -132,14 +131,18 @@ class VoterRecord
   end
   
   def self.house_number(address_line_1)
-    # TODO: Make this smart
     if address_line_1.present?
-      address_line_1.split(" ").first
+      parsed = TextParser.parse_address(address_line_1)
+      parsed.split(" ").first
     end
   end
   
   def self.street_name(address_line_1)
-    address_line_1.gsub(house_number(address_line_1), "").strip
+    if address_line_1.present?
+      parsed = TextParser.parse_address(address_line_1)
+      parts = parsed.split
+      parts[1..parts.size].join(' ')
+    end
   end
   
   def self.house_number_odd_even(address_line_1)

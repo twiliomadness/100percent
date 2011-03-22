@@ -35,4 +35,15 @@ class TextParser
       nil
     end
   end
+  
+  def self.parse_address(text)
+    patterns = [["Strip fractions", /^(\d+ )(\d\/\d )?/, '\1'],
+      ["Strip the secondary unit designators and anything following them", /^(.*? )(apartment|apt|basement|bldg|bsmt|building|department|dept|fl|floor|frnt|front|hangar|hngr|lbby|lobby|lot|lower|lowr|ofc|office|penthouse|ph|pier|rear|rm|room|side|slip|space|spc|ste|stop|suite|trailer|trlr|unit|upper|uppr).*?$/i, '\1'],
+      ["Strip everything after the street designation", /^(.*? )(ave|avenue|blvd|boulevard|cir|circle|court|ct|dr|drive|freeway|frwy|highway|hwy|lane|ln|mews|parkway|pike|pkwy|rd|road|st|street|trail|trl|way).*?$/i, '\1\2']]
+    result = text
+    patterns.each do |description, pattern, replacement|
+      result = result.sub(pattern, replacement)
+    end
+    result
+  end
 end
