@@ -13,6 +13,7 @@ class VoiceMessagesController < ApplicationController
    # Need to create both user and voter
    
    @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
+   @voter = @user.voters.empty? ? @user.voters.create(:phone_number => phone_number, :type => "") : @user.voters.first
    
    @response = Twilio::Response.new
    @response.append(Twilio::Say.new("Hi, welcome to Vote Simple.  For help in voting and registering to vote, please leave your first and last name.", :voice => "woman", :loop => "1"))
