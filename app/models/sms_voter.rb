@@ -59,8 +59,10 @@ class SmsVoter < Voter
     end
 
     event :confirmed_unknown_user_address_is_correct do 
-      transition :pending_user_entered_voter_address_confirmation => :need_help
+      transition :pending_user_entered_voter_address_confirmation => :unknown_address_needs_volunteer_help
     end
+    
+    
 
     state :welcome do
       def process_message_by_status(message)
@@ -300,6 +302,17 @@ class SmsVoter < Voter
         ""
       end
     end
+
+    state :unknown_address_needs_volunteer_help do
+      def summary
+        "We can't find your address in the database. So, a volunteer will contact you shortly "
+      end
+
+      def prompt
+        ""
+      end
+    end
+    
   end
 
   def sms_help

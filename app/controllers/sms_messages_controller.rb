@@ -23,7 +23,12 @@ class SmsMessagesController < ApplicationController
 
   def send_text(to, content)
     twilio = Twilio::RestAccount.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
-
+    
+    if content.blank?
+      logger.error
+      raise "empty content to #{to}"
+    end
+    
     data = {
       'From' => APP_CONFIG[:TWILIO_CALLER_ID],
       'To' => to,

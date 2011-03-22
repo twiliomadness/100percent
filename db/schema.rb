@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110321142724) do
+ActiveRecord::Schema.define(:version => 20110321232705) do
 
   create_table "polling_places", :force => true do |t|
     t.string   "location_name"
@@ -70,6 +70,11 @@ ActiveRecord::Schema.define(:version => 20110321142724) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "polling_place_id"
+    t.date     "registration_date"
+    t.string   "registration_status"
+    t.boolean  "has_voted"
+    t.string   "voice_recording_url"
+    t.integer  "state_voter_id"
   end
 
 end

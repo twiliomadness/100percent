@@ -17,9 +17,10 @@ body {
   font-weight: bold;
   font-size: 125%;
   text-transform: uppercase;
+  padding-top: 20px;
 }
 
-/* line 19, ../../../app/stylesheets/style.sass */
+/* line 20, ../../../app/stylesheets/style.sass */
 .index h1 {
   text-transform: uppercase;
   margin-bottom: 30px;

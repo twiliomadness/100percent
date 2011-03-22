@@ -1,5 +1,7 @@
 Gotv::Application.routes.draw do
   get "sms_messages/incoming"
+  get "voice_messages/incoming"
+  get "voice_messages/recording"
 
   devise_for :users, :skip => [:registrations, :sessions] do
     # devise/registrations
