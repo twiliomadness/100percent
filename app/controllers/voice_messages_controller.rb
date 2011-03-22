@@ -16,7 +16,7 @@ class VoiceMessagesController < ApplicationController
    @voter = @user.voters.empty? ? @user.voters.create(:phone_number => phone_number, :type => "") : @user.voters.first
    
    @response = Twilio::Response.new
-   @response.append(Twilio::Say.new("Hi, welcome to Vote Simple.  For help in voting and registering to vote, please leave your first and last name.", :voice => "woman", :loop => "1"))
+   @response.append(Twilio::Say.new("Hi, welcome to Vote Simple.  For help in voting and registering to vote, please leave your first and last name and someone will get back with you shortly.", :voice => "woman", :loop => "1"))
    @response.append(Twilio::Record.new(:action => voice_messages_recording_url, :maxLength => record_length))
 
    render :xml => @response.respond
@@ -33,14 +33,7 @@ class VoiceMessagesController < ApplicationController
    voter = @user.voters.find_by_phone_number(phone_number)
    voter.update_attribute(:voice_recording_url, recording_URL) 
    
-   #update the user/voter with this recording
-   # logging.info(FIXME - report that we have this caller’s recording)
-
-   @response = Twilio::Response.new
-   @response.append(Twilio::Say.new("Thank you! Someone will call back to assist you", :voice => "woman", :loop => "1"))
-   @response.append(Twilio::Hangup.new())
-   
-   render :xml => @r.respond
+   head 200
 
  end
 end
