@@ -131,7 +131,15 @@ You are currently registered at:
 
     private
 
-    
+    def lookup_address
+      # If this address is not found, returns false
+      if self.update_voter_address
+        self.voter_address_saved
+      else  
+        self.failed_voter_address_lookup
+      end
+    end
+
     def save_message(message)
       incoming_messages.create!(:text => message)
     end

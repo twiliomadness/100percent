@@ -1,4 +1,4 @@
-/* line 3, ../../../app/stylesheets/style.sass */
+/* line 1, ../../../app/stylesheets/style.sass */
 body {
   background-color: #c4c4c2;
   background-image: url("/images/background-texture.png");
@@ -6,22 +6,52 @@ body {
   background-position: top center;
 }
 
-/* line 9, ../../../app/stylesheets/style.sass */
+/* line 7, ../../../app/stylesheets/style.sass */
 .center {
   text-align: center;
 }
 
-/* line 12, ../../../app/stylesheets/style.sass */
+/* line 10, ../../../app/stylesheets/style.sass */
 #quotes {
-  text-align: right;
+  text-align: center;
   font-weight: bold;
-  font-size: 125%;
-  text-transform: uppercase;
+  font-size: 150%;
   padding-top: 20px;
 }
+/* line 16, ../../../app/stylesheets/style.sass */
+#quotes .quote_start {
+  color: grey;
+  font-size: 400%;
+  float: left;
+  font-family: Georgia, Serif;
+  margin-top: -25px;
+}
+/* line 23, ../../../app/stylesheets/style.sass */
+#quotes .quote_end {
+  color: grey;
+  font-size: 400%;
+  float: right;
+  font-family: Georgia, Serif;
+  margin-top: -30px;
+  margin-right: -40px;
+}
+/* line 31, ../../../app/stylesheets/style.sass */
+#quotes .quotecontent {
+  font-style: italic;
+}
 
-/* line 20, ../../../app/stylesheets/style.sass */
+/* line 37, ../../../app/stylesheets/style.sass */
 .index h1 {
   text-transform: uppercase;
   margin-bottom: 30px;
+}
+/* line 40, ../../../app/stylesheets/style.sass */
+.index h2 {
+  font-weight: bold;
+}
+
+/* line 42, ../../../app/stylesheets/style.sass */
+.big_logo {
+  position: relative;
+  left: 20px;
 }

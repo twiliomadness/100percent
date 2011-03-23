@@ -227,10 +227,11 @@ module SmsVoterLookupStateMachine
           transition_branch_yes_no(message, :yes => :process_yes, :no => :failed_voter_name_and_dob_lookup)
         end
         def process_yes
-          # We just got the address from the GAB in this path, so we could have assigned polling_place_id then.  This should still work.
-          polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
-          self.update_attribute(:polling_place_id, polling_place.id)
-          self.next_prompt
+          self.update_voter_address
+          self.voter_address_saved
+        end
+        def process_no
+          self.failed_voter_name_and_dob_lookup
         end
   
         def summary
@@ -289,7 +290,7 @@ module SmsVoterLookupStateMachine
       
     end
   end
-
+  
   def transition_branch_yes_no(message, callbacks = {})
     try_text = TextParser.parse_yes_or_no(message)
     unless try_text.nil?
@@ -302,16 +303,6 @@ module SmsVoterLookupStateMachine
     else
       self.has_unrecognized_response = true
     end
-  end
-
-  def lookup_address
-    if polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
-       #self.update_attributes_from_voter(voter)
-       self.polling_place_id = polling_place.id
-       self.next_prompt
-     else  
-       self.failed_user_entered_voter_address_lookup
-     end
   end
 
 end
