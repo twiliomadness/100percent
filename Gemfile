@@ -16,6 +16,7 @@ gem 'html5-boilerplate'
 gem 'formtastic'
 gem 'web-app-theme'
 gem 'decent_exposure'
+gem 'will_paginate'
 
 group :cucumber do
   gem 'capybara', '0.4.1.2'
