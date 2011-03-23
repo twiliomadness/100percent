@@ -2,6 +2,7 @@ class CountyClerk < ActiveRecord::Base
   has_many :voters
   
   validates_presence_of :location_name
+  validates_presence_of :county
   validates_presence_of :city
   
   # TODO: have VoterRecord get the HTML for the voter, then PolingPlace and CountyClerk can go from there?
