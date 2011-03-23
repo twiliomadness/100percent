@@ -122,6 +122,8 @@ module SmsVoterLookupStateMachine
             self.address_line_2 = voter.address_line_2
             self.city = voter.city
             self.zip = voter.zip
+            self.registration_date = voter.registration_date
+            self.registration_status = voter.registration_status
             self.save
             self.next_prompt
           else
