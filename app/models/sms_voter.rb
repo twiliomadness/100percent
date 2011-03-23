@@ -119,20 +119,17 @@ You are currently registered at:
         eof
     end
 
-  def process_yes_no_message(message, callbacks = {})
-    try_text = TextParser.parse_yes_or_no(message)
-    if !try_text.nil?
-      case try_text
-      when "yes"
-        callbacks.has_key?(:yes) ? self.send(callbacks[:yes].intern) : self.branch_yes
-      when "no"
-        callbacks.has_key?(:no) ? self.send(callbacks[:no].intern) : self.branch_no
+    private
+
+    def lookup_address
+      # If this address is not found, returns false
+      if self.update_voter_address
+        self.voter_address_saved
+      else  
+        self.failed_voter_address_lookup
       end
     end
-  end
-  private
 
-    
     def save_message(message)
       incoming_messages.create!(:text => message)
     end

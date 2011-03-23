@@ -15,7 +15,13 @@ class VoterRecord
       :zip => "53703"}.merge(attrs)
   end
     
-  def self.find_address_record(address_line_1, city, zip)
+  def self.lookup!(user)
+    #TODO: this should decide to lookup user by name and dob or address based on user passed in
+    # In general, I like to be explicit.  The caller should know what it is asking for
+    # More than the provider deciding what the caller's gonna get
+  end
+  
+  def self.get_address_details_page(address_line_1, city, zip)
     # TODO: Rename this to find_polling_place.  yo.
     agent = Mechanize.new
 
@@ -51,33 +57,9 @@ class VoterRecord
     end
     
     url = link.get_attribute("href")
-    next_page = page.link_with(:href => url).click
-    address_info = Nokogiri.HTML(next_page.content)
-
-    polling_place_name = address_info.xpath("//input[@id = 'PollingPlaceSummarySection1_txtName']").first.get_attribute("value")
-    polling_place_address_line_a = address_info.xpath("//input[@id = 'PollingPlaceSummarySection1_txtAddressLineA']").first.get_attribute("value")
-    poling_place_city = address_info.xpath("//input[@id = 'PollingPlaceSummarySection1_txtAddressLineB']").first.get_attribute("value")
-    polling_place_zip = address_info.xpath("//input[@id = 'PollingPlaceSummarySection1_txtAddressLineC']").first.get_attribute("value")
-    polling_place_hours = address_info.xpath("//input[@id = 'PollingPlaceSummarySection1_txtHours']").first.get_attribute("value")
+    address_details_page = page.link_with(:href => url).click
     
-    polling_place_link = address_info.xpath("//a[starts-with(@href, 'PollingPlaceAccessibilityPage')]").first.get_attribute("href")
-    polling_place_id = PollingPlace.polling_place_id_from_link(polling_place_link)
-
-    polling_place = PollingPlace.find_by_polling_place_id(polling_place_id)
-    
-    # TODO: We're always updating PollingPlaces.  They sometimes change.
-    if polling_place.blank?
-      polling_place = PollingPlace.new
-      polling_place.location_name = polling_place_name
-      polling_place.address = polling_place_address_line_a
-      polling_place.city = poling_place_city
-      polling_place.zip = polling_place_zip
-      polling_place.hours = polling_place_hours
-      polling_place.polling_place_id = polling_place_id
-      polling_place.save
-    end
-
-    polling_place
+    address_details_page
     
   end
 

@@ -10,15 +10,16 @@ class CountyClerk < ActiveRecord::Base
     # get html for the clerk details then
     
     address_info_html = Nokogiri.HTML(mechanize_page.content)
+
+    county_clerk_td_font_tag = address_info_html.xpath("//td/font[starts-with(text(), 'COUNTY CLERK')]")
     
-    county_clerk_td = address_info_html.xpath("//td[starts-with(text(), 'COUNTY CLERK')]")
-    clerk_link = county_clerk_td.first.parent.search("td/a").first
+    clerk_link = county_clerk_td_font_tag.first.parent.parent.search("td/font/a").first
     url = clerk_link.get_attribute("href")
-    county_name = county_clerk_td.first.parent.search("td[ends-with(text(), 'County')]").first.gsub(" County", "")
+    county_name = county_clerk_td_font_tag.first.parent.parent.search("td/font")[2].inner_text.gsub(" County", "")
     next_page = mechanize_page.link_with(:href => url).click
     county_clerk_html = Nokogiri.HTML(next_page.content)
     
-    county_clerk = CountyClerk.find_by_county(county_clerk.county)
+    county_clerk = CountyClerk.find_by_county(county_name)
     if county_clerk.blank?
       county_clerk = self.create_from_html(county_clerk_html, county_name)
     end
@@ -26,12 +27,11 @@ class CountyClerk < ActiveRecord::Base
   end
   
   def self.create_from_html(page_html, county)
-    page_object = Nokogiri.HTML(page_html)
     
-    location_name_address = page_object.xpath("//input[@id = 'txtAddress1']").first.get_attribute("value")
-    city_state_zip = page_object.xpath("//input[@id = 'txtAddress2']").first.get_attribute("value")
-    phone_number = page_object.xpath("//input[@id = 'txtPhoneNumber']").first.get_attribute("value")
-    clerk_email = page_object.xpath("//input[@id = 'txtEMailAddress']").first.get_attribute("value")
+    location_name_address = page_html.xpath("//input[@id = 'txtAddress1']").first.get_attribute("value")
+    city_state_zip = page_html.xpath("//input[@id = 'txtAddress2']").first.get_attribute("value")
+    phone_number = page_html.xpath("//input[@id = 'txtPhoneNumber']").first.get_attribute("value")
+    clerk_email = page_html.xpath("//input[@id = 'txtEMailAddress']").first.get_attribute("value")
 
     county_clerk = CountyClerk.new
     county_clerk.location_name = location_name_address.strip
