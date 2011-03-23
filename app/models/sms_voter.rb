@@ -119,14 +119,14 @@ You are currently registered at:
         eof
     end
 
-  def process_yes_no_message(message)
+  def process_yes_no_message(message, callbacks = {})
     try_text = TextParser.parse_yes_or_no(message)
     if !try_text.nil?
       case try_text
       when "yes"
-        self.process_yes
+        callbacks.has_key?(:yes) ? self.send(callbacks[:yes].intern) : self.branch_yes
       when "no"
-        self.process_no
+        callbacks.has_key?(:no) ? self.send(callbacks[:no].intern) : self.branch_no
       end
     end
   end
