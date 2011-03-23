@@ -13,6 +13,8 @@
           %th.first ID
           %th
             = t("activerecord.attributes.admin_user.email", :default => t("activerecord.labels.email", :default => "Email"))
+          %th
+            = t("activerecord.attributes.admin_user.phone_number", :default => t("activerecord.labels.phone_number", :default => "Phone Number"))
           %th= t("web-app-theme.created_at", :default => "Created at")
           %th.last &nbsp;
         - users.each do |user|
@@ -21,6 +23,8 @@
               = user.id
             %td
               = link_to user.email, admin_user_path(user)
+            %td
+              = link_to user.phone_number, admin_user_path(user)
             %td
               = user.created_at
             %td.last
