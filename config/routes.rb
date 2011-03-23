@@ -3,6 +3,8 @@ Gotv::Application.routes.draw do
   post "voice_messages/incoming"
   post "voice_messages/recording"
 
+  get "admin" => "admin#index", :as => :admin
+
   devise_for :users, :skip => [:registrations, :sessions] do
     # devise/registrations
     get 'signup'         => 'devise/registrations#new',     :as => :new_user_registration
