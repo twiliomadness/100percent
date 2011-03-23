@@ -15,6 +15,7 @@ gem 'twiliolib', '2.0.7'
 gem 'html5-boilerplate'
 gem 'formtastic'
 gem 'web-app-theme'
+gem 'decent_exposure'
 
 group :cucumber do
   gem 'capybara', '0.4.1.2'
