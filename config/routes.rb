@@ -5,6 +5,10 @@ Gotv::Application.routes.draw do
 
   get "admin" => "admin#index", :as => :admin
 
+  namespace :admin do
+    resources :users
+  end
+
   devise_for :users, :skip => [:registrations, :sessions] do
     # devise/registrations
     get 'signup'         => 'devise/registrations#new',     :as => :new_user_registration
