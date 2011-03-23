@@ -26,7 +26,7 @@ Feature: Manage voter_lookups
     And I confirm my name and birthday
     Then I should be prompted "What is your street address?"
 
-  Scenario: Propmpt for city after user enters address
+  Scenario: Prompt for city after user enters address
     Given I have submitted my name and birthday
     When I enter my street address
     Then I should be prompted "City?"

@@ -241,9 +241,7 @@ module SmsVoterLookupStateMachine
           process_yes_no_message(message)
         end
         def process_yes
-          # We just got the address from the GAB in this path, so we could have assigned polling_place_id then.  This should still work.
-          polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
-          self.update_attribute(:polling_place_id, polling_place.id)
+          self.update_voter_address
           self.voter_address_saved
         end
         def process_no

@@ -133,9 +133,8 @@ You are currently registered at:
   private
 
     def lookup_address
-      if polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
-        #self.update_attributes_from_voter(voter)
-        self.polling_place_id = polling_place.id
+      # If this address is not found, returns false
+      if self.update_voter_address
         self.voter_address_saved
       else  
         self.failed_voter_address_lookup

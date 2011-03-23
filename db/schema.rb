@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110322032559) do
+ActiveRecord::Schema.define(:version => 20110323010206) do
 
   create_table "county_clerks", :force => true do |t|
     t.string   "location_name"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(:version => 20110322032559) do
     t.string   "city"
     t.string   "zip"
     t.string   "hours"
-    t.integer  "polling_place_id"
+    t.integer  "vpa_polling_place_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -81,7 +81,6 @@ ActiveRecord::Schema.define(:version => 20110322032559) do
     t.string   "address_line_2"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "polling_place_id"
     t.date     "registration_date"
     t.string   "registration_status"
     t.boolean  "has_voted"
@@ -89,6 +88,8 @@ ActiveRecord::Schema.define(:version => 20110322032559) do
     t.integer  "state_voter_id"
     t.string   "help_status"
     t.string   "conversation_status"
+    t.integer  "county_clerk_id"
+    t.integer  "polling_place_id"
   end
 
 end
