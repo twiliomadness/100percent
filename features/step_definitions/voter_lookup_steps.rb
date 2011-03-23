@@ -91,3 +91,4 @@ end
 Then /^I should be shown "([^"]*)"$/ do |arg1|
   @sms_voter.last_summary.should =~ /#{arg1}/
 end
+

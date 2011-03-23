@@ -37,10 +37,11 @@ Feature: Manage voter_lookups
     And I enter my city
     Then I should be prompted "Zip?"
 
-  Scenario: Address lookup succeeded
+  Scenario: Registered voter confirms info
     Given I have submitted my name and birthday
-    And I have entered an address that is found
-    Then I should be shown "You are registered to vote at: Ground Zero, 123 Main, Anywhere"
+    And I am a registered voter
+    And I confirm my voter info
+    Then I should be shown "You are currently registered at:\n\n123 MAIN ST.\nMADISON 53703"
 
   Scenario: Address lookup failed
     Given I have submitted my name and birthday
