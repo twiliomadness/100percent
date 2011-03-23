@@ -2,7 +2,9 @@
 %h2.center#welcome
   Vote Simple will help you find out when, where, and how to vote
   %br
-  Just call or Text "Vote" to (414)939-8633
+  Just call or Text "Vote" to 
+  =# Get this from IP geocode lookup to determine what area code to display.  715, 920, 414, 608.  
+  = APP_CONFIG[:TWILIO_CALLER_ID]
 
 =# link_to 'Sign In', new_user_registration_path
 =# link_to 'Sign in', new_user_session_path
