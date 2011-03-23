@@ -305,4 +305,12 @@ module SmsVoterLookupStateMachine
     end
   end
 
+  def lookup_address
+    # If this address is not found, returns false
+    if self.update_voter_address
+      self.next_prompt
+    else  
+      self.failed_user_entered_voter_address_lookup
+    end
+  end
 end
