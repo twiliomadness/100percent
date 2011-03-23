@@ -14,6 +14,11 @@ Feature: Manage voter_lookups
     When I submit my birthday
     Then I should be prompted "Is this correct?" 
 
+  Scenario: Malformed voter info conf shows user their entered data again
+    Given I have submitted my name and birthday
+    When I text "This is not valid"
+    Then I should be shown "We have"
+
  Scenario: Lookup voter who is registered 
     Given I have submitted my name and birthday
     And I am a registered voter
@@ -53,5 +58,39 @@ Feature: Manage voter_lookups
     And I confirm that my address is correct
     Then I should be shown "We can't find your address in the database. So, a volunteer will contact you shortly to help out."
 
+  Scenario: Malformed answer to yes/no question raises validation
+    Given I have submitted my name and birthday
+    When I text "This is not recognized"
+    Then I should be shown "Sorry"
 
+  Scenario: Malformed answer to yes/no causes question to be repeated
+    Given I have submitted my name and birthday
+    When I text "This is not recognized"
+    Then I should be prompted "Is this correct?"
 
+  Scenario: Blank answer to yes/no causes question to be repeated
+    Given I have submitted my name and birthday
+    When I text ""
+    Then I should be shown "Sorry"
+
+  Scenario: Blank answer to text question raises validation error
+    Given I have submitted my name and birthday
+    And I enter my street address
+    When I text ""
+    Then I should be shown "Sorry"
+
+  Scenario: Blank anser to text question causes question to be repeated
+    Given I have submitted my name and birthday
+    And I enter my street address
+    When I text ""
+    Then I should be prompted "City?"
+
+  Scenario: Malformed date causes validation error
+    Given I have submitted my first and last name
+    And I text "not a valid date"
+    Then I should be shown "Sorry"
+
+  Scenario: Malformed date causes question to be repeated
+    Given I have submitted my first and last name
+    And I text "not a valid date"
+    Then I should be prompted "What is your date of birth?"

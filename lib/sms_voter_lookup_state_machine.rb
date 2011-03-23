@@ -54,7 +54,11 @@ module SmsVoterLookupStateMachine
       state :pending_first_name do
         def process_message_by_status(message)
           self.first_name = message.strip
-          self.next_prompt
+          if self.first_name
+            self.next_prompt
+          else
+            self.has_unrecognized_response = true
+          end
         end
         def summary
           "Welcome!"
@@ -65,10 +69,14 @@ module SmsVoterLookupStateMachine
       end
   
       state :pending_last_name do
-        validates_presence_of :first_name
+        validates_presence_of :last_name
         def process_message_by_status(message)
           self.last_name = message.strip
-          self.next_prompt
+          if self.last_name.to_s.blank?
+            self.has_unrecognized_response = true
+          else
+            self.next_prompt if self.valid?
+          end
         end
   
         def summary
@@ -84,7 +92,11 @@ module SmsVoterLookupStateMachine
         validates_presence_of :last_name
         def process_message_by_status(message)
           self.date_of_birth = TextParser.parse_date(message)
-          self.next_prompt
+          if self.date_of_birth
+            self.next_prompt
+          else
+            self.has_unrecognized_response = true
+          end
         end
   
         def summary
@@ -99,6 +111,7 @@ module SmsVoterLookupStateMachine
       state :pending_voter_info_confirmation do
         validates_presence_of :date_of_birth
         def process_message_by_status(message)
+          self.include_summary_on_failure = true
           transition_branch_yes_no(message, :yes => :process_yes)
         end
   
@@ -127,6 +140,7 @@ module SmsVoterLookupStateMachine
       
       state :pending_voter_info_confirmation_retry do
         def process_message_by_status(message)
+          self.include_summary_on_failure = true
           transition_branch_yes_no(message)
         end
         def summary
@@ -140,7 +154,11 @@ module SmsVoterLookupStateMachine
       state :pending_address_line_1 do
         def process_message_by_status(message)
           self.address_line_1 = message
-          self.next_prompt
+          if self.address_line_1.to_s.blank?
+            self.has_unrecognized_response = true
+          else
+            self.next_prompt
+          end
         end
         def summary
           "Next step is to determine where you vote."
@@ -152,13 +170,20 @@ module SmsVoterLookupStateMachine
   
       state :pending_city do
         validates_presence_of :address_line_1
+
         def process_message_by_status(message)
-          self.city = message
-          self.next_prompt
+          self.city = message.strip
+          if self.city.to_s.blank?
+            self.has_unrecognized_response = true
+          else
+            self.next_prompt 
+          end
         end
+
         def summary
           "Got it."
         end
+
         def prompt
           "City?"
         end
@@ -168,11 +193,17 @@ module SmsVoterLookupStateMachine
         validates_presence_of :address_line_1, :city
         def process_message_by_status(message)
           self.zip = message
-          self.next_prompt
+          if self.zip.to_s.blank?
+            self.has_unrecognized_response = true
+          else
+            self.next_prompt
+          end
         end
+
         def summary
           "OK."
         end
+
         def prompt
           "Zip?"
         end
@@ -192,6 +223,7 @@ module SmsVoterLookupStateMachine
       state :pending_gab_voter_address_confirmation do
         validates_presence_of :address_line_1, :city, :zip
         def process_message_by_status(message)
+          self.include_summary_on_failure = true
           transition_branch_yes_no(message, :yes => :process_yes, :no => :failed_voter_name_and_dob_lookup)
         end
         def process_yes
@@ -260,13 +292,15 @@ module SmsVoterLookupStateMachine
 
   def transition_branch_yes_no(message, callbacks = {})
     try_text = TextParser.parse_yes_or_no(message)
-    if !try_text.nil?
+    unless try_text.nil?
       case try_text
       when "yes"
         callbacks.has_key?(:yes) ? self.send(callbacks[:yes].intern) : self.branch_yes
       when "no"
         callbacks.has_key?(:no) ? self.send(callbacks[:no].intern) : self.branch_no
       end
+    else
+      self.has_unrecognized_response = true
     end
   end
 
