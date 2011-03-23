@@ -9,6 +9,7 @@ module SmsVoterLookupStateMachine
       end
 
       event :next_prompt do
+        transition :welcome => :pending_first_name
         transition :pending_first_name => :pending_last_name
         transition :pending_last_name => :pending_date_of_birth
         transition :pending_date_of_birth => :pending_voter_info_confirmation
@@ -21,17 +22,14 @@ module SmsVoterLookupStateMachine
 
       event :branch_yes do
         transition :pending_user_entered_voter_address_confirmation => :unknown_address_needs_volunteer_help
+        transition :pending_voter_info_confirmation_retry => :need_help
       end
 
       event :branch_no do
         transition :pending_user_entered_voter_address_confirmation => :pending_address_line_1
-        transition :pending_voter_info_confirmation => :welcome
+        transition [:pending_voter_info_confirmation, :pending_voter_info_confirmation_retry] => :welcome
       end
 
-      event :start_collecting do
-        transition any => :pending_first_name
-      end
-      
       event :failed_voter_name_and_dob_lookup do
         transition any => :pending_address_line_1
       end
@@ -43,7 +41,7 @@ module SmsVoterLookupStateMachine
   
       state :welcome do
         def process_message_by_status(message)
-          start_collecting
+          self.next_prompt
         end
         def summary
           # noop
@@ -56,7 +54,7 @@ module SmsVoterLookupStateMachine
       state :pending_first_name do
         def process_message_by_status(message)
           self.first_name = message.strip
-          save_first_name
+          self.next_prompt
         end
         def summary
           "Welcome!"
@@ -101,10 +99,7 @@ module SmsVoterLookupStateMachine
       state :pending_voter_info_confirmation do
         validates_presence_of :date_of_birth
         def process_message_by_status(message)
-          try_text = TextParser.parse_yes_or_no(message)
-          if !try_text.nil?
-            process_yes_no_message(try_text, :yes => :process_yes)
-          end
+          transition_branch_yes_no(message, :yes => :process_yes)
         end
   
         def process_yes
@@ -132,22 +127,7 @@ module SmsVoterLookupStateMachine
       
       state :pending_voter_info_confirmation_retry do
         def process_message_by_status(message)
-          try_text = TextParser.parse_yes_or_no(message)
-          if !try_text.nil?
-            case try_text
-            when "yes"
-              self.process_yes
-            when "no"
-              self.process_no
-            end
-          end
-        end
-        def process_yes
-          #TODO: this is a dead end. this vent doesn't exist!!!!
-          self.confirmed_voting_history_but_unable_to_find
-        end
-        def process_no
-          self.reset_all!
+          transition_branch_yes_no(message)
         end
         def summary
           "We were unable to find a voting record for #{self.full_name} dob #{self.date_of_birth_friendly}"
@@ -212,7 +192,7 @@ module SmsVoterLookupStateMachine
       state :pending_gab_voter_address_confirmation do
         validates_presence_of :address_line_1, :city, :zip
         def process_message_by_status(message)
-          process_yes_no_message(message, :yes => :process_yes, :no => :failed_voter_name_and_dob_lookup)
+          transition_branch_yes_no(message, :yes => :process_yes, :no => :failed_voter_name_and_dob_lookup)
         end
         def process_yes
           # We just got the address from the GAB in this path, so we could have assigned polling_place_id then.  This should still work.
@@ -232,7 +212,7 @@ module SmsVoterLookupStateMachine
       
       state :pending_user_entered_voter_address_confirmation do 
         def process_message_by_status(message)
-          process_yes_no_message(message)
+          transition_branch_yes_no(message)
         end
   
         def summary
@@ -246,7 +226,6 @@ module SmsVoterLookupStateMachine
   
       state :voter_address_found do
         def process_message_by_status(message)
-          puts "Here we are!"
         end
         def summary
           "You are registered to vote at: #{self.polling_place.sms_description}"
@@ -278,6 +257,19 @@ module SmsVoterLookupStateMachine
       
     end
   end
+
+  def transition_branch_yes_no(message, callbacks = {})
+    try_text = TextParser.parse_yes_or_no(message)
+    if !try_text.nil?
+      case try_text
+      when "yes"
+        callbacks.has_key?(:yes) ? self.send(callbacks[:yes].intern) : self.branch_yes
+      when "no"
+        callbacks.has_key?(:no) ? self.send(callbacks[:no].intern) : self.branch_no
+      end
+    end
+  end
+
   def lookup_address
     if polling_place = VoterRecord.find_address_record(self.address_line_1, self.city, self.zip)
        #self.update_attributes_from_voter(voter)
