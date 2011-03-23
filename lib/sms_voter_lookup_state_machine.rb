@@ -143,6 +143,7 @@ module SmsVoterLookupStateMachine
           end
         end
         def process_yes
+          #TODO: this is a dead end. this vent doesn't exist!!!!
           self.confirmed_voting_history_but_unable_to_find
         end
         def process_no
@@ -232,14 +233,6 @@ module SmsVoterLookupStateMachine
       state :pending_user_entered_voter_address_confirmation do 
         def process_message_by_status(message)
           process_yes_no_message(message)
-        end
-  
-        def process_yes
-          self.branch_yes
-        end
-  
-        def process_no
-          self.branch_no
         end
   
         def summary
