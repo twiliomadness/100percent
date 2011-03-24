@@ -338,6 +338,9 @@ module SmsVoterLookupStateMachine
 
   def lookup_in_gab_by_voter_info
     voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
+    puts "\n\n\n\n\n"
+    p voter
+    puts "thats all folks"
     if voter
       self.address_line_1 = voter.address_line_1
       self.address_line_2 = voter.address_line_2
