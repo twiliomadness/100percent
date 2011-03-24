@@ -26,7 +26,7 @@ module SmsVoterLookupStateMachine
       end
 
       event :branch_no do
-        transition :pending_user_entered_voter_address_confirmation => :pending_address_line_1
+        transition [:pending_user_entered_voter_address_confirmation, :pending_voter_has_voted_before_in_wisconsin_confirmation] => :pending_address_line_1
         transition [:pending_voter_info_confirmation, :pending_voter_info_confirmation_retry] => :welcome
       end
 
@@ -53,7 +53,7 @@ module SmsVoterLookupStateMachine
   
       state :pending_first_name do
         def process_message_by_status(message)
-          self.first_name = message.strip
+          self.update_attribute(:first_name, message.strip)
           if self.first_name
             self.next_prompt
           else
@@ -69,10 +69,10 @@ module SmsVoterLookupStateMachine
       end
   
       state :pending_last_name do
-        validates_presence_of :last_name
+        validates_presence_of :first_name
         def process_message_by_status(message)
           self.last_name = message.strip
-          if self.last_name.to_s.blank?
+          if self.last_name.blank?
             self.has_unrecognized_response = true
           else
             self.next_prompt if self.valid?
@@ -125,7 +125,6 @@ module SmsVoterLookupStateMachine
             self.failed_voter_name_and_dob_lookup
           end
         end
-
 
         def summary
           "We have:\n#{self.full_name}\n#{self.date_of_birth_friendly}"
@@ -237,6 +236,28 @@ module SmsVoterLookupStateMachine
 
         def prompt
           "Is this your current address? Yes or No"
+        end
+      end
+      
+      state :pending_voter_has_voted_before_in_wisconsin_confirmation do 
+        def process_message_by_status(message)
+          transition_branch_yes_no(message)
+        end
+        
+        def process_yes
+          self.update_voter_address
+          self.voter_address_saved
+        end
+        def process_no
+          self.failed_voter_name_and_dob_lookup
+        end
+  
+        def summary
+          self.address_confirmation_summary
+        end
+        
+        def prompt
+          "Have you voted in Wisconsin before?"
         end
       end
       
