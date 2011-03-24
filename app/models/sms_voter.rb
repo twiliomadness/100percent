@@ -77,6 +77,8 @@ class SmsVoter < Voter
     self.address_line_2 = nil
     self.city = nil
     self.zip = nil
+    self.polling_place_id = nil
+    self.count_clerk_id = nil
     self.status = "pending_address_line_1"
     self.save!
   end
@@ -110,6 +112,7 @@ class SmsVoter < Voter
   end
 
   def update_attributes_from_voter(voter)
+    # TODO: Shouldn't this save?
     self.address_line_1 = voter.address_line_1
     self.address_line_2 = voter.address_line_2
     self.city = voter.city
