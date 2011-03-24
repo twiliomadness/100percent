@@ -116,15 +116,9 @@ module SmsVoterLookupStateMachine
         end
   
         def process_yes
-          # TODO: This method is pretty hidden.  Probably should move it out so we can use it outside of this process_yes
           voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
           if voter
-            self.address_line_1 = voter.address_line_1
-            self.address_line_2 = voter.address_line_2
-            self.city = voter.city
-            self.zip = voter.zip
-            self.registration_date = voter.registration_date
-            self.registration_status = voter.registration_status
+            self.update_attributes_from_voter(voter)
             self.save
             self.next_prompt
           else

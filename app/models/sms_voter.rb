@@ -110,10 +110,12 @@ class SmsVoter < Voter
   end
 
   def update_attributes_from_voter(voter)
-   self.address_line_1 = voter.address_line_1
-   self.address_line_2 = voter.address_line_2
-   self.city = voter.city
-   self.zip = voter.zip
+    self.address_line_1 = voter.address_line_1
+    self.address_line_2 = voter.address_line_2
+    self.city = voter.city
+    self.zip = voter.zip
+    self.registration_date = voter.registration_date
+    self.registration_status = voter.registration_status
   end
   
   def first_welcome_message
