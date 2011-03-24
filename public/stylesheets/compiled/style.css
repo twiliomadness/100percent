@@ -1,24 +1,21 @@
 /* line 1, ../../../app/stylesheets/style.sass */
 body {
-  background-color: #c4c4c2;
-  background-image: url("/images/background-texture.png");
-  background-repeat: no-repeat;
-  background-position: top center;
+  background-color: #fefefe;
 }
 
-/* line 7, ../../../app/stylesheets/style.sass */
+/* line 4, ../../../app/stylesheets/style.sass */
 .center {
   text-align: center;
 }
 
-/* line 10, ../../../app/stylesheets/style.sass */
+/* line 7, ../../../app/stylesheets/style.sass */
 #quotes {
   text-align: center;
   font-weight: bold;
   font-size: 150%;
   padding-top: 20px;
 }
-/* line 16, ../../../app/stylesheets/style.sass */
+/* line 13, ../../../app/stylesheets/style.sass */
 #quotes .quote_start {
   color: grey;
   font-size: 400%;
@@ -26,7 +23,7 @@ body {
   font-family: Georgia, Serif;
   margin-top: -25px;
 }
-/* line 23, ../../../app/stylesheets/style.sass */
+/* line 20, ../../../app/stylesheets/style.sass */
 #quotes .quote_end {
   color: grey;
   font-size: 400%;
@@ -35,37 +32,37 @@ body {
   margin-top: -30px;
   margin-right: -40px;
 }
-/* line 31, ../../../app/stylesheets/style.sass */
+/* line 28, ../../../app/stylesheets/style.sass */
 #quotes .quotecontent {
   font-style: italic;
 }
-/* line 34, ../../../app/stylesheets/style.sass */
+/* line 31, ../../../app/stylesheets/style.sass */
 #quotes a {
   font-size: small;
 }
 
-/* line 38, ../../../app/stylesheets/style.sass */
+/* line 35, ../../../app/stylesheets/style.sass */
 .index h1 {
   text-transform: uppercase;
   margin-bottom: 30px;
 }
-/* line 41, ../../../app/stylesheets/style.sass */
+/* line 38, ../../../app/stylesheets/style.sass */
 .index h2 {
   font-weight: bold;
 }
 
-/* line 43, ../../../app/stylesheets/style.sass */
+/* line 40, ../../../app/stylesheets/style.sass */
 .big_logo {
   position: relative;
   left: 20px;
 }
 
-/* line 49, ../../../app/stylesheets/style.sass */
+/* line 46, ../../../app/stylesheets/style.sass */
 .about p, .about li {
   font-size: 150%;
 }
 
-/* line 52, ../../../app/stylesheets/style.sass */
+/* line 49, ../../../app/stylesheets/style.sass */
 .massive {
   font-size: 250%;
 }
