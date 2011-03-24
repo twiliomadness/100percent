@@ -30,74 +30,85 @@ Feature: Manage voter_lookups
     Given I am not a registered voter
     And I have submitted my name and birthday
     And I text "yes"
-    Then I should be shown "Lets try again"
+    And I should be prompted "What is your full first name"
 
   Scenario: Prompt for address if user confirms no voting history
     Given I am not a registered voter
     And I have submitted my name and birthday
     And I text "no"
-    Then I should be prompted "What is your street address?"
+    Then I should be prompted "Have you voted in Wisconsin before?"
 
   Scenario: Prompt for city after user enters address
-    Given I have submitted my name and birthday
+    Given I am not a registered voter
+    And I have submitted my name and birthday
     When I enter my street address
     Then I should be prompted "City?"
 
   Scenario: Prompt for zip after user enters city
-    Given I have submitted my name and birthday
+    Given I am not a registered voter
+    And I have submitted my name and birthday
     When I enter my street address
     And I enter my city
     Then I should be prompted "Zip?"
 
   Scenario: Registered voter confirms info
+    Given I am a registered voter
     Given I have submitted my name and birthday
-    And I am a registered voter
     Then I should be shown "You are currently registered at:\n\n123 MAIN ST.\nMADISON 53703"
 
   Scenario: Address lookup failed
-    Given I have submitted my name and birthday
+    Given I am a registered voter
+    And I have submitted my name and birthday
     And I have entered an address that is not found
     Then I should be prompted "Is this your current address?"
 
   Scenario: Address lookup failed, and user confirms bad address
-    Given I have submitted my name and birthday
+    Given I am not a registered voter
+    And I have submitted my name and birthday
     And I have entered an address that is not found
     And I confirm that my address is correct
     Then I should be shown "We can't find your address in the database. So, a volunteer will contact you shortly to help out."
 
   Scenario: Malformed answer to yes/no question raises validation
-    Given I have submitted my name and birthday
+    Given I am not a registered voter
+    And I have submitted my name and birthday
     When I text "This is not recognized"
     Then I should be shown "Sorry"
 
   Scenario: Malformed answer to yes/no causes question to be repeated
-    Given I have submitted my name and birthday
+    Given I am not a registered voter
+    And I have submitted my name and birthday
     When I text "This is not recognized"
     Then I should be prompted "Is this correct?"
 
   Scenario: Blank answer to yes/no causes question to be repeated
-    Given I have submitted my name and birthday
+    Given I am not a registered voter
+    And I have submitted my name and birthday
     When I text ""
     Then I should be shown "Sorry"
 
   Scenario: Blank answer to text question raises validation error
-    Given I have submitted my name and birthday
+    Given I am not a registered voter
+    And I have submitted my name and birthday
     And I enter my street address
     When I text ""
     Then I should be shown "Sorry"
 
   Scenario: Blank anwser to text question causes question to be repeated
-    Given I have submitted my name and birthday
+    Given I am not a registered voter
+    And I have submitted my name and birthday
     And I enter my street address
     When I text ""
     Then I should be prompted "City?"
 
   Scenario: Malformed date causes validation error
-    Given I have submitted my first and last name
+    Given I am not a registered voter
+    And I have submitted my first and last name
     And I text "not a valid date"
     Then I should be shown "Sorry"
 
   Scenario: Malformed date causes question to be repeated
-    Given I have submitted my first and last name
+    Given I am not a registered voter
+    And I have submitted my first and last name
     And I text "not a valid date"
     Then I should be prompted "What is your date of birth?"

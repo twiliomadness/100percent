@@ -1,7 +1,7 @@
 class SmsVoter < Voter
   before_create :assure_single_sms_voter
   
-  attr_accessor :last_summary, :last_prompt, :has_unrecognized_response, :include_summary_on_failure
+  attr_accessor :last_summary, :last_prompt, :has_unrecognized_response, :include_summary_on_failure, :fail_message
 
   include SmsVoterLookupStateMachine
   include SmsVoterHelpStateMachine
@@ -53,8 +53,8 @@ class SmsVoter < Voter
       self.last_prompt = self.prompt
     end
 
-    if self.has_unrecognized_response
-      fail_message = "Sorry, I didn't understand that."
+    if self.has_unrecognized_response || !self.fail_message.nil?
+      fail_message = self.fail_message || "Sorry, I didn't understand that."
       if self.include_summary_on_failure == true
         self.last_summary = "#{fail_message}\n#{self.last_summary}"
       else

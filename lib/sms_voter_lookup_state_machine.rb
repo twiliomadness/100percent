@@ -24,7 +24,7 @@ module SmsVoterLookupStateMachine
       event :branch_yes do
         transition :pending_user_entered_voter_address_confirmation => :unknown_address_needs_volunteer_help
         transition :pending_voter_info_confirmation_retry => :need_help
-        transition :pending_voter_history_confirmation => :pending_address_line_1
+        transition :pending_voter_history_confirmation => :pending_first_name
       end
 
       event :branch_no do
@@ -121,8 +121,11 @@ module SmsVoterLookupStateMachine
 
       state :pending_voter_history_confirmation do
         def process_message_by_status(message)
-          self.include_summary_on_failure = true
-          transition_branch_yes_no(message)
+          transition_branch_yes_no(message, :yes => :process_yes)
+        end
+        def process_yes
+          self.fail_message = "Let's try agian"
+          self.branch_yes
         end
 
         def summary
@@ -360,9 +363,6 @@ module SmsVoterLookupStateMachine
 
   def lookup_in_gab_by_voter_info
     voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
-    puts "\n\n\n\n\n"
-    p voter
-    puts "thats all folks"
     if voter
       self.address_line_1 = voter.address_line_1
       self.address_line_2 = voter.address_line_2
