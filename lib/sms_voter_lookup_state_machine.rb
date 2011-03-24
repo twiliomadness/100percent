@@ -253,7 +253,7 @@ module SmsVoterLookupStateMachine
         end
         def process_yes
           self.update_voter_address
-          self.voter_address_saved
+          self.next_prompt
         end
         def process_no
           self.failed_voter_name_and_dob_lookup
