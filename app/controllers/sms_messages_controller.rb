@@ -18,6 +18,9 @@ class SmsMessagesController < ApplicationController
     @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter(:phone_number => phone_number) : @user.sms_voter
     
     outgoing_text = @sms_voter.process_message(incoming_text)
+    
+    # Instead of use the restful approach, we can use response, see the voice_messages_controller
+    
     send_text(params[:From], outgoing_text)
     
     @sms_voter.outgoing_messages.create(:text => outgoing_text)

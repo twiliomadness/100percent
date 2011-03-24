@@ -61,10 +61,10 @@ module SmsVoterLookupStateMachine
           end
         end
         def summary
-          "Welcome!"
+          "At any point you can reply 'Reset' to start over.  Also, if you get totally stuck, just reply 'Help' and we'll give you a call."
         end
         def prompt
-          "What is your first name?"
+          "Ok, What is your full first name?"
         end
       end
   
@@ -116,6 +116,7 @@ module SmsVoterLookupStateMachine
         end
   
         def process_yes
+          # TODO: This method is pretty hidden.  Probably should move it out so we can use it outside of this process_yes
           voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
           if voter
             self.address_line_1 = voter.address_line_1

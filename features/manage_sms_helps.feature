@@ -25,7 +25,7 @@ Feature: Manage sms help conversations
     And I am in the help system
     And I make it to the next action prompt
     When I text "start over"
-    Then I should be prompted "What is your first name?"
+    Then I should be prompted "Ok, What is your full first name?"
 
   Scenario: User can re-enter help at end of help
     Given I have submitted my first and last name

@@ -5,10 +5,15 @@ class Voter < ActiveRecord::Base
   belongs_to :polling_place
   belongs_to :county_clerk
 
-  # TODO: Add validation of address format here?
-  # number and name are required.  Punctuation and apt/suite # s/b removed
-
-
+  def next_election_date
+    # TODO: Implement election class which this will utilize
+    "April 5th"
+  end
+  
+  def is_registered?
+    self.registration_status.present?  && self.registration_status.downcase == "active"
+  end
+  
   def update_voter_address
     address_details_page = VoterRecord.get_address_details_page(self.address_line_1, self.city, self.zip)
     
@@ -34,4 +39,5 @@ class Voter < ActiveRecord::Base
     end
     success
   end
+  
 end
