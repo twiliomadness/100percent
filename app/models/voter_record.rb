@@ -1,12 +1,16 @@
 class VoterRecord
 
-  attr_accessor :address_line_1, :address_line_2, :city, :zip
+  attr_accessor :address_line_1, :address_line_2, :city, :zip, :state_voter_id, :registration_date, :registration_status, :has_voted
   
   def initialize(attrs = {})
     self.address_line_1 = attrs[:address_line_1]
     self.address_line_2 = attrs[:address_line_2]
     self.city = attrs[:city]
     self.zip = attrs[:zip]
+    self.state_voter_id = attrs[:state_voter_id]
+    self.registration_date = attrs[:registration_date]
+    self.registration_status = attrs[:registration_status]
+    self.has_voted = attrs[:has_voted]
   end
 
   def self.default_attributes(attrs = {})
@@ -78,7 +82,6 @@ class VoterRecord
     
     result_page = Nokogiri.HTML(page.content)
 
-    # Another approach is to look for links with href that contains VoterSummaryScreen in the link
     path = "//a[starts-with(@href, 'VoterSummaryScreen')]"
 
     links = result_page.xpath(path)
@@ -101,8 +104,11 @@ class VoterRecord
     address_line_2 = voter_info.xpath("//input[@id = 'txtAddressline2']").first.get_attribute("value")
     city = voter_info.xpath("//input[@id = 'txtCity']").first.get_attribute("value")
     zip = voter_info.xpath("//input[@id = 'txtZipcode']").first.get_attribute("value")
+    
+    registration_date = voter_info.xpath("//input[@id = 'txtRegDate']").first.get_attribute("value")
+    registration_status = voter_info.xpath("//input[@id = 'txtVoterStatus']").first.get_attribute("value")
 
-    VoterRecord.new(:address_line_1 => address_line_1, :address_line_2 => address_line_2, :city => city, :zip => zip)
+    VoterRecord.new(:address_line_1 => address_line_1, :address_line_2 => address_line_2, :city => city, :zip => zip, :registration_date => registration_date, :registration_status => registration_status)
 
   end
   

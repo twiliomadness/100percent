@@ -3,6 +3,12 @@ Gotv::Application.routes.draw do
   post "voice_messages/incoming"
   post "voice_messages/recording"
 
+  get "admin" => "admin#index", :as => :admin
+
+  namespace :admin do
+    resources :users
+  end
+
   devise_for :users, :skip => [:registrations, :sessions] do
     # devise/registrations
     get 'signup'         => 'devise/registrations#new',     :as => :new_user_registration
@@ -19,6 +25,7 @@ Gotv::Application.routes.draw do
   end
 
   get "/namedob" => 'content#namedob', :as => :namedob
+  get "/about" => 'content#about', :as => :about
 
   root :to => "content#index"
 end

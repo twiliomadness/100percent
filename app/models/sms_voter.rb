@@ -110,10 +110,48 @@ class SmsVoter < Voter
   end
 
   def update_attributes_from_voter(voter)
-   self.address_line_1 = voter.address_line_1
-   self.address_line_2 = voter.address_line_2
-   self.city = voter.city
-   self.zip = voter.zip
+    self.address_line_1 = voter.address_line_1
+    self.address_line_2 = voter.address_line_2
+    self.city = voter.city
+    self.zip = voter.zip
+    self.registration_date = voter.registration_date
+    self.registration_status = voter.registration_status
+  end
+  
+  def first_welcome_message
+    # 126 Characters
+    "Welcome to VoteSimple.  We're going to help you vote in this election. This will take about 3 minutes and 5-10 text messages."
+  end
+  
+  def no_voter_record_found_but_voter_confirms_they_have_voted_message
+    # 132 Characters
+    "Let's try again.  Make sure to use your full legal name as you would when voting.  Example: Gregory, not Greg.  Katherine, not Katy."
+  end
+  
+  def happy_path_message_one
+    # These could approach the 160 character limit
+    if self.is_registered? 
+      "You can absentee vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
+    else
+      "You can egister AND vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
+    end
+  end
+  
+  def happy_path_message_two
+    if self.is_registered? 
+      "On #{self.next_election_date} you can vote at #{self.polling_place.sms_description}"
+    else
+      "On #{self.next_election_date} you can register AND vote at #{self.polling_place.sms_description}"
+    end
+  end
+  
+  def happy_path_message_three
+    "More help? Visit VoteSimple.org or call your county clerk @ #{self.county_clerk.phone_number} OR, text back 'HELP' and we'll give you a call."
+  end
+  
+  def invite_a_friend_message
+    # TODO: Send this after we find out they've submitted absentee ballot?  Or maybe a day after they get to the happy path end using a background process?
+     "Invite your friends to use VoteSimple.  Just text us 'Invite' and their phone number and we'll send them a text. Thanks!"
   end
 
   def address_confirmation_summary

@@ -39,19 +39,33 @@ body {
 #quotes .quotecontent {
   font-style: italic;
 }
+/* line 34, ../../../app/stylesheets/style.sass */
+#quotes a {
+  font-size: small;
+}
 
-/* line 37, ../../../app/stylesheets/style.sass */
+/* line 38, ../../../app/stylesheets/style.sass */
 .index h1 {
   text-transform: uppercase;
   margin-bottom: 30px;
 }
-/* line 40, ../../../app/stylesheets/style.sass */
+/* line 41, ../../../app/stylesheets/style.sass */
 .index h2 {
   font-weight: bold;
 }
 
-/* line 42, ../../../app/stylesheets/style.sass */
+/* line 43, ../../../app/stylesheets/style.sass */
 .big_logo {
   position: relative;
   left: 20px;
+}
+
+/* line 49, ../../../app/stylesheets/style.sass */
+.about p, .about li {
+  font-size: 150%;
+}
+
+/* line 52, ../../../app/stylesheets/style.sass */
+.massive {
+  font-size: 250%;
 }

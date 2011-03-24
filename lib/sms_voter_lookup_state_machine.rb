@@ -62,10 +62,10 @@ module SmsVoterLookupStateMachine
           end
         end
         def summary
-          "Welcome!"
+          "At any point you can reply 'Reset' to start over.  Also, if you get totally stuck, just reply 'Help' and we'll give you a call."
         end
         def prompt
-          "What is your first name?"
+          "Ok, What is your full first name?"
         end
       end
   
@@ -141,6 +141,14 @@ module SmsVoterLookupStateMachine
         end
   
         def process_yes
+          voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
+          if voter
+            self.update_attributes_from_voter(voter)
+            self.save
+            self.next_prompt
+          else
+            self.failed_voter_name_and_dob_lookup
+          end
         end
 
 

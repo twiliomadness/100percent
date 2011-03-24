@@ -1,0 +1,5 @@
+/* Override here any style defined by web-app-theme */
+
+#main-navigation ul li.first {
+  margin-left: 0;
+}
