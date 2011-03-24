@@ -32,6 +32,6 @@ class Voter < ActiveRecord::Base
     else  
       success = false
     end
-    success
+    return success
   end
 end

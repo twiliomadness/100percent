@@ -10,25 +10,32 @@ Feature: Manage voter_lookups
   Scenario: Prompt for birthday
 
   Scenario: Confirm voter info
+    Given I am a registered voter
     Given I have submitted my first and last name
     When I submit my birthday
-    Then I should be prompted "Is this correct?" 
+    Then I should be shown "You are currently registered at"
 
-  Scenario: Malformed voter info conf shows user their entered data again
+  Scenario: Malformed voter history conf shows custom message
+    Given I am not a registered voter
     Given I have submitted my name and birthday
     When I text "This is not valid"
-    Then I should be shown "We have"
+    Then I should be shown "We couldn't find a record for you"
 
- Scenario: Lookup voter who is registered 
-    Given I have submitted my name and birthday
-    And I am a registered voter
-    When I confirm my voter info
-    Then I should be prompted to confirm my address
+  Scenario: Confirm voter has voting history if lookup fails
+    Given I am not a registered voter
+    And I have submitted my name and birthday
+    Then I should be prompted "Have you voted in Wisconsin before?"
 
-  Scenario: Prompt for address if voter confirms information
-    Given I have submitted my name and birthday
-    And I am not a registered voter
-    And I confirm my name and birthday
+  Scenario: Start over if user confirms voting history
+    Given I am not a registered voter
+    And I have submitted my name and birthday
+    And I text "yes"
+    Then I should be shown "Lets try again"
+
+  Scenario: Prompt for address if user confirms no voting history
+    Given I am not a registered voter
+    And I have submitted my name and birthday
+    And I text "no"
     Then I should be prompted "What is your street address?"
 
   Scenario: Prompt for city after user enters address
@@ -45,13 +52,12 @@ Feature: Manage voter_lookups
   Scenario: Registered voter confirms info
     Given I have submitted my name and birthday
     And I am a registered voter
-    And I confirm my voter info
     Then I should be shown "You are currently registered at:\n\n123 MAIN ST.\nMADISON 53703"
 
   Scenario: Address lookup failed
     Given I have submitted my name and birthday
     And I have entered an address that is not found
-    Then I should be prompted "Is this your current address"
+    Then I should be prompted "Is this your current address?"
 
   Scenario: Address lookup failed, and user confirms bad address
     Given I have submitted my name and birthday
@@ -80,7 +86,7 @@ Feature: Manage voter_lookups
     When I text ""
     Then I should be shown "Sorry"
 
-  Scenario: Blank anser to text question causes question to be repeated
+  Scenario: Blank anwser to text question causes question to be repeated
     Given I have submitted my name and birthday
     And I enter my street address
     When I text ""

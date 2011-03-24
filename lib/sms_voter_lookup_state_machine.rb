@@ -1,6 +1,7 @@
 module SmsVoterLookupStateMachine
   def self.included(base)
     base.state_machine :status, :initial => :welcome do
+      after_transition any => :pending_gab_voter_info_lookup, :do => :lookup_in_gab_by_voter_info
       after_transition any => :pending_voter_address_lookup, :do => :lookup_address
       before_transition any => :welcome, :do => :reset_all!
         
@@ -12,8 +13,8 @@ module SmsVoterLookupStateMachine
         transition :welcome => :pending_first_name
         transition :pending_first_name => :pending_last_name
         transition :pending_last_name => :pending_date_of_birth
-        transition :pending_date_of_birth => :pending_voter_info_confirmation
-        transition :pending_voter_info_confirmation => :pending_gab_voter_address_confirmation
+        transition :pending_date_of_birth => :pending_gab_voter_info_lookup
+        transition :pending_gab_voter_info_lookup => :pending_gab_voter_address_confirmation
         transition :pending_address_line_1 => :pending_city
         transition :pending_city => :pending_zip
         transition :pending_zip => :pending_voter_address_lookup
@@ -31,7 +32,7 @@ module SmsVoterLookupStateMachine
       end
 
       event :failed_voter_name_and_dob_lookup do
-        transition any => :pending_address_line_1
+        transition any => :pending_voter_history_confirmation
       end
       
       event :failed_user_entered_voter_address_lookup do
@@ -69,7 +70,6 @@ module SmsVoterLookupStateMachine
       end
   
       state :pending_last_name do
-        validates_presence_of :last_name
         def process_message_by_status(message)
           self.last_name = message.strip
           if self.last_name.to_s.blank?
@@ -108,6 +108,31 @@ module SmsVoterLookupStateMachine
         end
       end
       
+      state :pending_gab_voter_info_lookup do
+        def summary 
+          ""
+        end
+
+        def prompt
+          ""
+        end
+      end
+
+      state :pending_voter_history_confirmation do
+        def process_message_by_status(message)
+          self.include_summary_on_failure = true
+          transition_branch_yes_no(message)
+        end
+
+        def summary
+          "We couldn't find a record for you."
+        end
+        
+        def prompt
+          "Have you voted in Wisconsin before?"
+        end
+      end
+        
       state :pending_voter_info_confirmation do
         validates_presence_of :date_of_birth
         def process_message_by_status(message)
@@ -116,17 +141,6 @@ module SmsVoterLookupStateMachine
         end
   
         def process_yes
-          voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
-          if voter
-            self.address_line_1 = voter.address_line_1
-            self.address_line_2 = voter.address_line_2
-            self.city = voter.city
-            self.zip = voter.zip
-            self.save
-            self.next_prompt
-          else
-            self.failed_voter_name_and_dob_lookup
-          end
         end
 
 
@@ -313,4 +327,19 @@ module SmsVoterLookupStateMachine
       self.failed_user_entered_voter_address_lookup
     end
   end
+
+  def lookup_in_gab_by_voter_info
+    voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
+    if voter
+      self.address_line_1 = voter.address_line_1
+      self.address_line_2 = voter.address_line_2
+      self.city = voter.city
+      self.zip = voter.zip
+      self.save
+      self.next_prompt
+    else
+      self.failed_voter_name_and_dob_lookup
+    end
+  end
+
 end
