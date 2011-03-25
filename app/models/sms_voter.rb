@@ -49,7 +49,7 @@ class SmsVoter < Voter
       self.last_prompt = self.help_prompt
     else
       process_message_by_status(message)
-      self.last_summary = self.summary.strip
+      self.last_summary = self.summary
       self.last_prompt = self.prompt
     end
 
@@ -62,7 +62,7 @@ class SmsVoter < Voter
       end
     end
 
-    return "#{self.last_summary.strip}\n\n#{self.last_prompt}"
+    return self.last_summary.kind_of?(Array) ? self.last_summary : "#{self.last_summary.strip}\n\n#{self.last_prompt}"
   end
 
 
@@ -149,7 +149,7 @@ class SmsVoter < Voter
   end
   
   def happy_path_message_three
-    "More help? Visit VoteSimple.org or call your county clerk @ #{self.county_clerk.phone_number} OR, text back 'HELP' and we'll give you a call."
+    "More help? Visit VoteSimple.org or call your county clerk @ #{self.county_clerk.phone_number} OR text back 'HELP' and we'll give you a call."
   end
   
   def invite_a_friend_message

@@ -21,8 +21,14 @@ class SmsMessagesController < ApplicationController
     
     # Instead of use the restful approach, we can use response, see the voice_messages_controller
     
-    send_text(params[:From], outgoing_text)
-    
+    if outgoing_text.kind_of?(Array)
+      outgoing_text.each do |message|
+        send_text(params[:From], outgoing_text)
+      end
+    else
+      send_text(params[:From], outgoing_text)
+    end
+
     @sms_voter.outgoing_messages.create(:text => outgoing_text)
     head 200
   end

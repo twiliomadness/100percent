@@ -275,7 +275,7 @@ module SmsVoterLookupStateMachine
         
         def process_yes
           self.update_voter_address
-          self.voter_address_saved
+          self.next_prompt
         end
         def process_no
           self.failed_voter_name_and_dob_lookup
@@ -308,10 +308,10 @@ module SmsVoterLookupStateMachine
         def process_message_by_status(message)
         end
         def summary
-          "You are registered to vote at: #{self.polling_place.sms_description}"
+          [self.happy_path_message_one, self.happy_path_message_two, self.happy_path_message_three]
         end
         def prompt
-          "No more steps for now"
+          
         end
       end
   
