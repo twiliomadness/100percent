@@ -51,6 +51,12 @@ Feature: Manage voter_lookups
     And I enter my city
     Then I should be prompted "Zip?"
 
+  Scenario: Show polling place info if address lookup is success
+    Given I am not a registered voter
+    And I have submitted my name and birthday
+    And I have entered an address that is found
+    Then I should be shown "You are currently registered at"
+
   Scenario: Registered voter confirms info
     Given I am a registered voter
     Given I have submitted my name and birthday
@@ -66,7 +72,7 @@ Feature: Manage voter_lookups
     Given I am not a registered voter
     And I have submitted my name and birthday
     And I have entered an address that is not found
-    And I confirm that my address is correct
+    And I text "yes"
     Then I should be shown "We can't find your address in the database. So, a volunteer will contact you shortly to help out."
 
   Scenario: Malformed answer to yes/no question raises validation
