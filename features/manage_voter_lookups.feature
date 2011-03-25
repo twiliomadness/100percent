@@ -19,7 +19,7 @@ Feature: Manage voter_lookups
     Given I am not a registered voter
     Given I have submitted my name and birthday
     When I text "This is not valid"
-    Then I should be shown "We couldn't find a record for you"
+    Then I should be shown "Sorry, I didn't understand that."
 
   Scenario: Confirm voter has voting history if lookup fails
     Given I am not a registered voter
@@ -79,7 +79,7 @@ Feature: Manage voter_lookups
     Given I am not a registered voter
     And I have submitted my name and birthday
     When I text "This is not recognized"
-    Then I should be prompted "Is this correct?"
+    Then I should be prompted "Have you voted in Wisconsin before?"
 
   Scenario: Blank answer to yes/no causes question to be repeated
     Given I am not a registered voter
