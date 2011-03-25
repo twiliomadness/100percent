@@ -37,7 +37,7 @@ class PollingPlace < ActiveRecord::Base
       polling_place.zip = polling_place_zip
       polling_place.hours = polling_place_hours
       polling_place.vpa_polling_place_id = vpa_polling_place_id
-      polling_place.save
+      polling_place.save!
     end
 
     polling_place
