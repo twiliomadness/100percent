@@ -2,7 +2,7 @@ Given /^I have submitted my first and last name$/ do
   #TODO: clean up users and sms voters here
   @user = User.create!(User.default_attributes())
   @sms_voter = @user.create_sms_voter(SmsVoter.default_attributes(:date_of_birth => nil))
-  @sms_voter.status = "pending_date_of_birth"
+  @sms_voter.status = "pending_last_name"
   @sms_voter.next_prompt
 end
 
