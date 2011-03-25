@@ -149,7 +149,7 @@ class SmsVoter < Voter
   end
   
   def happy_path_message_three
-    "More help? Visit VoteSimple.org or call your county clerk @ #{self.county_clerk.phone_number} OR text back 'HELP' and we'll give you a call."
+    "More help? Call your county clerk @ #{self.county_clerk.phone_number} OR text back 'HELP' and we'll give you a call."
   end
   
   def invite_a_friend_message
@@ -165,8 +165,8 @@ class SmsVoter < Voter
         <<-eof
 You are currently registered at:
 
-#{address}
-#{self.city} #{self.zip}
+#{address.titleize}
+#{self.city.titleize} #{self.zip}
         eof
     end
 
