@@ -5,7 +5,7 @@ describe TwilioHelper do
     it "should return false when the signature is not valid" do
       signature = nil
       url = "junk"
-      params = {}
+      params = {'a' => 'foo', 'b' => 'bar'}
       result = TwilioHelper.validateRequest(signature, url, params)
       result.should be_false
     end
