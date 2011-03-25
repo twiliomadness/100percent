@@ -1,0 +1,33 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_voters_path
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Voters
+    .inner
+      %table.table
+        %tr
+          %th.first ID
+          %th
+            = t("activerecord.attributes.admin_user.phone_number", :default => t("activerecord.labels.phone_number", :default => "Phone Number"))
+          %th
+            = t("web-app-theme.created_at", :default => "Created at")
+          %th.last &nbsp;
+        - voters.each do |voter|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = voter.id
+            %td
+              = link_to voter.phone_number, admin_voter_path(voter)
+            %td
+              = voter.created_at
+            %td.last
+              = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_voter_path(voter)
+              |
+              = link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_voter_path(voter)
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate voters
+- content_for :sidebar, render(:partial => 'sidebar')
