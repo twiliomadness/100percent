@@ -35,6 +35,7 @@ class CountyClerk < ActiveRecord::Base
     clerk_email = page_html.xpath("//input[@id = 'txtEMailAddress']").first.get_attribute("value")
 
     county_clerk = CountyClerk.new
+    county_clerk.county = county
     county_clerk.location_name = location_name_address.strip
     county_clerk.address = ""
     city, state_zip = city_state_zip.split(',')
@@ -42,7 +43,7 @@ class CountyClerk < ActiveRecord::Base
     county_clerk.zip = state_zip.split()[state_zip.split().size - 1]
     county_clerk.phone_number = phone_number
     county_clerk.email_address = clerk_email
-    county_clerk.save
+    county_clerk.save!
 
     county_clerk
 
