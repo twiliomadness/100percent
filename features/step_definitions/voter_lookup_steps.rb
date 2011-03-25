@@ -37,23 +37,27 @@ end
 
 Given /^I enter my street address$/ do
   @sms_voter.status = "pending_address_line_1"
+  @sms_voter.fail_message = nil
   @sms_voter.process_message("123 Main St.")
 end
 
-Given /^I have entered an address that is found$/ do
+Given /^I have entered an address that is found for polling place "([^"]*)"$/ do |polling_place_name|
   @polling_place = PollingPlace.new(:location_name => "GroundZero", :address => "123 Main", :city => "Anywhere")
   PollingPlace.stub!(:get_polling_place).and_return(@polling_place)
   @sms_voter.stub!(:polling_place).and_return(@polling_place)
+  @sms_voter.stub!(:update_voter_address).and_return(true)
+  @sms_voter.stub!(:happy_path_message_one).and_return(polling_place_name)
+  @sms_voter.stub!(:happy_path_message_three).and_return("Happy Path 3")
   Given "I enter my street address"
-  And "I enter my city"
-  And "I enter my zip"
+  @sms_voter.process_message("Madison")
+  @sms_voter.process_message("53719")
 end
 
 Given /^I have entered an address that is not found$/ do
  VoterRecord.stub!(:get_address_details_page).and_return(nil)
   Given "I enter my street address"
-  And "I enter my city"
-  And "I enter my zip"
+  @sms_voter.process_message("Madison")
+  @sms_voter.process_message("53703")
 end
 
 When /^I enter my city$/ do
@@ -89,6 +93,6 @@ Then /^I should be prompted "([^"]*)"$/ do |arg1|
 end
 
 Then /^I should be shown "([^"]*)"$/ do |arg1|
-  @sms_voter.last_summary.should =~ /#{arg1}/
+  @sms_voter.last_summary.to_s.should =~ /#{arg1}/
 end
 

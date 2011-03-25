@@ -39,9 +39,8 @@ module SmsVoterLookupStateMachine
         transition [:pending_voter_info_confirmation, 
                     :pending_voter_info_confirmation_retry] => :welcome                       #found wrong user in gab, try again
         transition :pending_voter_history_confirmation => :pending_address_line_1             #user not in gab, they have't voted, lookup polling place
-        transition :pending_voter_address_lookup => :pending_gab_voter_address_confirmation   #cound not find users address in gab
+        transition :pending_voter_address_lookup => :pending_address_line_1  #cound not find users address in gab
         transition :pending_gab_voter_info_lookup => :pending_voter_history_confirmation      #could not find user in gab
-        transition :pending_gab_voter_address_confirmation => :pending_address_line_1         #user mistyped address
       end
 
       state :welcome do
@@ -171,8 +170,6 @@ module SmsVoterLookupStateMachine
       end
   
       state :pending_city do
-        validates_presence_of :address_line_1
-
         def process_message_by_status(message)
           self.city = message.strip
           if self.city.to_s.blank?
@@ -192,7 +189,6 @@ module SmsVoterLookupStateMachine
       end
   
       state :pending_zip do
-        validates_presence_of :address_line_1, :city
         def process_message_by_status(message)
           self.zip = message
           if self.zip.to_s.blank?
@@ -212,7 +208,6 @@ module SmsVoterLookupStateMachine
       end
   
       state :pending_voter_address_lookup do 
-        validates_presence_of :address_line_1, :city, :zip
         def summary
           ""
         end
@@ -296,7 +291,12 @@ module SmsVoterLookupStateMachine
   end
 
   def lookup_address
-    self.update_voter_address ? self.branch_yes : self.branch_no
+    if self.update_voter_address 
+      self.branch_yes
+    else
+      self.fail_message = "We couldn't find that address. Lets try again, or 'HELP' to have a volunteer contact you."
+      self.branch_no
+    end
   end
 
   def lookup_in_gab_by_voter_info
@@ -312,5 +312,4 @@ module SmsVoterLookupStateMachine
       self.branch_no
     end
   end
-
 end
