@@ -1,6 +1,10 @@
 class SmsMessagesController < ApplicationController
   def incoming
-    # TODO: Validate that this is actually from twilio.
+    signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
+    if !TwilioHelper.validateRequest(signature, url, params)
+      logger.error("Invalid request with signature #{signature} for url #{url} with params #{params}")
+      # TODO: Return 500 error code and halt processing.
+    end
     incoming_text = params[:Body]
     phone_number = params[:From]
     # TODO: Take this out once we're live.
