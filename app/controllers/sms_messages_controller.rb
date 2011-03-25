@@ -1,7 +1,7 @@
 class SmsMessagesController < ApplicationController
   def incoming
     signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
-    if !TwilioHelper.validateRequest(signature, url, params)
+    if !TwilioHelper.validateRequest(signature, request.url, params)
       logger.error("Invalid request with signature #{signature} for url #{url} with params #{params}")
       # TODO: Return 500 error code and halt processing.
     end
