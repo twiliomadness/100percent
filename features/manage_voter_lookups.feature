@@ -30,7 +30,13 @@ Feature: Manage voter_lookups
     Given I am not a registered voter
     And I have submitted my name and birthday
     And I text "yes"
-    And I should be prompted "What is your full first name"
+    Then I should be prompted "What is your full first name"
+
+  Scenario: Lookup address if voter has no history
+    Given I am not a registered voter
+    And I have submitted my name and birthday
+    And I text "no"
+    Then I should be prompted "What is your street address"
 
   Scenario: Prompt for address if user confirms no voting history
     Given I am not a registered voter

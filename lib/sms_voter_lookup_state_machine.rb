@@ -11,30 +11,37 @@ module SmsVoterLookupStateMachine
 
       event :next_prompt do
         transition :welcome => :pending_first_name
+
+        #linear path to collect voter info
+        #----------------------------------
         transition :pending_first_name => :pending_last_name
         transition :pending_last_name => :pending_date_of_birth
         transition :pending_date_of_birth => :pending_gab_voter_info_lookup
+
+        #linear path to collect voter address
+        #--------------------------------------
         transition :pending_address_line_1 => :pending_city
         transition :pending_city => :pending_zip
         transition :pending_zip => :pending_voter_address_lookup
-        transition :pending_gab_voter_address_confirmation => :voter_address_found 
+        
+        #transition :pending_gab_voter_address_confirmation => :voter_address_found 
       end
 
       event :branch_yes do
-        #transition :pending_user_entered_voter_address_confirmation => :unknown_address_needs_volunteer_help
-        transition :pending_voter_info_confirmation_retry => :need_help
-        transition :pending_voter_history_confirmation => :pending_first_name
-        transition :pending_voter_address_lookup => :voter_address_found
-        transition :pending_gab_voter_info_lookup => :pending_gab_voter_address_confirmation
-        transition :pending_gab_voter_address_confirmation => :unknown_address_needs_volunteer_help
+        transition :pending_voter_info_confirmation_retry => :need_help                             #user info not in gab, confirmed correct
+        transition :pending_voter_history_confirmation => :pending_first_name                       #user has voted, must have mis-typed info
+        transition :pending_voter_address_lookup => :voter_address_found                            #found voter
+        transition :pending_gab_voter_info_lookup => :pending_gab_voter_address_confirmation        #found voter address
+        transition :pending_gab_voter_address_confirmation => :unknown_address_needs_volunteer_help #couldn't find voters address, need help
       end
 
       event :branch_no do
-        #transition [:pending_user_entered_voter_address_confirmation, :pending_voter_has_voted_before_in_wisconsin_confirmation] => :pending_address_line_1
-        transition [:pending_voter_info_confirmation, :pending_voter_info_confirmation_retry] => :welcome
-        transition :pending_voter_address_lookup => :pending_gab_voter_address_confirmation
-        transition :pending_gab_voter_info_lookup => :pending_voter_history_confirmation
-        transition :pending_gab_voter_address_confirmation => :pending_address_line_1
+        transition [:pending_voter_info_confirmation, 
+                    :pending_voter_info_confirmation_retry] => :welcome                       #found wrong user in gab, try again
+        transition :pending_voter_history_confirmation => :pending_address_line_1             #user not in gab, they have't voted, lookup polling place
+        transition :pending_voter_address_lookup => :pending_gab_voter_address_confirmation   #cound not find users address in gab
+        transition :pending_gab_voter_info_lookup => :pending_voter_history_confirmation      #could not find user in gab
+        transition :pending_gab_voter_address_confirmation => :pending_address_line_1         #user mistyped address
       end
 
       state :welcome do
@@ -132,33 +139,7 @@ module SmsVoterLookupStateMachine
           "Have you voted in Wisconsin before?"
         end
       end
-        
-#      state :pending_voter_info_confirmation do
-#        validates_presence_of :date_of_birth
-#        def process_message_by_status(message)
-#          self.include_summary_on_failure = true
-#          transition_branch_yes_no(message, :yes => :process_yes)
-#        end
-#  
-#        def process_yes
-#          voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
-#          if voter
-#            self.update_attributes_from_voter(voter)
-#            self.save
-#            self.branch_yes
-#          else
-#            self.failed_voter_name_and_dob_lookup
-#          end
-#        end
-#
-#        def summary
-#          "We have:\n#{self.full_name}\n#{self.date_of_birth_friendly}"
-#        end
-#        def prompt
-#          "Is this correct? Yes or No"
-#        end
-#      end
-      
+     
       state :pending_voter_info_confirmation_retry do
         def process_message_by_status(message)
           self.include_summary_on_failure = true
@@ -265,43 +246,7 @@ module SmsVoterLookupStateMachine
           "Is this your current address? Yes or No"
         end
       end
-      
-#      state :pending_voter_has_voted_before_in_wisconsin_confirmation do 
-#        def process_message_by_status(message)
-#          transition_branch_yes_no(message)
-#        end
-#        
-#        def process_yes
-#          self.update_voter_address
-#          self.next_prompt
-#        end
-#        def process_no
-#          self.failed_voter_name_and_dob_lookup
-#        end
-#  
-#        def summary
-#          self.address_confirmation_summary
-#        end
-#        
-#        def prompt
-#          "Have you voted in Wisconsin before?"
-#        end
-#      end
-      
-#      state :pending_user_entered_voter_address_confirmation do 
-#        def process_message_by_status(message)
-#          transition_branch_yes_no(message)
-#        end
-#  
-#        def summary
-#          self.address_confirmation_summary
-#        end
-#        
-#        def prompt
-#          "Is this your current address? Yes or No"
-#        end
-#      end
-  
+ 
       state :voter_address_found do
         def process_message_by_status(message)
         end
