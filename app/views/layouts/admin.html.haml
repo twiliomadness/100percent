@@ -16,7 +16,7 @@
           %li
             %a{:href => "#"}= t("web-app-theme.settings", :default => "Settings")
           %li
-            %a.logout{:href => "/logout"}= t("web-app-theme.logout", :default => "Logout")
+            %a.logout{:href => destroy_user_session_path}= t("web-app-theme.logout", :default => "Logout")
       #main-navigation
         %ul.wat-cf
           %li{:class => controller.controller_path == 'admin/users' ? 'first active' : 'first' }

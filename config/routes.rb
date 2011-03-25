@@ -7,6 +7,7 @@ Gotv::Application.routes.draw do
 
   namespace :admin do
     resources :users
+    resources :voters
   end
 
   devise_for :users, :skip => [:registrations, :sessions] do

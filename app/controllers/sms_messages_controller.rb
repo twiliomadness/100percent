@@ -17,7 +17,7 @@ class SmsMessagesController < ApplicationController
       end
     end
 
-    @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
+    @user = User.find_or_create_by_phone_number(phone_number)
     @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter(:phone_number => phone_number) : @user.sms_voter
 
     outgoing_text = @sms_voter.process_message(incoming_text)

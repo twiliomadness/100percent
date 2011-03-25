@@ -9,7 +9,7 @@ class ContentController < ApplicationController
 
   def namedob
     @user = current_user
-    @voter = @user.voters.new
+    @voter = @user.voters.empty? ? @user.voters.create : @user.voters.last
   end
 
   def about

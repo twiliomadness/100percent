@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110323010206) do
+ActiveRecord::Schema.define(:version => 20110325152202) do
 
   create_table "county_clerks", :force => true do |t|
     t.string   "location_name"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20110323010206) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "authentication_token"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "first_name"
@@ -62,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20110323010206) do
     t.string   "city"
     t.string   "status"
     t.string   "phone_number"
+    t.boolean  "admin"
   end
 
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
