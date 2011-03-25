@@ -50,15 +50,10 @@ Given /^I have entered an address that is found$/ do
 end
 
 Given /^I have entered an address that is not found$/ do
-  VoterRecord.stub!(:get_address_details_page).and_return(nil)
+ VoterRecord.stub!(:get_address_details_page).and_return(nil)
   Given "I enter my street address"
   And "I enter my city"
   And "I enter my zip"
-end
-
-Given /^I confirm that my address is correct$/ do
-  @sms_voter.status= "pending_user_entered_voter_address_confirmation"
-  @sms_voter.process_message("yes")
 end
 
 When /^I enter my city$/ do
