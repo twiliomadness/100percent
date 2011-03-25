@@ -63,7 +63,7 @@ module SmsVoterLookupStateMachine
           end
         end
         def summary
-          "At any point you can reply 'Reset' to start over.  Also, if you get totally stuck, just reply 'Help' and we'll give you a call."
+          "At any point you can text 'Reset' to start over. Also, if you get totally stuck, just text 'Help' and we'll give you a call."
         end
         def prompt
           "Ok, What is your full first name?"

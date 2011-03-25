@@ -38,6 +38,11 @@ class SmsMessagesController < ApplicationController
       logger.error
       raise "empty content to #{to}"
     end
+    
+    if content.size > 160
+      logger.error
+      raise "content is too long: #{content}"
+    end
 
     data = {
       'From' => APP_CONFIG[:TWILIO_CALLER_ID],
