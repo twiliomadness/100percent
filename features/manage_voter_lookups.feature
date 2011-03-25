@@ -38,6 +38,12 @@ Feature: Manage voter_lookups
     And I text "no"
     Then I should be prompted "What is your street address"
 
+  Scenario: Prompt for address if user confirms no voting history
+    Given I am not a registered voter
+    And I have submitted my name and birthday
+    And I text "no"
+    Then I should be prompted "What is your street address?"
+
   Scenario: Prompt for city after user enters address
     Given I am not a registered voter
     And I have submitted my name and birthday
@@ -60,7 +66,7 @@ Feature: Manage voter_lookups
   Scenario: Registered voter confirms info
     Given I am a registered voter
     Given I have submitted my name and birthday
-    Then I should be shown "You are currently registered at:\n\n123 MAIN ST.\nMADISON 53703"
+    Then I should be shown "You are currently registered at:\n\n123 Main St.\nMadison 53703"
 
   Scenario: Address lookup failed
     Given I am a registered voter

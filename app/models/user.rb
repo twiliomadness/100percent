@@ -1,26 +1,35 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable and :timeoutable
-
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable
-
-  # TODO: Add :token_authenticatable
+         :recoverable, :rememberable, :validatable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :phone_number
 
-  # TODO: Once :token_authenticatable is added, re-enable this:
+  # TODO: Add :token_authenticatable, then re-enable this:
   # before_save :reset_authentication_token
-
 
   has_many :voters
   has_one :sms_voter, :conditions => {:type => 'SmsVoter'} 
   has_one :voice_voter, :conditions => {:type => 'VoiceVoter'} 
 
   def self.default_attributes(attrs = {})
-    {:first_name => "John",
+    {:first_name => "John", 
+      :email => "junk@votesimple.org",
+      :password => "iamnotapotato",
       :last_name => "Smith"}.merge(attrs)
+  end
+  
+  # We need to bypass the standard validation of email password for the sms voters
+  def self.find_or_create_by_phone_number(number)
+    user = User.find_by_phone_number(number)
+    if user.nil?
+      user = User.new
+      user.phone_number = number
+      # TODO: make sure this is a good way to handle this strangeness
+      # Save w/o validation b/c we don't have email/password until later
+      user.save(false)
+    end
+    user
   end
 
   state_machine :status, :initial => :new do

@@ -24,6 +24,9 @@ module SmsVoterLookupStateMachine
         transition :pending_city => :pending_zip
         transition :pending_zip => :pending_voter_address_lookup
         
+        # Couldn't find address, so loop back to the start
+        transition :voter_address_not_found_in_gab => :pending_address_line_1
+        
         #transition :pending_gab_voter_address_confirmation => :voter_address_found 
       end
 
@@ -126,7 +129,7 @@ module SmsVoterLookupStateMachine
           transition_branch_yes_no(message, :yes => :process_yes)
         end
         def process_yes
-          self.fail_message = "Let's try agian"
+          self.fail_message = "Let's try again"
           self.branch_yes
         end
 
@@ -216,7 +219,17 @@ module SmsVoterLookupStateMachine
           ""
         end
       end
+      
+      state :voter_address_not_found_in_gab do 
+        def summary
+          "We couldn't find that address. Let's try again.  Text 'Help' to have a volunteer contact you."
+        end
   
+        def prompt
+          ""
+        end
+      end
+      
       state :pending_gab_voter_address_confirmation do
         validates_presence_of :address_line_1, :city, :zip
         def process_message_by_status(message)
@@ -229,7 +242,7 @@ module SmsVoterLookupStateMachine
         end
 
         def process_no
-          self.fail_message = "Let's try agian"
+          self.fail_message = ""
           self.branch_no
         end
   

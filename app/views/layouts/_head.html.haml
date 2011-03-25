@@ -1,27 +1,28 @@
 %head
   %meta{ :charset => "utf-8" }/
-  
+
   -#
     Always force latest IE rendering engine (even in intranet) & Chrome Frame
     Remove this if you use the .htaccess
   %meta{ :content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible" }/
-  
+
   %title
     VoteSimple: Get voting today.
-    
+
   %meta{ :content => "VoteSimple: The easiest way to find out when you vote.  Where you vote.  And how you vote.", :name => "description" }/
   %meta{ :content => "register, vote, voter registration, absentee voting, polling place", :name => "keywords" }/
-  
+
   -# Mobile viewport optimized: j.mp/bplateviewport
-  %meta{ :content => "width=device-width, initial-scale=1.0", :name => "viewport" }/
-  
+  -# %meta{ :content => "width=device-width, initial-scale=1.0", :name => "viewport" }/
+
   -# Place favicon.ico and apple-touch-icon.png in the root of your domain and delete these references
   -# %link{ :href => "/favicon.ico", :rel => "shortcut icon" }/
   -# %link{ :href => "/apple-touch-icon.png", :rel => "apple-touch-icon" }/
-  
+
   = render :partial => 'layouts/stylesheets'
-  
+
   -# All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects
   = javascript_include_tag 'modernizr.min'
-  
+
   = csrf_meta_tag
+
