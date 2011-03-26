@@ -5,7 +5,7 @@ class Voter < ActiveRecord::Base
   belongs_to :polling_place
   belongs_to :county_clerk
   
-  named_scope :most_recent_first, :order => "created_at DESC"
+  scope :most_recent_first, :order => "created_at DESC"
 
   def next_election_date
     # TODO: Implement election class which this will utilize
