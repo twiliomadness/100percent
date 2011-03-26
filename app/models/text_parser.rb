@@ -6,17 +6,20 @@ class TextParser
     rescue TypeError
       # noop
     end
-    if result.nil?
-      if text =~ /^[^a-zA-Z]+$/
-        text = text.gsub(/[^\d]/, '')
-      end
-      if text =~ /^\d{8}$/
-        try_text = "#{text[0..1]}/#{text[2..3]}/#{text[4..7]}"
-        result = Chronic.parse(try_text)
-      elsif text =~ /^\d{6}$/
-        try_text = "#{text[0..1]}/#{text[2..3]}/#{text[4..5]}"
-        result = Chronic.parse(try_text)
-      end
+    # 8 digits e.g., 03081972 -> 3/8/1972
+    if result.nil? && text =~ /^\d{8}$/
+      try_text = "#{text[0..1]}/#{text[2..3]}/#{text[4..7]}"
+      result = Chronic.parse(try_text)
+    end
+    # 6 digits; e.g., 030872 -> 3/8/1972
+    if result.nil? && text =~ /^\d{6}$/
+      try_text = "#{text[0..1]}/#{text[2..3]}/#{text[4..5]}"
+      result = Chronic.parse(try_text)
+    end
+    # non-alphanumeric separators
+    if result.nil? && text =~ /([0-9]+[^a-z0-9])+/i
+      try_text = text.gsub(/[^\d]/, '/')
+      result = Chronic.parse(try_text)
     end
     if !result.nil?
       if result.year < 100
