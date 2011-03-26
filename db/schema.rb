@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110325152202) do
+ActiveRecord::Schema.define(:version => 20110326172137) do
 
   create_table "county_clerks", :force => true do |t|
     t.string   "location_name"
@@ -91,6 +91,9 @@ ActiveRecord::Schema.define(:version => 20110325152202) do
     t.string   "conversation_status"
     t.integer  "county_clerk_id"
     t.integer  "polling_place_id"
+    t.string   "sms_city"
+    t.string   "sms_state"
+    t.string   "sms_zip"
   end
 
 end

@@ -9,7 +9,8 @@ Gotv::Application.routes.draw do
     resources :users
     resources :voters
   end
-
+  resources :voters
+  
   devise_for :users, :skip => [:registrations, :sessions] do
     # devise/registrations
     get 'signup'         => 'devise/registrations#new',     :as => :new_user_registration
