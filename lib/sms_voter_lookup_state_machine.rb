@@ -1,6 +1,7 @@
 module SmsVoterLookupStateMachine
   def self.included(base)
     base.state_machine :status, :initial => :welcome do
+      after_transition any => :pending_zip, :do => :lookup_address_via_geocode
       after_transition any => :pending_gab_voter_info_lookup, :do => :lookup_in_gab_by_voter_info
       after_transition any => :pending_voter_address_lookup, :do => :lookup_address
       before_transition any => :welcome, :do => :reset_all!
@@ -26,24 +27,23 @@ module SmsVoterLookupStateMachine
         
         # Couldn't find address, so loop back to the start
         transition :voter_address_not_found_in_gab => :pending_address_line_1
-        
       end
 
       event :branch_yes do
-        transition :pending_voter_info_confirmation_retry => :need_help                             #user info not in gab, confirmed correct
-        transition :pending_voter_history_confirmation => :pending_first_name                       #user has voted, must have mis-typed info
-        transition :pending_voter_address_lookup => :voter_address_found                            #found voter
-        transition :pending_gab_voter_info_lookup => :pending_gab_voter_address_confirmation        #found voter address
-        transition :pending_gab_voter_address_confirmation => :voter_address_found                  #voter confirms this their GAB record
-      end
-
-      event :branch_no do
-        transition [:pending_voter_info_confirmation, 
-                    :pending_voter_info_confirmation_retry] => :welcome                       #found wrong user in gab, try again
-        transition :pending_voter_history_confirmation => :pending_address_line_1             #user not in gab, they have't voted, lookup polling place
-        transition :pending_voter_address_lookup => :pending_address_line_1  #cound not find users address in gab
-        transition :pending_gab_voter_info_lookup => :pending_voter_history_confirmation      #could not find user in gab
-        transition :pending_gab_voter_address_confirmation => :pending_address_line_1                  #found voter, but not this users record
+        transition :pending_voter_info_confirmation_retry => :need_help                         #user info not in gab, confirmed correct
+        transition :pending_voter_history_confirmation => :pending_first_name                   #user has voted, must have mis-typed info
+        transition :pending_voter_address_lookup => :voter_address_found                        #found voter
+        transition :pending_gab_voter_info_lookup => :pending_gab_voter_address_confirmation    #found voter address
+        transition :pending_gab_voter_address_confirmation => :voter_address_found              #voter confirms this is their GAB record
+      end                                                                                       
+                                                                                                
+      event :branch_no do                                                                       
+        transition [:pending_voter_info_confirmation,                                           
+                    :pending_voter_info_confirmation_retry] => :welcome                         #found wrong user in gab, try again
+        transition :pending_voter_history_confirmation => :pending_address_line_1               #user not in gab, they have't voted, lookup polling place
+        transition :pending_voter_address_lookup => :pending_address_line_1                     #could not find user's address in gab
+        transition :pending_gab_voter_info_lookup => :pending_voter_history_confirmation        #could not find user in gab
+        transition :pending_gab_voter_address_confirmation => :pending_address_line_1           #found voter, but not this user's record
       end
 
       state :welcome do
@@ -325,4 +325,13 @@ module SmsVoterLookupStateMachine
       self.branch_no
     end
   end
+  
+  def lookup_address_via_geocode
+    result = Geokit::Geocoders::GoogleGeocoder.geocode("#{self.address_line_1}, #{self.city}, WI")
+    if result.success && result.all.size == 1
+      self.zip = result.zip
+      self.next_prompt
+    end
+  end
+  
 end

@@ -24,7 +24,11 @@ Geokit::Geocoders::yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
 # This is your Google Maps geocoder key. 
 # See http://www.google.com/apis/maps/signup.html
 # and http://www.google.com/apis/maps/documentation/#Geocoding_Examples
-Geokit::Geocoders::google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
+Gotv::Application.configure do
+  config.after_initialize do
+    Geokit::Geocoders::google = APP_CONFIG[:GOOGLE_API_KEY]
+  end
+end
 
 # You can also set multiple API KEYS for different domains that may be directed to this same application.
 # The domain from which the current user is being directed will automatically be updated for Geokit via
