@@ -1,4 +1,4 @@
-class Admin::VotersController < ApplicationController
+class Admin::VotersController < AdminController
   layout 'admin'
 
   expose(:voter) { @voter || Voter.find_by_id(params[:voter_id] || params[:id]) || Voter.new }

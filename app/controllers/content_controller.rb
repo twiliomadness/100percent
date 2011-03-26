@@ -1,8 +1,8 @@
 class ContentController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :about, :admin]
+  before_filter :authenticate_user!, :except => [:index, :about]
 
   def index
-    if user_signed_in?
+    if user_signed_in? && !current_user.admin?
       redirect_to namedob_path and return
     end
   end
