@@ -91,6 +91,8 @@ class SmsVoter < Voter
     self.address_line_2 = nil
     self.city = nil
     self.zip = nil
+    self.polling_place_id = nil
+    self.count_clerk_id = nil
   end
 
   
