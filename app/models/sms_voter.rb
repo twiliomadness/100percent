@@ -78,7 +78,7 @@ class SmsVoter < Voter
     self.city = nil
     self.zip = nil
     self.polling_place_id = nil
-    self.count_clerk_id = nil
+    self.county_clerk_id = nil
     self.status = "pending_address_line_1"
     self.save!
   end
@@ -92,7 +92,7 @@ class SmsVoter < Voter
     self.city = nil
     self.zip = nil
     self.polling_place_id = nil
-    self.count_clerk_id = nil
+    self.county_clerk_id = nil
   end
 
   
