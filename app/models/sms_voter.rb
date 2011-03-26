@@ -136,7 +136,7 @@ class SmsVoter < Voter
     if self.is_registered? 
       "You can absentee vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
     else
-      "You can egister AND vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
+      "You can register AND vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
     end
   end
   
