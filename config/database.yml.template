@@ -1,0 +1,18 @@
+global: &global
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: postgres
+  password:
+  min_messages: warning
+
+development:
+  database: wigotv_development
+  <<: *global
+
+test: &test
+  database: wigotv_test
+  <<: *global
+
+cucumber:
+  <<: *test

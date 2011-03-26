@@ -29,7 +29,7 @@ group :cucumber do
 end
 
 group :cucumber, :development, :test do
-  #gem "sqlite3"
+  gem "sqlite3"
   gem "autotest"
   gem "autotest-notification"
   gem 'faker', '0.9.5'
