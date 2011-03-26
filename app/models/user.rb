@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :voters
   has_one :sms_voter, :conditions => {:type => 'SmsVoter'} 
   has_one :voice_voter, :conditions => {:type => 'VoiceVoter'} 
+  
+  scope :has_email, :conditions => "length(email) > 0"
 
   def self.default_attributes(attrs = {})
     {:first_name => "John", 

@@ -78,7 +78,7 @@ class SmsVoter < Voter
     self.city = nil
     self.zip = nil
     self.polling_place_id = nil
-    self.count_clerk_id = nil
+    self.county_clerk_id = nil
     self.status = "pending_address_line_1"
     self.save!
   end
@@ -91,6 +91,8 @@ class SmsVoter < Voter
     self.address_line_2 = nil
     self.city = nil
     self.zip = nil
+    self.polling_place_id = nil
+    self.county_clerk_id = nil
   end
 
   
@@ -136,7 +138,7 @@ class SmsVoter < Voter
     if self.is_registered? 
       "You can absentee vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
     else
-      "You can egister AND vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
+      "You can register AND vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
     end
   end
   

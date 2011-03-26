@@ -1,6 +1,7 @@
 module SmsVoterLookupStateMachine
   def self.included(base)
     base.state_machine :status, :initial => :welcome do
+      after_transition any => :pending_zip, :do => :lookup_address_via_geocode
       after_transition any => :pending_gab_voter_info_lookup, :do => :lookup_in_gab_by_voter_info
       after_transition any => :pending_voter_address_lookup, :do => :lookup_address
       before_transition any => :welcome, :do => :reset_all!
@@ -26,7 +27,6 @@ module SmsVoterLookupStateMachine
         
         # Couldn't find address, so loop back to the start
         transition :voter_address_not_found_in_gab => :pending_address_line_1
-        
       end
 
       event :branch_yes do
@@ -325,4 +325,13 @@ module SmsVoterLookupStateMachine
       self.branch_no
     end
   end
+  
+  def lookup_address_via_geocode
+    result = Geokit::Geocoders::GoogleGeocoder.geocode("#{self.address_line_1}, #{self.city}, WI")
+    if result.success && result.all.size == 1
+      self.zip = result.zip
+      self.next_prompt
+    end
+  end
+  
 end
