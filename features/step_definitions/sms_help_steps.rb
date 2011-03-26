@@ -1,7 +1,3 @@
-Given /^I text "([^"]*)"$/ do |arg1|
-  @sms_response = @sms_voter.process_message(arg1)
-end
-
 Given /^I am prompted with next options$/ do
   @sms_voter.transition_help
 end

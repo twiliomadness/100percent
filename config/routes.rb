@@ -1,5 +1,5 @@
 Gotv::Application.routes.draw do
-  get "sms_messages/incoming"
+  get "sms_messages/incoming", :as => 'sms_request'
   post "voice_messages/incoming"
   post "voice_messages/recording"
 

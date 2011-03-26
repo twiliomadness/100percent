@@ -9,15 +9,22 @@ Feature: Manage voter_lookups
 
   Scenario: Prompt for birthday
 
+  Scenario: New users should see a welcome message
+    Given I am a registered voter
+    When I text "Vote"
+    Then I should receive texts:
+    |Welcome|
+    |What|
+
   Scenario: Confirm voter info
     Given I am a registered voter
-    Given I have submitted my first and last name
+    And I have submitted my first and last name
     When I submit my birthday
     Then I should be shown "You are currently registered at"
 
   Scenario: Malformed voter history conf shows custom message
     Given I am not a registered voter
-    Given I have submitted my name and birthday
+    And I have submitted my name and birthday
     When I text "This is not valid"
     Then I should be shown "Sorry, I didn't understand that."
 
@@ -61,7 +68,7 @@ Feature: Manage voter_lookups
     Given I am not a registered voter
     And I have submitted my name and birthday
     And I have entered an address that is found for polling place "Poll 1"
-    Then I should be shown "Poll 1"
+    Then I should receive text "Poll 1"
 
   Scenario: Registered voter confirms info
     Given I am a registered voter
@@ -78,13 +85,9 @@ Feature: Manage voter_lookups
     Given I am not a registered voter
     And I have submitted my name and birthday
     And I have entered an address that is not found
-    Then I should be shown "find that address"
-
-  Scenario: Address lookup failed, and user confirms bad address
-    Given I am not a registered voter
-    And I have submitted my name and birthday
-    And I have entered an address that is not found
-    Then I should be shown "We couldn't find that address"
+    Then I should receive texts:
+    |We couldn't find a record for you.\n\nHave you voted in Wisconsin before?|
+    |Next step is to determine where you vote.\n\nWhat is your street address?|
 
   Scenario: Malformed answer to yes/no question raises validation
     Given I am a registered voter

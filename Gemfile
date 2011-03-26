@@ -34,6 +34,7 @@ group :cucumber, :development, :test do
   gem "autotest-notification"
   gem 'faker', '0.9.5'
   gem 'rspec-rails', '2.5.0'
+  gem 'spork'
 end
 
 group :development do

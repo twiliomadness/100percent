@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
       user.phone_number = number
       # TODO: make sure this is a good way to handle this strangeness
       # Save w/o validation b/c we don't have email/password until later
-      user.save(false)
+      user.save(:validate => false)
     end
     user
   end

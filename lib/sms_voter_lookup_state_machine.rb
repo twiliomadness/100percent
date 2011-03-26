@@ -41,13 +41,14 @@ module SmsVoterLookupStateMachine
         transition [:pending_voter_info_confirmation, 
                     :pending_voter_info_confirmation_retry] => :welcome                       #found wrong user in gab, try again
         transition :pending_voter_history_confirmation => :pending_address_line_1             #user not in gab, they have't voted, lookup polling place
-        transition :pending_voter_address_lookup => :pending_address_line_1  #cound not find users address in gab
+        transition :pending_voter_address_lookup => :pending_address_line_1                   #cound not find users address in gab
         transition :pending_gab_voter_info_lookup => :pending_voter_history_confirmation      #could not find user in gab
-        transition :pending_gab_voter_address_confirmation => :pending_address_line_1                  #found voter, but not this users record
+        transition :pending_gab_voter_address_confirmation => :pending_address_line_1         #found voter, but not this users record
       end
 
       state :welcome do
         def process_message_by_status(message)
+          self.outgoing_messages.create(:text => "Welcome")
           self.next_prompt
         end
         def summary
@@ -129,7 +130,7 @@ module SmsVoterLookupStateMachine
           transition_branch_yes_no(message, :yes => :process_yes)
         end
         def process_yes
-          self.fail_message = "Let's try again"
+          self.outgoing_messages.create :text => "Let's try again"
           self.branch_yes
         end
 
@@ -242,7 +243,6 @@ module SmsVoterLookupStateMachine
         end
 
         def process_no
-          self.fail_message = ""
           self.branch_no
         end
   
@@ -307,7 +307,7 @@ module SmsVoterLookupStateMachine
     if self.update_voter_address 
       self.branch_yes
     else
-      self.fail_message = "We couldn't find that address. Lets try again, or 'HELP' to have a volunteer contact you."
+      self.outgoing_messages :text => "We couldn't find that address. Lets try again, or 'HELP' to have a volunteer contact you."
       self.branch_no
     end
   end
