@@ -1,5 +1,5 @@
 class ContentController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :about]
+  before_filter :authenticate_user!, :except => [:index, :about, :admin]
 
   def index
     if user_signed_in?
