@@ -77,6 +77,7 @@ GEM
       actionpack (>= 2.3.7)
       activesupport (>= 2.3.7)
       i18n (~> 0.4)
+    geokit (1.5.0)
     gherkin (2.3.4)
       json (~> 1.4.6)
     haml (3.0.25)
@@ -175,6 +176,7 @@ DEPENDENCIES
   devise (= 1.1.8)
   faker (= 0.9.5)
   formtastic
+  geokit
   haml (= 3.0.25)
   heroku (= 1.18.3)
   html5-boilerplate
