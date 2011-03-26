@@ -40,7 +40,6 @@ class SmsMessagesController < ApplicationController
   end
 
   def send_text(to, content)
-    return
     twilio = Twilio::RestAccount.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
 
     if content.blank?
