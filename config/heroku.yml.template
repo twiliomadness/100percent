@@ -15,15 +15,19 @@ common: &common
   TWILIO_ACCOUNT_TOKEN:
 
 development:
+  GOOGLE_API_KEY:
   <<: *common
 
 test:
+  GOOGLE_API_KEY:
   <<: *common
 
 staging:
   app_name: wigotv-staging
+  GOOGLE_API_KEY:
   <<: *common
   
 production:
   app_name: wigotv
+  GOOGLE_API_KEY:
   <<: *common
