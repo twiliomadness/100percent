@@ -27,7 +27,6 @@ module SmsVoterLookupStateMachine
         # Couldn't find address, so loop back to the start
         transition :voter_address_not_found_in_gab => :pending_address_line_1
         
-        #transition :pending_gab_voter_address_confirmation => :voter_address_found 
       end
 
       event :branch_yes do
@@ -35,7 +34,7 @@ module SmsVoterLookupStateMachine
         transition :pending_voter_history_confirmation => :pending_first_name                       #user has voted, must have mis-typed info
         transition :pending_voter_address_lookup => :voter_address_found                            #found voter
         transition :pending_gab_voter_info_lookup => :pending_gab_voter_address_confirmation        #found voter address
-        transition :pending_gab_voter_address_confirmation => :unknown_address_needs_volunteer_help #couldn't find voters address, need help
+        transition :pending_gab_voter_address_confirmation => :voter_address_found                  #voter confirms this their GAB record
       end
 
       event :branch_no do
@@ -44,6 +43,7 @@ module SmsVoterLookupStateMachine
         transition :pending_voter_history_confirmation => :pending_address_line_1             #user not in gab, they have't voted, lookup polling place
         transition :pending_voter_address_lookup => :pending_address_line_1  #cound not find users address in gab
         transition :pending_gab_voter_info_lookup => :pending_voter_history_confirmation      #could not find user in gab
+        transition :pending_gab_voter_address_confirmation => :pending_address_line_1                  #found voter, but not this users record
       end
 
       state :welcome do
