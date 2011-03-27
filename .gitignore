@@ -1,6 +1,7 @@
 .bundle
 .DS_Store
 config/database.yml
+config/exceptional.yml
 config/heroku.yml
 db/*.sqlite3
 log/*.log
