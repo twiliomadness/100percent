@@ -1,7 +1,7 @@
 class SmsMessagesController < ApplicationController
   def incoming
     signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
-    if !TwilioHelper.validateRequest(signature, request.url, request.post? ? params : nil)
+    if !TwilioHelper.validateRequest(signature, request.url, request.post? ? params : {})
       logger.error("Invalid request with signature #{signature} for url #{request.url} with params #{params}")
       head 404 and return
     end
