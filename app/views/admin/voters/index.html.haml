@@ -10,8 +10,11 @@
       %table.table
         %tr
           %th.first ID
+          %th Type
           %th
-            = t("activerecord.attributes.admin_user.phone_number", :default => t("activerecord.labels.phone_number", :default => "Phone Number"))
+            Message
+          %th
+            Number
           %th
             = t("web-app-theme.created_at", :default => "Created at")
           %th.last &nbsp;
@@ -19,6 +22,10 @@
           %tr{:class => cycle("odd", "even")}
             %td
               = voter.id
+            %td
+              = voter.type
+            %td
+              = link_to "listen", voter.voice_recording_url, :target => "blank" if voter.voice_recording_url.present?
             %td
               = link_to voter.phone_number, admin_voter_path(voter)
             %td
