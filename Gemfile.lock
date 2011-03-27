@@ -69,6 +69,8 @@ GEM
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    exceptional (2.0.32)
+      rack
     faker (0.9.5)
       i18n (~> 0.4)
     ffi (0.6.3)
@@ -179,6 +181,7 @@ DEPENDENCIES
   database_cleaner (= 0.6.6)
   decent_exposure
   devise (= 1.1.8)
+  exceptional
   faker (= 0.9.5)
   formtastic
   geokit

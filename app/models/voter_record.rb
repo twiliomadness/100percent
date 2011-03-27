@@ -89,9 +89,11 @@ class VoterRecord
       return nil
     end
 
-    # TODO: Handle possibility of more than one record
     if links.size > 1
-      logger.warn("Found #{summary_links.size} for #{first_name} #{last_name} #{date_of_birth}")
+      params = {:first_name => first_name,
+        last_name: last_name,
+        date_of_birth: date_of_birth}
+      Exceptional.handle(Exception.new, "VoterRecord.find_by_name_and_date_of_birth found #{summary_links.size} links for params: #{params}")
     end
 
     link = links.first
