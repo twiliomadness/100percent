@@ -315,10 +315,7 @@ module SmsVoterLookupStateMachine
   def lookup_in_gab_by_voter_info
     voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
     if voter
-      self.address_line_1 = voter.address_line_1
-      self.address_line_2 = voter.address_line_2
-      self.city = voter.city
-      self.zip = voter.zip
+      self.update_attributes_from_voter(voter)
       self.save
       self.branch_yes
     else
