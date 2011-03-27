@@ -20,7 +20,7 @@ class VoiceMessagesController < ApplicationController
    phone_number = params[:Caller]
    
    # TODO Fix user and voter find by number
-   @user = User.find_or_create_by_phone_number(:phone_number => phone_number)
+   @user = User.find_or_create_by_phone_number(phone_number)
    @voice_voter = @user.voice_voter.nil? ? @user.create_voice_voter(:phone_number => phone_number) : @user.voice_voter
    
    recording_URL = params[:RecordingUrl]
