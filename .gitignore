@@ -1,5 +1,5 @@
 .bundle
-config/credentials.rb
+.DS_Store
 config/database.yml
 config/heroku.yml
 db/*.sqlite3
