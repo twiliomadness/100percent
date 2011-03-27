@@ -5,39 +5,45 @@ describe TextParser do
   describe "#parse_date" do
 
     it "handles canonical US date format (mm/dd/yyyy)" do
-      text = "7/4/1969"
+      text = "3/8/1972"
       result = TextParser.parse_date(text)
-      result.should == Time.new(1969, 7, 4)
+      result.should == Time.new(1972, 3, 8)
     end
 
     it "handles canonical US date format with two digit years (mm/dd/yy)" do
-      text = "7/4/69"
+      text = "3/8/72"
       result = TextParser.parse_date(text)
-      result.should == Time.new(1969, 7, 4)
+      result.should == Time.new(1972, 3, 8)
     end
 
     it "handles all digits with four digit years (mmddyyyy)" do
-      text = "07041969"
+      text = "03081972"
       result = TextParser.parse_date(text)
-      result.should == Time.new(1969, 7, 4)
+      result.should == Time.new(1972, 3, 8)
     end
 
     it "handles all digits with two digit years" do
-      text = "070469"
+      text = "030872"
       result = TextParser.parse_date(text)
-      result.should == Time.new(1969, 7, 4)
+      result.should == Time.new(1972, 3, 8)
     end
     
     it "handles all digits with spaces as separators" do
-      text = "07 04 1969"
+      text = "03 08 1972"
       result = TextParser.parse_date(text)
-      result.should == Time.new(1969, 7, 4)
+      result.should == Time.new(1972, 3, 8)
     end
 
     it "handles all digits with any non-alpha characters as separators" do
-      text = "07*04*1969"
+      text = "03*08*1972"
       result = TextParser.parse_date(text)
-      result.should == Time.new(1969, 7, 4)
+      result.should == Time.new(1972, 3, 8)
+    end
+
+    it "any non-alphanumeric character is treated as a separator" do
+      text = "3*8*1972"
+      result = TextParser.parse_date(text)
+      result.should == Time.new(1972, 3, 8)
     end
 
   end

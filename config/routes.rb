@@ -1,5 +1,5 @@
 Gotv::Application.routes.draw do
-  get "sms_messages/incoming"
+  get "sms_messages/incoming", :as => 'sms_request'
   post "voice_messages/incoming"
   post "voice_messages/recording"
 
@@ -9,7 +9,8 @@ Gotv::Application.routes.draw do
     resources :users
     resources :voters
   end
-
+  resources :voters
+  
   devise_for :users, :skip => [:registrations, :sessions] do
     # devise/registrations
     get 'signup'         => 'devise/registrations#new',     :as => :new_user_registration

@@ -1,6 +1,7 @@
 module SmsVoterLookupStateMachine
   def self.included(base)
     base.state_machine :status, :initial => :welcome do
+      after_transition any => :pending_zip, :do => :lookup_address_via_geocode
       after_transition any => :pending_gab_voter_info_lookup, :do => :lookup_in_gab_by_voter_info
       after_transition any => :pending_voter_address_lookup, :do => :lookup_address
       before_transition any => :welcome, :do => :reset_all!
@@ -26,8 +27,6 @@ module SmsVoterLookupStateMachine
         
         # Couldn't find address, so loop back to the start
         transition :voter_address_not_found_in_gab => :pending_address_line_1
-        
-        #transition :pending_gab_voter_address_confirmation => :voter_address_found 
       end
 
       event :branch_yes do
@@ -35,20 +34,21 @@ module SmsVoterLookupStateMachine
         transition :pending_voter_history_confirmation => :pending_first_name                       #user has voted, must have mis-typed info
         transition :pending_voter_address_lookup => :voter_address_found                            #found voter
         transition :pending_gab_voter_info_lookup => :pending_gab_voter_address_confirmation        #found voter address
-        transition :pending_gab_voter_address_confirmation => :unknown_address_needs_volunteer_help #couldn't find voters address, need help
+        transition :pending_gab_voter_address_confirmation => :voter_address_found                  #voter confirms this their GAB record
       end
 
       event :branch_no do
         transition [:pending_voter_info_confirmation, 
                     :pending_voter_info_confirmation_retry] => :welcome                       #found wrong user in gab, try again
         transition :pending_voter_history_confirmation => :pending_address_line_1             #user not in gab, they have't voted, lookup polling place
-        transition :pending_voter_address_lookup => :pending_gab_voter_address_confirmation   #cound not find users address in gab
+        transition :pending_voter_address_lookup => :pending_address_line_1                   #cound not find users address in gab
         transition :pending_gab_voter_info_lookup => :pending_voter_history_confirmation      #could not find user in gab
-        transition :pending_gab_voter_address_confirmation => :pending_address_line_1         #user mistyped address
+        transition :pending_gab_voter_address_confirmation => :pending_address_line_1         #found voter, but not this users record
       end
 
       state :welcome do
         def process_message_by_status(message)
+          self.outgoing_messages.create(:text => "Welcome")
           self.next_prompt
         end
         def summary
@@ -130,7 +130,7 @@ module SmsVoterLookupStateMachine
           transition_branch_yes_no(message, :yes => :process_yes)
         end
         def process_yes
-          self.fail_message = "Let's try again"
+          self.outgoing_messages.create :text => "Let's try again"
           self.branch_yes
         end
 
@@ -174,8 +174,6 @@ module SmsVoterLookupStateMachine
       end
   
       state :pending_city do
-        validates_presence_of :address_line_1
-
         def process_message_by_status(message)
           self.city = message.strip
           if self.city.to_s.blank?
@@ -195,7 +193,6 @@ module SmsVoterLookupStateMachine
       end
   
       state :pending_zip do
-        validates_presence_of :address_line_1, :city
         def process_message_by_status(message)
           self.zip = message
           if self.zip.to_s.blank?
@@ -215,7 +212,6 @@ module SmsVoterLookupStateMachine
       end
   
       state :pending_voter_address_lookup do 
-        validates_presence_of :address_line_1, :city, :zip
         def summary
           ""
         end
@@ -247,7 +243,6 @@ module SmsVoterLookupStateMachine
         end
 
         def process_no
-          self.fail_message = ""
           self.branch_no
         end
   
@@ -309,7 +304,12 @@ module SmsVoterLookupStateMachine
   end
 
   def lookup_address
-    self.update_voter_address ? self.branch_yes : self.branch_no
+    if self.update_voter_address 
+      self.branch_yes
+    else
+      self.outgoing_messages :text => "We couldn't find that address. Lets try again, or 'HELP' to have a volunteer contact you."
+      self.branch_no
+    end
   end
 
   def lookup_in_gab_by_voter_info
@@ -325,5 +325,13 @@ module SmsVoterLookupStateMachine
       self.branch_no
     end
   end
-
+  
+  def lookup_address_via_geocode
+    result = Geokit::Geocoders::GoogleGeocoder.geocode("#{self.address_line_1}, #{self.city}, WI")
+    if result.success && result.all.size == 1
+      self.zip = result.zip
+      self.next_prompt
+    end
+  end
+  
 end

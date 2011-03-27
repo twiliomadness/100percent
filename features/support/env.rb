@@ -1,4 +1,9 @@
-# RSpec mocks / stubs
+require 'spork'
+
+Spork.prefork do
+    ENV["RAILS_ENV"] ||= "test"
+    
+    # RSpec mocks / stubs
 require 'cucumber/rspec/doubles'
 
 ENV["RAILS_ENV"] ||= "test"
@@ -53,6 +58,12 @@ if defined?(ActiveRecord::Base)
   rescue LoadError => ignore_if_database_cleaner_not_present
   end
 end
+end
 
-
-
+Before do
+  @twilio_client = Twilio::RestAccount.new('id','password')
+  @twilio_response = mock('twilio_response', :code => "200", :body => "success", :error! => false)
+  @twilio_client.stub!(:request).and_return(@twilio_response)
+  Twilio::RestAccount.stub!(:new).and_return(@twilio_client)
+  TwilioHelper.stub!(:validateRequest).and_return(true)
+end

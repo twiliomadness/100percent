@@ -4,6 +4,8 @@ class Voter < ActiveRecord::Base
   has_many :outgoing_messages, :conditions => {:type => 'OutgoingMessage'} 
   belongs_to :polling_place
   belongs_to :county_clerk
+  
+  scope :most_recent_first, :order => "created_at DESC"
 
   def next_election_date
     # TODO: Implement election class which this will utilize
