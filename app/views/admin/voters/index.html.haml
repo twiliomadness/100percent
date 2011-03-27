@@ -29,7 +29,7 @@
             %td
               = link_to voter.phone_number, admin_voter_path(voter)
             %td
-              = voter.created_at
+              = voter.created_at.strftime("%A, %b %e at %I:%M %p")
             %td.last
               = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_voter_path(voter)
               |

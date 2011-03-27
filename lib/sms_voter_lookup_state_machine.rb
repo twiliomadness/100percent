@@ -48,7 +48,7 @@ module SmsVoterLookupStateMachine
 
       state :welcome do
         def process_message_by_status(message)
-          self.outgoing_messages.create(:text => "Welcome")
+          self.outgoing_messages.create(:text => self.first_welcome_message)
           self.next_prompt
         end
         def summary
@@ -107,7 +107,7 @@ module SmsVoterLookupStateMachine
         end
   
         def summary
-          "OK, #{self.full_name}"
+          "Great. To check if you're registered or can register, we need your date of birth. All info is kept confidential."
         end
   
         def prompt

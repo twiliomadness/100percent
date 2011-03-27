@@ -124,7 +124,7 @@ class SmsVoter < Voter
   
   def first_welcome_message
     # 126 Characters
-    "Welcome to VoteSimple.  We're going to help you vote in this election. This will take about 3 minutes and 5-10 text messages."
+    "Welcome to VoteSimple.  We're going to help you vote in this election. This will take about just a few seconds and 5-10 text messages."
   end
   
   def no_voter_record_found_but_voter_confirms_they_have_voted_message

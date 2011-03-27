@@ -16,7 +16,6 @@ gem 'mechanize', '1.0.0'
 gem 'nokogiri', '1.4.4'
 gem 'state_machine', '0.9.4'
 gem 'twiliolib', '2.0.7'
-gem 'web-app-theme'
 gem 'will_paginate'
 
 group :cucumber do
@@ -37,6 +36,9 @@ group :cucumber, :development, :test do
 end
 
 group :development do
+  gem 'web-app-theme'
+  gem 'ruby_parser'
+  gem 'hpricot'
 end
 
 group :test do
