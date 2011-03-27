@@ -14,9 +14,6 @@ class OutgoingMessage < TextMessage
 
     path = "/2010-04-01/Accounts/#{APP_CONFIG[:TWILIO_ACCOUNT_SID]}/SMS/Messages"
     twilio_response = twilio.request(path, 'POST', data)
-
-    logger.info("Sent #{data} to #{path} and got response code: #{twilio_response.code} and response body: #{twilio_response.body}")
-
     twilio_response.error! unless twilio_response.kind_of? Net::HTTPSuccess
   end
 

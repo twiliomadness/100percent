@@ -23,7 +23,10 @@ class Voter < ActiveRecord::Base
     if address_details_page
       polling_place = PollingPlace.get_polling_place(address_details_page)
       if polling_place.nil?
-        logger.error("Unable to find polling place for #{self.address_line_1} ...")
+        params = {:address_line_1 => self.address_line_1,
+          :city => self.city,
+          :zip => self.zip}
+        Exceptional.handle(Exception.new, "Unable to find polling place for params: #{params}")
         success = false
       else
         self.update_attribute(:polling_place_id, polling_place.id)
@@ -31,7 +34,10 @@ class Voter < ActiveRecord::Base
 
       county_clerk = CountyClerk.get_county_clerk(address_details_page)
       if county_clerk.nil?
-        logger.error("Unable to find county clerk for #{self.address_line_1} ...")
+        params = {:address_line_1 => self.address_line_1,
+          :city => self.city,
+          :zip => self.zip}
+        Exceptional.handle(Exception.new, "Unable to find county clerk for params: #{params}")
         success = false
       else
         self.update_attribute(:county_clerk_id, county_clerk.id)
