@@ -1,4 +1,5 @@
 class SmsMessagesController < ApplicationController
+
   def incoming
     signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
     if !TwilioHelper.validateRequest(signature, request.url, request.post? ? params : {})
@@ -10,16 +11,6 @@ class SmsMessagesController < ApplicationController
     sms_city = params[:FromCity]
     sms_state = params[:FromState]
     sms_zip = params[:FromZip]
-
-    # TODO: Take this out once we're live.
-    if incoming_text.strip.downcase == 'xxx'
-      user = User.find_by_phone_number(phone_number)
-      if user
-        user.sms_voter.incoming_messages.destroy_all
-        user.sms_voter.outgoing_messages.destroy_all
-        user.destroy
-      end
-    end
 
     @user = User.find_or_create_by_phone_number(phone_number)
     @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter(:phone_number => phone_number, :sms_city => sms_city, :sms_state => sms_state, :sms_zip => sms_zip) : @user.sms_voter
