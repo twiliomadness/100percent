@@ -71,3 +71,14 @@ body {
 .massive {
   font-size: 250%;
 }
+
+/* line 56, ../../../app/stylesheets/style.sass */
+.tweet_button {
+  text-align: right;
+}
+
+/* line 59, ../../../app/stylesheets/style.sass */
+.like_button {
+  position: relative;
+  top: -4px;
+}

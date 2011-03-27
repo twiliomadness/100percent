@@ -12,12 +12,16 @@
 =# link_to 'Sign in', new_user_session_path
 
 %br
-%br
 
-%br
+#quotes.span-24.clear.last
+  .span-12.tweet_button
+    %a.twitter-share-button{"data-count" => "horizontal", "data-text" => "Find out when, where, and how to vote in Wisconsin", "data-via" => "votesimpleorg", :href => "http://twitter.com/share"} Tweet
+    %script{:src => "http://platform.twitter.com/widgets.js", :type => "text/javascript"}
+  .span-12.last.like_button
+    %script{:src => "http://connect.facebook.net/en_US/all.js#xfbml=1"}
+    %fb:like{:font => "", :href => "www.votesimple.org", :layout => "button_count", :show_faces => "true", :width => "450"}
 
-#quotes.span-8.prepend-8.append.8.clear.last
-  %br
-  %p
-    = link_to 'About Vote Simple', about_path
+  .span-24.last.clear
+    %p
+      = link_to 'About Vote Simple', about_path
 
