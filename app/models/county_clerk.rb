@@ -12,7 +12,7 @@ class CountyClerk < ActiveRecord::Base
 
     address_info_html = Nokogiri.HTML(mechanize_page.content)
 
-    county_clerk_td_font_tag = address_info_html.xpath("//td/font[starts-with(text(), 'COUNTY CLERK')]")
+    county_clerk_td_font_tag = address_info_html.xpath("//td/font[contains(text(), 'COUNTY CLERK')]")
 
     clerk_link = county_clerk_td_font_tag.first.parent.parent.search("td/font/a").first
     url = clerk_link.get_attribute("href")
