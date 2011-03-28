@@ -111,7 +111,7 @@ module SmsVoterLookupStateMachine
         end
   
         def prompt
-          "What is your date of birth (mm/dd/yyyy)?"
+          "What is your date of birth (mm/dd/yy)?"
         end
       end
       
