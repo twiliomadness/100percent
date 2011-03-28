@@ -33,7 +33,6 @@ class SmsMessagesController < ApplicationController
         Exceptional.context(:environment => Rails.env)
         raise "Invalid request with signature '#{signature}' for url '#{request.url}' with params: #{params}"
       end
-
     end
 
 end
