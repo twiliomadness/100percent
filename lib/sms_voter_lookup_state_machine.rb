@@ -27,6 +27,7 @@ module SmsVoterLookupStateMachine
         
         # Couldn't find address, so loop back to the start
         transition :voter_address_not_found_in_gab => :pending_address_line_1
+        transition :voter_address_found => :happy_path_endpoint
       end
 
       event :branch_yes do
@@ -257,6 +258,7 @@ module SmsVoterLookupStateMachine
  
       state :voter_address_found do
         def process_message_by_status(message)
+          self.next_prompt
         end
         def summary
           [self.happy_path_message_one, self.happy_path_message_two, self.happy_path_message_three]
@@ -265,6 +267,18 @@ module SmsVoterLookupStateMachine
           
         end
       end
+ 
+      state :happy_path_endpoint do
+        def process_message_by_status(message)
+        end
+        def summary
+          ""
+        end
+        def prompt
+          ""
+        end
+      end
+      
   
       state :need_help do
         def summary
