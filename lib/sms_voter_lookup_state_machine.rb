@@ -69,7 +69,7 @@ module SmsVoterLookupStateMachine
           end
         end
         def summary
-          "At any point you can text 'Reset' to start over. Also, if you get totally stuck, just text 'Help' and we'll give you a call."
+          "At any point just text 'Reset' to start over. If you get totally stuck, text 'Help' and we'll contact you."
         end
         def prompt
           "Ok, What is your full first name?"
@@ -130,7 +130,7 @@ module SmsVoterLookupStateMachine
           transition_branch_yes_no(message, :yes => :process_yes)
         end
         def process_yes
-          self.outgoing_messages.create :text => "Let's try again"
+          self.outgoing_messages.create :text => self.no_voter_record_found_but_voter_confirms_they_have_voted_message
           self.branch_yes
         end
 

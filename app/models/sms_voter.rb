@@ -120,7 +120,7 @@ class SmsVoter < Voter
   
   def no_voter_record_found_but_voter_confirms_they_have_voted_message
     # 132 Characters
-    "Let's try again.  Make sure to use your full legal name as you would when voting.  Example: Gregory, not Greg.  Katherine, not Katy."
+    "Let's try again.  Make sure to use your full first name as you would when voting.  Example: Gregory, not Greg.  Katherine, not Katy."
   end
   
   def happy_path_message_one
