@@ -4,6 +4,7 @@ class Voter < ActiveRecord::Base
   has_many :outgoing_messages, :conditions => {:type => 'OutgoingMessage'} 
   belongs_to :polling_place
   belongs_to :county_clerk
+  has_many :text_messages
   
   scope :most_recent_first, :order => "created_at DESC"
 
@@ -15,8 +16,17 @@ class Voter < ActiveRecord::Base
   def is_registered?
     self.registration_status.present?  && self.registration_status.downcase == "active"
   end
+
+  def update_attributes_from_voter_record(voter_record)
+    self.address_line_1 = voter_record.address_line_1
+    self.address_line_2 = voter_record.address_line_2
+    self.city = voter_record.city
+    self.zip = voter_record.zip
+    self.registration_date = voter_record.registration_date
+    self.registration_status = voter_record.registration_status
+  end
   
-  def update_voter_address
+  def update_voter_polling_place_clerk
     address_details_page = VoterRecord.get_address_details_page(self.address_line_1, self.city, self.zip)
     
     success = true

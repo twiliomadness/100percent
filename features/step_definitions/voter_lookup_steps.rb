@@ -41,7 +41,7 @@ Given /^I have entered an address that is found for polling place "([^"]*)"$/ do
   @polling_place = PollingPlace.new(:location_name => "GroundZero", :address => "123 Main", :city => "Anywhere")
   PollingPlace.stub!(:get_polling_place).and_return(@polling_place)
   @sms_voter.stub!(:polling_place).and_return(@polling_place)
-  @sms_voter.stub!(:update_voter_address).and_return(true)
+  @sms_voter.stub!(:update_voter_polling_place_clerk).and_return(true)
   @sms_voter.stub!(:happy_path_message_one).and_return(polling_place_name)
   @sms_voter.stub!(:happy_path_message_three).and_return("Happy Path 3")
   Given "I enter my street address"

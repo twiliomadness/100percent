@@ -1,6 +1,8 @@
 class VoterRecord
 
-  attr_accessor :address_line_1, :address_line_2, :city, :zip, :state_voter_id, :registration_date, :registration_status, :has_voted
+  attr_accessor :address_line_1, :address_line_2, :city, :zip, 
+  :state_voter_id, :registration_date, :registration_status, 
+  :has_voted
   
   def initialize(attrs = {})
     self.address_line_1 = attrs[:address_line_1]

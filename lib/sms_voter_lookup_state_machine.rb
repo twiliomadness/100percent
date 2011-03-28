@@ -238,7 +238,7 @@ module SmsVoterLookupStateMachine
           transition_branch_yes_no(message, :yes => :process_yes, :no => :process_no)
         end
         def process_yes
-          self.update_voter_address
+          self.update_voter_polling_place_clerk
           self.branch_yes
         end
 
@@ -304,7 +304,7 @@ module SmsVoterLookupStateMachine
   end
 
   def lookup_address
-    if self.update_voter_address 
+    if self.update_voter_polling_place_clerk 
       self.branch_yes
     else
       self.outgoing_messages :text => "We couldn't find that address. Lets try again, or 'HELP' to have a volunteer contact you."
@@ -313,9 +313,9 @@ module SmsVoterLookupStateMachine
   end
 
   def lookup_in_gab_by_voter_info
-    voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
-    if voter
-      self.update_attributes_from_voter(voter)
+    voter_record = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
+    if voter_record
+      self.update_attributes_from_voter_record(voter_record)
       self.save
       self.branch_yes
     else
