@@ -6,6 +6,10 @@ class Voter < ActiveRecord::Base
   belongs_to :county_clerk
   has_many :text_messages
   
+  before_validation do
+   self.zip = self.zip[0..4] unless self.zip.nil?
+  end
+  
   scope :most_recent_first, :order => "created_at DESC"
 
   def next_election_date
@@ -28,11 +32,9 @@ class Voter < ActiveRecord::Base
   
   def update_voter_polling_place_clerk
     address_details_page = VoterRecord.get_address_details_page(self.address_line_1, self.city, self.zip)
-
     params = {:address_line_1 => self.address_line_1,
       :city => self.city,
       :zip => self.zip}
-    
     success = true
     if address_details_page
       polling_place = PollingPlace.get_polling_place(address_details_page)
