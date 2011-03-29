@@ -27,6 +27,46 @@ class VoterRecord
     # More than the provider deciding what the caller's gonna get
   end
   
+  def self.get_address_link(address_line_1, page_content)
+    
+    result_page = Nokogiri.HTML(page_content)
+    
+    # The links we're looking for have this pattern
+    path = "//a[starts-with(@href, 'AddressDetailsScreen')]"
+
+    links = result_page.xpath(path)
+    
+    if links.empty?
+      return nil
+    end
+    
+    if links.size == 1
+      return links.first
+    end
+    
+    # Grab the <td> with Odd as content
+    link_row_path = "//td[text() = '#{self.house_number_odd_even(address_line_1).capitalize!}']"
+    td = result_page.xpath(link_row_path)
+    # the link is within the parent (the <tr>) of the selected <td>  like this:  <table><tr><td>Odd</td><td><a href="AddressDetailsScreen..."
+    
+    if td.present?
+      link = td.first.parent.search("td/a").first
+    else
+      # Otherwise the pattern is like this:  <table><tr><td>Both</td><td><a href="AddressDetailsScreen...>N. Butler
+      # We match on either N. or S.
+      if links[0].text[0] == self.street_name(address_line_1)[0]
+        link = links[0]
+      end
+      
+      if links[1].text[0] == self.street_name(address_line_1)[0]
+        link = links[1]
+      end
+    end
+    
+    link
+    
+  end
+  
   def self.get_address_details_page(address_line_1, city, zip)
     # TODO: Rename this to find_polling_place.  yo.
     agent = Mechanize.new
@@ -41,24 +81,9 @@ class VoterRecord
     
     page = form.click_button
     
-    result_page = Nokogiri.HTML(page.content)
-    
-    path = "//a[starts-with(@href, 'AddressDetailsScreen')]"
-
-    links = result_page.xpath(path)
-    
-    # If street is on border of district, two rows returned - Odd side and Even side
-    if links.size > 1
-      # Grab the <td> with Odd as content
-      link_row_path = "//td[text() = '#{self.house_number_odd_even(address_line_1).capitalize!}']"
-      td = result_page.xpath(link_row_path)
-      # the link is within the parent (the <tr>) of the selected <td>  like this:  <table><tr><td>Odd</td><td><a href="AddressDetailsScreen..."
-      link = td.first.parent.search("td/a").first
-    else
-      link = links.first
-    end
-    
-    if links.empty?
+    link = self.get_address_link(address_line_1, page.content)
+      
+    if link.present?
       return nil
     end
     

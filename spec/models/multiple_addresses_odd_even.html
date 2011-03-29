@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML xmlns:st1>
+	<HEAD>
+		<title>Address Search</title>
+		<meta content="Microsoft Visual Studio .NET 7.1" name="GENERATOR">
+		<meta content="Visual Basic .NET 7.1" name="CODE_LANGUAGE">
+		<meta content="JavaScript" name="vs_defaultClientScript">
+		<meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
+		<script language="javascript">
+//Something weird is going on with the validation controls used on that page.  
+//The Clear button's click event (as well as the page load) does not fire occasionally. 
+//Tried out various options (autopostback, raisebubbleevent, autoeventwireup,  causesvalidation, getpostbackeventreference etc).  
+//Finally changed the implementation to use a client-side button.  This fixes the problem.
+	function Clear()
+	{
+		document.all.txtHouseNum.value ='';
+		document.all.txtStreetName.value ='';
+		document.all.txtCity.value ='';
+		document.all.txtZipcode.value ='';
+		if (document.all.tblAddressRanges)
+		{
+			document.all.tblAddressRanges.style.visibility ='hidden';
+		}
+		if (document.all.lblParseError)
+		{
+			document.all.lblParseError.style.visibility ='hidden';
+		}
+		if (document.all.LabelNoMatchesFound)
+		{
+			document.all.LabelNoMatchesFound.style.visibility ='hidden';
+		}
+	}
+		</script>
+
+	</HEAD>
+	<body MS_POSITIONING="GridLayout">
+		<form name="Form1" method="post" action="AddressSearchScreen.aspx?Language=en-us" language="javascript" onsubmit="javascript:return WebForm_OnSubmit();" id="Form1">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTY1MTk4NTEzNGRkLEGZv1aBozw/N8fHodZhn7vhha0=" />
+
+
+<script src="/WebResource.axd?d=H1DM-PP9W6BrcQUYojxD-15DfmLCn3N0YaxyHqlwoez4_Ry26SYKIup_Y2I0ll4Efevkva7KZGW8FjkOCak9cjpp_7w1&amp;t=634271306333550111" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+// -->
+</script>
+
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWBgLC0alGApOK2fwMAv23xrgGAtDfxO4EAtzms7gMAqWf8+4KDDLVt2PHgYi3iLpy/JdJOTxiizs=" />
+
+			<table width="800">
+				<tr>
+					<td colSpan="5">
+<table cellSpacing="0" cellPadding="0" width="800" border="0">
+	<tr bgColor="#004260" style="background-image: url('img/header.png')">
+		<td style="HEIGHT: 29px">
+            <img src="img/pixture_reloaded_logo.gif" style="width: 90px; height: 90px" /></td>
+		<td style="HEIGHT: 29px"><span id="Vpaheader2_Title" style="color:White;font-family:Arial;font-size:Large;font-weight:bold;font-style:normal;">State of Wisconsin Voter Public Access</span></td>
+		<td align="right">
+
+			<a id="Vpaheader2_HyperLinkHome" href="mainpage.aspx?Language=en-us" style="color:White;font-family:Arial;font-size:Larger;font-weight:bold;">Home</a></td>
+	</tr>
+	<tr bgColor="lightsteelblue">
+		<td align="left">&nbsp;</td>
+		<td colspan="2" align="left">
+			<div id="Vpaheader2_LinkPanel" style="text-align:center;">
+	&nbsp; 
+<a id="Vpaheader2_HyperLinkVoterSearchheader" href="VoterSearchScreen.aspx?Language=en-us" style="font-family:Arial;">Voter Search</a>
+
+                &nbsp; 
+<a id="Vpaheader2_HyperLinkAddressSearchheader" href="AddressSearchScreen.aspx?Language=en-us" style="font-family:Arial;">Address Search</a>&nbsp; 
+<a id="Vpaheader2_HyperLinkBallotSearchheader" href="ProvisionalBallotSearchScreen.aspx?Language=en-us" style="font-family:Arial;">Provisional Ballot Search</a>&nbsp;&nbsp;<a id="Vpaheader2_HyperLinkAbsenteeBallotSearchheader" href="VoterSearchScreen.aspx?Language=en-us" style="font-family:Arial;">Absentee Ballot Search</a>
+            
+</div>
+			</td>
+	</tr>
+</table>
+</td>
+				</tr>
+
+				<tr>
+					<td colSpan="2"><span id="LabelAddressSearch" style="font-family:Arial;font-weight:bold;">Address Search</span></td>
+					<td noWrap colSpan="3"><span id="LabelBallotStatus" style="font-family:Arial;">Looking for your Provisional Ballot Status?</span>&nbsp;&nbsp;
+						<a id="HyperLinkClickHere" href="ProvisionalBallotSearchScreen.aspx">Click Here</a></td>
+				</tr>
+				<tr>
+					<td colSpan="5">&nbsp;
+
+					</td>
+				</tr>
+				<tr>
+					<td bgColor="steelblue" colSpan="5"><span id="LabelSearchCriteria" style="color:White;background-color:SteelBlue;font-family:Arial;font-weight:bold;">Search Criteria</span></td>
+				</tr>
+				<tr>
+					<td><span id="LabelHouseNum" style="font-family:Arial;">House Num (*)</span></td>
+					<td><span id="LabelStreeName" style="font-family:Arial;">Street Name (*)</span></td>
+
+					<td><span id="LabelCity" style="font-family:Arial;">City (*)</span></td>
+					<td><span id="LabelZipcode" style="font-family:Arial;">Zip Code</span></td>
+					<td noWrap align="right"><span id="LabelRequired" style="color:Maroon;font-family:Arial;font-weight:bold;">(*) = Required</span></td>
+				</tr>
+				<tr>
+					<td style="HEIGHT: 26px"><input name="txtHouseNum" type="text" value="2915" id="txtHouseNum" style="font-family:Arial;" /></td>
+					<td style="HEIGHT: 26px"><input name="txtStreetName" type="text" value="stowell" id="txtStreetName" style="font-family:Arial;" /></td>
+
+					<td style="HEIGHT: 26px"><input name="txtCity" type="text" value="Milwaukee" id="txtCity" style="font-family:Arial;" /></td>
+					<TD style="HEIGHT: 26px"><input name="txtZipcode" type="text" value="53211" maxlength="5" id="txtZipcode" style="font-family:Arial;" /></TD>
+					<td style="HEIGHT: 26px"></td>
+				</tr>
+				<tr>
+					<td><span controltovalidate="txtHouseNum" errormessage="Required" display="Dynamic" id="rfHouseNum" evaluationfunction="RequiredFieldValidatorEvaluateIsValid" initialvalue="" style="color:Red;display:none;">Required</span>&nbsp;
+					</td>
+					<td><span controltovalidate="txtStreetName" errormessage="Required" id="rfStreetName" evaluationfunction="RequiredFieldValidatorEvaluateIsValid" initialvalue="" style="color:Red;visibility:hidden;">Required</span></td>
+
+					<td><span controltovalidate="txtCity" errormessage="Required" id="rfCity" evaluationfunction="RequiredFieldValidatorEvaluateIsValid" initialvalue="" style="color:Red;visibility:hidden;">Required</span></td>
+					<td colSpan="2"><span controltovalidate="txtZipcode" errormessage="Please enter number" display="Dynamic" id="cvZipcode" type="Integer" evaluationfunction="CompareValidatorEvaluateIsValid" operator="DataTypeCheck" style="color:Red;display:none;">Please enter number</span></td>
+				</tr>
+				<tr>
+					<td vAlign="baseline" colSpan="5">
+						<hr>
+						<span id="lblParseError" style="color:Red;background-color:Transparent;"></span></td>
+				</tr>
+
+				<tr>
+					<td colSpan="4"></td>
+					<td noWrap align="right"><input type="submit" name="btnSearch" value="Search" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;btnSearch&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" language="javascript" id="btnSearch" style="font-family:Arial;" />&nbsp;&nbsp;&nbsp; <input id="btnClear" style="FONT-FAMILY: Arial" onclick="Clear();" type="button" value="Clear"
+							name="btnClear">
+					</td>
+				</tr>
+				<tr>
+					<td colSpan="5">&nbsp;</td>
+				</tr>
+
+				<tr>
+					<td colSpan="5">
+						<table id="tblAddressRanges" width="100%">
+							
+									<tr bgcolor="WhiteSmoke">
+										<td width="15%">
+											<span id="rptAddressRanges__ctl0_LabelAddressRangeLow" style="color:SteelBlue;font-family:Arial;">Low</span></td>
+										<td width="15%">
+											<span id="rptAddressRanges__ctl0_LabelAddressRangeHigh" style="color:SteelBlue;font-family:Arial;">High</span></td>
+
+										<td width="10%">
+											<span id="rptAddressRanges__ctl0_LabelAdressRangeOddEven" style="color:SteelBlue;font-family:Arial;">Odd Even</span></td>
+										<td width="30%">
+											<span id="rptAddressRanges__ctl0_LabelAddressRangeStreet" style="color:SteelBlue;font-family:Arial;">Street</span></td>
+										<td width="20%">
+											<span id="rptAddressRanges__ctl0_LabelAddressRangeCity" style="color:SteelBlue;font-family:Arial;">City</span></td>
+										<td width="10%">
+
+											<span id="rptAddressRanges__ctl0_LabelAddressRangeZipcode" style="color:SteelBlue;font-family:Arial;">Zip</span></td>
+									</tr>
+								
+									<tr>
+										<td>2900</td>
+										<td>2998</td>
+										<td>Even</td>
+										<td><a href='AddressDetailsScreen.aspx?Language=en-us&AddressRangeID=24032439&DistrictComboID=100006468&JurisdictionID=1119'>N STOWELL AVE</a></td>
+
+										<td>MILWAUKEE</td>
+										<td>53211</td>
+									</tr>
+								
+									<tr>
+										<td>2901</td>
+										<td>2999</td>
+										<td>Odd</td>
+
+										<td><a href='AddressDetailsScreen.aspx?Language=en-us&AddressRangeID=24032440&DistrictComboID=100006468&JurisdictionID=1119'>N STOWELL AVE</a></td>
+										<td>MILWAUKEE</td>
+										<td>53211</td>
+									</tr>
+								</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td style="HEIGHT: 31px" bgColor="steelblue" colSpan="5"><span id="LabelEmpty" style="color:White;background-color:SteelBlue;"></span></td>
+				</tr>
+				<TR>
+					<TD colSpan="5" bgColor="#cccccc" style="HEIGHT: 107px">
+						<span id="AESMLabel1" style="color:Maroon;border-color:Transparent;border-width:1px;border-style:solid;font-family:Arial;height:88px;width:796px;">Searching by address requires a valid residential address. This is the address that determines the contests, candidates and referenda for which you may vote. Mailing addresses, including all PO Box addresses, will not return any results. If you do not find the record you are searching for, try variations of the street name. This may be necessary if you live on a county highway (e.g. Cty Hwy X, CTH X) or state road (e.g. State Rd 1, SR 1). </span></TD>
+				</TR>
+				<TR>
+
+					<TD colSpan="5"></TD>
+				</TR>
+				<tr>
+					<td colSpan="5"><span id="LabelChooseAddressRange" style="color:Maroon;font-family:Arial;font-weight:bold;width:100%;">Choose an address range by clicking on the street name</span></td>
+				</tr>
+				<TR>
+					<TD align="center" colSpan="5">
+						<TABLE id="Table1" style="WIDTH: 356px; HEIGHT: 105px" cellSpacing="0" cellPadding="0"
+							width="356" border="0">
+
+							<TR>
+								<TD align="center"><SPAN style="FONT-SIZE: 8pt; FONT-FAMILY: Arial; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">
+                                    <A href ="http://gab.wi.gov/" style="color: #000000">Elections 
+										Division - Wisconsin Government Accountability Board</A></SPAN></TD>
+							</TR>
+							<TR>
+								<TD align="center"><SPAN style="FONT-SIZE: 8pt; FONT-FAMILY: Arial; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">212 
+										East Washington Avenue, Third Floor</SPAN></TD>
+							</TR>
+							<TR>
+
+								<TD style="HEIGHT: 16px" align="center"><SPAN style="FONT-SIZE: 8pt; FONT-FAMILY: Arial; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">P.O.Box 
+										7984</SPAN></TD>
+							</TR>
+							<TR>
+								<TD align="center">
+									
+										<SPAN style="FONT-SIZE: 8pt; FONT-FAMILY: Arial; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">
+											Madison, Wisconsin 53707-7984</SPAN>
+										
+										</TD>
+							</TR>
+
+							<TR>
+								<TD align="center"><SPAN style="FONT-SIZE: 8pt; FONT-FAMILY: Arial; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">Phone: 
+										608-266-8005 Fax: 608-267-0500</SPAN></TD>
+							</TR>
+							<TR>
+								<TD align="center"><SPAN style="FONT-SIZE: 8pt; FONT-FAMILY: Arial; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA"><A href="mailto:gab@wi.gov">gab@wi.gov</A></SPAN></TD>
+							</TR>
+						</TABLE>
+					</TD>
+
+				</TR>
+			</table>
+		
+<script type="text/javascript">
+<!--
+var Page_Validators =  new Array(document.getElementById("rfHouseNum"), document.getElementById("rfStreetName"), document.getElementById("rfCity"), document.getElementById("cvZipcode"));
+// -->
+</script>
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<script src="/WebResource.axd?d=yvnIG_60pSc1sT_CA51Smqhh85G4Mbt3refaKoxQFZFgyIn7rLwloF7Y5gpTrWh2pzrQylLIByVYRTT3Zgm9LbnHy7k1&amp;t=634271306333550111" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+<!--
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        // -->
+
+</script>
+</form>
+	</body>
+</HTML>
