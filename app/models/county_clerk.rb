@@ -1,7 +1,6 @@
 class CountyClerk < ActiveRecord::Base
   has_many :voters
 
-  validates_presence_of :location_name
   validates_presence_of :county
   validates_presence_of :city
 
