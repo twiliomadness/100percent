@@ -65,8 +65,7 @@ class SmsVoter < Voter
 
     return self.last_summary.kind_of?(Array) ? self.last_summary : "#{self.last_summary.strip}\n\n#{self.last_prompt}"
   end
-
-
+  
   def assure_single_sms_voter
     unless user.sms_voter.nil?
       user.sms_voter.update_attribute(:type => nil)

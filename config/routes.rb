@@ -8,7 +8,9 @@ Gotv::Application.routes.draw do
   namespace :admin do
     resources :county_clerks
     resources :users
-    resources :voters
+    resources :voters do
+      post 'send_text_message'
+    end
   end
   resources :voters
   

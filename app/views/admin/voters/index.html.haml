@@ -16,6 +16,8 @@
           %th
             Number
           %th
+            Name
+          %th
             = t("web-app-theme.created_at", :default => "Created at")
           %th.last &nbsp;
         - voters.each do |voter|
@@ -28,6 +30,8 @@
               = link_to "listen", voter.voice_recording_url, :target => "blank" if voter.voice_recording_url.present?
             %td
               = link_to voter.phone_number, admin_voter_path(voter)
+            %td
+              = link_to voter.first_name, admin_voter_path(voter)
             %td
               = voter.created_at.strftime("%A, %b %e at %I:%M %p")
             %td.last

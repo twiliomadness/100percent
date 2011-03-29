@@ -12,6 +12,11 @@ class Voter < ActiveRecord::Base
   
   scope :most_recent_first, :order => "created_at DESC"
 
+  def send_text_message_from_admin(message_text)
+    # In the future, we should keep track which volunteer sent this
+    self.outgoing_messages.create(:text => message_text)
+  end
+  
   def next_election_date
     # TODO: Implement election class which this will utilize
     "April 5th"
