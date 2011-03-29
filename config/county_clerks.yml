@@ -1,0 +1,576 @@
+Adams:
+  location_name: 
+  address: 400 N MAIN ST
+  city: FRIENDSHIP
+  zip: 53934
+  phone_number: (608) 339-4200
+  email_address: cphillippi@co.adams.wi.us
+
+Ashland:
+  location_name: 
+  address: COURTHOUSE W MAIN ST RM 202
+  city: ASHLAND
+  zip: 54806
+  phone_number: (715) 682-7001
+  email_address: pat.somppi@co.ashland.wi.us
+
+Barron:
+  location_name: 
+  address: 330 E LASALLE AVE RM 2130
+  city: BARRON
+  zip: 54812
+  phone_number: (715) 537-6200
+  email_address: deeann.cook@co.barron.wi.us
+
+Bayfield:
+  location_name: 
+  address: PO BOX 878
+  city: WASHBURN
+  zip: 54891
+  phone_number: (715) 373-6100
+  email_address: sfibert@bayfieldcounty.org
+
+Brown:
+  location_name: 
+  address: NORTH BUILDING 305 E WALNUT ST
+  city: GREEN BAY
+  zip: 54305
+  phone_number: (920) 448-4021
+  email_address: marcelle_dk@co.brown.wi.us
+
+Buffalo:
+  location_name: 
+  address: 407 S 2ND ST
+  city: ALMA
+  zip: 54610
+  phone_number: (608) 685-6209
+  email_address: roxann.halverson@buffalocounty.com
+
+Burnett:
+  location_name: 
+  address: 7410 CTY RD K # 105
+  city: Siren
+  zip: 54872
+  phone_number: (715) 349-2173
+  email_address: whinrichs@burnettcounty.org
+
+Calumet:
+  location_name: 
+  address: 206 COURT ST
+  city: CHILTON
+  zip: 53014
+  phone_number: (920) 849-1458
+  email_address: hauser.beth@co.calumet.wi.us
+
+Chippewa:
+  location_name: 
+  address: COURTHOUSE 711 N BRIDGE ST
+  city: CHIPPEWA FALLS
+  zip: 54729
+  phone_number: (715) 726-7985
+  email_address: kbernier@co.chippewa.wi.us
+
+Clark:
+  location_name: 
+  address: 517 COURT ST RM 301
+  city: NEILLSVILLE
+  zip: 54456
+  phone_number: (715) 743-5150
+  email_address: christina.jensen@co.clark.wi.us
+
+Columbia:
+  location_name: 
+  address: 400 DEWITT STREET
+  city: PORTAGE
+  zip: 53901
+  phone_number: (608) 742-9654
+  email_address: sue.moll@co.columbia.wi.us
+
+Crawford:
+  location_name: 
+  address: 225 N BEAUMONT RD STE 210
+  city: PRAIRIE DU CHIEN
+  zip: 53821
+  phone_number: 608-326-0200
+  email_address: jgeisler@crawfordcountywi.org
+
+Dane:
+  location_name: 
+  address: 210 MARTIN LUTHER KING JR BLVD
+  city: MADISON
+  zip: 53703
+  phone_number: (608) 266-4122
+  email_address: peters@co.dane.wi.us
+
+Dodge:
+  location_name: 
+  address: 127 E OAK ST ADMINISTRATION BLDG
+  city: JUNEAU
+  zip: 53039
+  phone_number: (920) 386-3602
+  email_address: jheller@co.dodge.wi.us
+
+Door:
+  location_name: 
+  address: 421 NEBRASKA ST
+  city: STURGEON BAY
+  zip: 54235
+  phone_number: (920) 746-2200
+  email_address: jlau@co.door.wi.us
+
+Douglas:
+  location_name: 
+  address: 1313 BELKNAP ST RM 101
+  city: SUPERIOR
+  zip: 54880
+  phone_number: (715) 395-1568
+  email_address: sue.sandvick@douglascountywi.org
+
+Dunn:
+  location_name: 
+  address: 800 WILSON AVENUE
+  city: MENOMONIE
+  zip: 54751
+  phone_number: (715) 232-1677
+  email_address: mhoyt@co.dunn.wi.us
+
+Eau Claire:
+  location_name: 
+  address: 721 OXFORD AVE
+  city: EAU CLAIRE
+  zip: 54703
+  phone_number: (715) 839-4803
+  email_address: janet.loomis@co.eau-claire.wi.us
+
+Florence:
+  location_name: 
+  address: COURTHOUSE 501 LAKE ST
+  city: FLORENCE
+  zip: 54121
+  phone_number: (715) 528-3201
+  email_address: jmeyer@co.florence.wi.us
+
+Fond Du Lac:
+  location_name: 
+  address: 160 S. Macy Street - 1st Floor
+  city: FOND DU LAC
+  zip: 54936
+  phone_number: (920) 929-3008
+  email_address: lisa.freiberg@fdlco.wi.gov
+
+Forest:
+  location_name: 
+  address: 200 E MADISON STREET
+  city: CRANDON
+  zip: 54520
+  phone_number: (715) 478-2422
+  email_address: amihalko@co.forest.wi.us
+
+Grant:
+  location_name: 
+  address: 111 S JEFFERSON ST P.O. BOX 529
+  city: LANCASTER
+  zip: 53813
+  phone_number: (608) 723-2675
+  email_address: lgebhard@co.grant.wi.gov
+
+Green:
+  location_name: 
+  address: COURTHOUSE SQ 1016 16TH AVE
+  city: MONROE
+  zip: 53566
+  phone_number: (608) 328-9430
+  email_address: mdoyle@greencountywi.org
+
+Green Lake:
+  location_name: 
+  address: 492 HILL ST
+  city: GREEN LAKE
+  zip: 54941
+  phone_number: (920) 294-4007
+  email_address: lotto@co.green-lake.wi.us
+
+Iowa:
+  location_name: 
+  address: COUNTY CLERK 222 N IOWA STREET
+  city: DODGEVILLE
+  zip: 53533
+  phone_number: (608) 935-0399
+  email_address: greg.klusendorf@iowacounty.org
+
+Iron:
+  location_name: 
+  address: 300 TACONITE STREET SUITE 101
+  city: HURLEY
+  zip: 54534
+  phone_number: (715) 561-3375
+  email_address: clerk@ironcountywi.org
+
+Jackson:
+  location_name: 
+  address: COURTHOUSE 307 MAIN STREET
+  city: Black River Falls
+  zip: 54615
+  phone_number: (715) 284-0268
+  email_address: kyle.deno@co.jackson.wi.us
+
+Jefferson:
+  location_name: 
+  address: COURTHOUSE 320 S MAIN STREET ROOM 109
+  city: JEFFERSON
+  zip: 53549
+  phone_number: (920) 674-7144
+  email_address: barbf@jeffersoncountywi.gov
+
+Juneau:
+  location_name: 
+  address: 220 E STATE ST ROOM 112
+  city: MAUSTON
+  zip: 53948
+  phone_number: (608) 847-9302
+  email_address: kkobylsk@co.juneau.wi.us
+
+Kenosha:
+  location_name: 
+  address: 1010 56TH STREET
+  city: KENOSHA
+  zip: 53140
+  phone_number: (262) 653-2552
+  email_address: mkrebs@co.kenosha.wi.us
+
+Kewaunee:
+  location_name: 
+  address: 810 LINCOLN STREET
+  city: KEWAUNEE
+  zip: 54216
+  phone_number: (920) 388-7133
+  email_address: teskel@kewauneeco.org
+
+La Crosse:
+  location_name: 
+  address: 400 N 4TH STREET ROOM 1210
+  city: LA CROSSE
+  zip: 54601
+  phone_number: (608) 785-9622
+  email_address: dankmeyer.ginny@co.la-crosse.wi.us
+
+Lafayette:
+  location_name: 
+  address: 626 MAIN ST
+  city: DARLINGTON
+  zip: 53530
+  phone_number: (608) 776-4850
+  email_address: lbawden@lafayettecountywi.org
+
+Langlade:
+  location_name: 
+  address: 800 CLERMONT ST ROOM 202
+  city: ANTIGO
+  zip: 54409
+  phone_number: (715) 627-6200
+  email_address: kjacob@co.langlade.wi.us
+
+Lincoln:
+  location_name: 
+  address: 801 N SALES ST SUITE 201
+  city: MERRILL
+  zip: 54452
+  phone_number: (715) 539-1019
+  email_address: spudelko@co.lincoln.wi.us
+
+Manitowoc:
+  location_name: 
+  address: 1010 S 8TH ST
+  city: MANITOWOC
+  zip: 54220
+  phone_number: (920) 683-4004
+  email_address: jamieaulik@co.manitowoc.wi.us
+
+Marathon:
+  location_name: 
+  address: 500 FOREST STREET COURTHOUSE
+  city: WAUSAU
+  zip: 54403
+  phone_number: (715) 261-1500
+  email_address: nan.kottke@co.marathon.wi.us
+
+Marinette:
+  location_name: 
+  address: 1926 HALL AVE
+  city: MARINETTE
+  zip: 54143
+  phone_number: (715) 732-7406
+  email_address: mcclerk@marinettecounty.com
+
+Marquette:
+  location_name: 
+  address: 77 W PARK ST
+  city: MONTELLO
+  zip: 53949
+  phone_number: (608) 297-3016
+  email_address: dseddon@co.marquette.wi.us
+
+Menominee:
+  location_name: 
+  address: W3269 COURTHOUSE LANE
+  city: KESHENA
+  zip: 54135
+  phone_number: (715) 799-3311
+  email_address: ruthwa@co.menominee.wi.us
+
+Milwaukee:
+  location_name: 
+  address: 901 N 9TH STREET ROOM G-3
+  city: MILWAUKEE
+  zip: 53233
+  phone_number: (414) 278-4061
+  email_address: lweiner@milwcnty.com
+
+Monroe:
+  location_name: 
+  address: 202 SOUTH K ST ROOM 1
+  city: SPARTA
+  zip: 54656
+  phone_number: (608) 269-8705
+  email_address: mcclerk@co.monroe.wi.us
+
+Oconto:
+  location_name: 
+  address: 301 WASHINGTON ST
+  city: OCONTO
+  zip: 54153
+  phone_number: (920) 834-6806
+  email_address: kim.pytleski@co.oconto.wi.us
+
+Oneida:
+  location_name: 
+  address: 1 S ONEIDA AVE
+  city: RHINELANDER
+  zip: 54501
+  phone_number: (715) 369-6143
+  email_address: mbartelt@co.oneida.wi.us
+
+Outagamie:
+  location_name: 
+  address: 410 S WALNUT ST
+  city: APPLETON
+  zip: 54911
+  phone_number: (920) 832-5077
+  email_address: christnc@co.outagamie.wi.us
+
+Ozaukee:
+  location_name: 
+  address: 121 W MAIN ST
+  city: PORT WASHINGTON
+  zip: 53074
+  phone_number: (262) 284-8110
+  email_address: lhenning@co.ozaukee.wi.us
+
+Pepin:
+  location_name: 
+  address: 740 7TH AVE W
+  city: DURAND
+  zip: 54736
+  phone_number: (715) 672-8857
+  email_address: countyclerk@co.pepin.wi.us
+
+Pierce:
+  location_name: 
+  address: 414 W MAIN STREET
+  city: ELLSWORTH
+  zip: 54011
+  phone_number: (715) 273-3531
+  email_address: jamie.feuerhelm@co.pierce.wi.us
+
+Polk:
+  location_name: 
+  address: 100 POLK COUNTY PLZ STE 110
+  city: BALSAM LAKE
+  zip: 54810
+  phone_number: (715) 485-9226
+  email_address: stephanie.fansler@co.polk.wi.us
+
+Portage:
+  location_name: 
+  address: 1516 CHURCH ST
+  city: STEVENS POINT
+  zip: 54481
+  phone_number: (715) 346-1351
+  email_address: simoniss@co.portage.wi.us
+
+Price:
+  location_name: 
+  address: 126 CHERRY ST ROOM 106
+  city: PHILLIPS
+  zip: 54555
+  phone_number: (715) 339-3325
+  email_address: jean.gottwald@co.price.wi.us
+
+Racine:
+  location_name: 
+  address: 730 WISCONSIN AVE
+  city: RACINE
+  zip: 53403
+  phone_number: (262) 636-3482
+  email_address: wendy.christensen@goracine.org
+
+Richland:
+  location_name: 
+  address: COURTHOUSE 181 WEST SEMINARY ST
+  city: RICHLAND CENTER
+  zip: 53581
+  phone_number: (608) 647-2197
+  email_address: vlasakv@co.richland.wi.us
+
+Rock:
+  location_name: 
+  address: 51 S MAIN STREET
+  city: JANESVILLE
+  zip: 53545
+  phone_number: (608) 757-5660
+  email_address: stottler@co.rock.wi.us
+
+Rusk:
+  location_name: 
+  address: 311 Miner Ave E # C150 COURTHOUSE
+  city: LADYSMITH
+  zip: 54848
+  phone_number: (715) 532-2100
+  email_address: dwetzel@ruskcountywi.us
+
+Sauk:
+  location_name: 
+  address: 505 BROADWAY RM 144
+  city: BARABOO
+  zip: 53913
+  phone_number: (608) 355-3531
+  email_address: bmielke@co.sauk.wi.us
+
+Sawyer:
+  location_name: 
+  address: 10610 MAIN ST
+  city: HAYWARD
+  zip: 54843
+  phone_number: (715) 634-4866
+  email_address: county.clerk@sawyercountygov.org
+
+Shawano:
+  location_name: 
+  address: Courthouse Room 104 311 N. Main St.
+  city: SHAWANO
+  zip: 54166
+  phone_number: (715) 526-9150
+  email_address: rosemary.bohm@co.shawano.wi.us
+
+Sheboygan:
+  location_name: 
+  address: 508 NEW YORK AVE
+  city: SHEBOYGAN
+  zip: 53081
+  phone_number: (920) 459-3002
+  email_address: glancjmg@co.sheboygan.wi.us
+
+St. Croix:
+  location_name: 
+  address: ST. CROIX COUNTY GOVT CENTER 1101 CARMICHAEL RD
+  city: HUDSON
+  zip: 54016
+  phone_number: (715) 386-4607
+  email_address: cindyc@co.saint-croix.wi.us
+
+Taylor:
+  location_name: 
+  address: 224 S 2ND ST
+  city: MEDFORD
+  zip: 54451
+  phone_number: 715-748-1460
+  email_address: bruce.strama@co.taylor.wi.us
+
+Trempealeau:
+  location_name: 
+  address: 36245 MAIN ST
+  city: WHITEHALL
+  zip: 54773
+  phone_number: (715) 538-2311
+  email_address: tcclerk@tremplocounty.com
+
+Vernon:
+  location_name: 
+  address: COURTHOUSE ANX RM 108
+  city: VIROQUA
+  zip: 54665
+  phone_number: (608) 637-5380
+  email_address: rhoff@vernoncounty.org
+
+Vilas:
+  location_name: 
+  address: 330 COURT STREET
+  city: EAGLE RIVER
+  zip: 54521
+  phone_number: (715) 479-3600
+  email_address: daalle@co.vilas.wi.us
+
+Walworth:
+  location_name: 
+  address: COURTHOUSE SQUARE 100 W WALWORTH ST
+  city: ELKHORN
+  zip: 53121
+  phone_number: (262) 741-4241
+  email_address: kbushey@co.walworth.wi.us
+
+Washburn:
+  location_name: 
+  address: 10 FOURTH AVE
+  city: SHELL LAKE
+  zip: 54871
+  phone_number: (715) 468-4600
+  email_address: lhoeppne@co.washburn.wi.us
+
+Washington:
+  location_name: 
+  address: 432 E WASHINGTON ST
+  city: WEST BEND
+  zip: 53095
+  phone_number: (262) 335-4305
+  email_address: brenda.jaszewski@co.washington.wi.us
+
+Waukesha:
+  location_name: 
+  address: 515 W MORELAND BLVD # 120
+  city: WAUKESHA
+  zip: 53188
+  phone_number: (262) 548-7010
+  email_address: knickolaus@waukeshacounty.gov
+
+Waupaca:
+  location_name: 
+  address: 811 HARDING STREET
+  city: WAUPACA
+  zip: 54981
+  phone_number: (715) 258-6200
+  email_address: mary.robbins@co.waupaca.wi.us
+
+Waushara:
+  location_name: 
+  address: 209 S ST. MARIE STREET
+  city: WAUTOMA
+  zip: 54982
+  phone_number: (920) 787-0442
+  email_address: melanies@co.waushara.wi.us
+
+Winnebago:
+  location_name: 
+  address: 415 JACKSON ST
+  city: OSHKOSH
+  zip: 54901
+  phone_number: (920) 236-4888
+  email_address: sertmer@co.winnebago.wi.us
+
+Wood:
+  location_name: 
+  address: 400 MARKET ST
+  city: WISCONSIN RAPIDS
+  zip: 54495
+  phone_number: (715) 421-8460
+  email_address: ccepress@co.wood.wi.us
+
