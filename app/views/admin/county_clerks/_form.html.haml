@@ -1,0 +1,34 @@
+.group
+  = f.label :location_name, t("activerecord.attributes.county_clerk.location_name", :default => "Location name"), :class => :label
+  = f.text_field :location_name, :class => 'text_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :address, t("activerecord.attributes.county_clerk.address", :default => "Address"), :class => :label
+  = f.text_field :address, :class => 'text_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :city, t("activerecord.attributes.county_clerk.city", :default => "City"), :class => :label
+  = f.text_field :city, :class => 'text_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :zip, t("activerecord.attributes.county_clerk.zip", :default => "Zip"), :class => :label
+  = f.text_field :zip, :class => 'text_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :county, t("activerecord.attributes.county_clerk.county", :default => "County"), :class => :label
+  = f.text_field :county, :class => 'text_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :phone_number, t("activerecord.attributes.county_clerk.phone_number", :default => "Phone number"), :class => :label
+  = f.text_field :phone_number, :class => 'text_field'
+  %span.description Ex: a simple text
+.group
+  = f.label :email_address, t("activerecord.attributes.county_clerk.email_address", :default => "Email address"), :class => :label
+  = f.text_field :email_address, :class => 'text_field'
+  %span.description Ex: a simple text
+.group.navform.wat-cf
+  %button.button{:type => "submit"}
+    = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+    = t("web-app-theme.save", :default => "Save")
+  %span.text_button_padding= t("web-app-theme.or", :default => "or")
+  = link_to t("web-app-theme.cancel", :default => "Cancel"), admin_county_clerks_path, :class => "text_button_padding link_button"

@@ -19,6 +19,8 @@
             %a{:href => admin_users_path} Users
           %li{:class => controller.controller_path == 'admin/voters' ? 'first active' : 'first' }
             %a{:href => admin_voters_path} Voters
+          %li{:class => controller.controller_path == 'admin/county_clerks' ? 'first active' : 'first' }
+            %a{:href => admin_county_clerks_path} County Clerks
     #wrapper.wat-cf
       .flash
         - flash.each do |type, message|

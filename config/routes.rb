@@ -6,6 +6,7 @@ Gotv::Application.routes.draw do
   get "admin" => "admin#index", :as => :admin
 
   namespace :admin do
+    resources :county_clerks
     resources :users
     resources :voters
   end

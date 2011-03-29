@@ -3,18 +3,11 @@
 namespace :data do
   desc "Fix CountyClerk records"
   task :fix_county_clerk => :environment do
-    # http://www.countyofdane.com/clerk/
-    county_clerk = CountyClerk.find_by_county('Dane')
-    if county_clerk
-      puts "Found CountyClerk record for #{county_clerk.county}"
-      if county_clerk.phone_number != '(608) 266-4121'
-        puts "Fixing phone number..."
-        county_clerk.update_attribute(:phone_number, '(608) 266-4121')
-      end
-      if county_clerk.email_address != 'county.clerk@co.dane.wi.us'
-        puts "Fixing email address..."
-        county_clerk.update_attribute(:email_address, 'county.clerk@co.dane.wi.us')
-      end
+    counties = YAML.load_file("#{Rails.root}/config/county_clerks.yml")
+    counties.each do |county_name, county_data|
+      puts "Saving #{county_name}"
+      county_clerk = CountyClerk.find_or_create_by_county(county_name)
+      county_clerk.update_attributes(county_data)
     end
   end
 end
