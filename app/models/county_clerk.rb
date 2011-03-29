@@ -3,6 +3,8 @@ class CountyClerk < ActiveRecord::Base
 
   validates_presence_of :county
   validates_presence_of :city
+  
+  scope :alphabetical_order, :order => "county"
 
   # TODO: have VoterRecord get the HTML for the voter, then PolingPlace and CountyClerk can go from there?
 
