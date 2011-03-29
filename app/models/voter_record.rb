@@ -83,7 +83,7 @@ class VoterRecord
     
     link = self.get_address_link(address_line_1, page.content)
       
-    if link.present?
+    if link.nil?
       return nil
     end
     
