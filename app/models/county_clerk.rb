@@ -52,7 +52,7 @@ class CountyClerk < ActiveRecord::Base
 
   def sms_description
     # Update this if we end up splitting location_name and address
-    "#{self.location_name}, #{self.city}".titleize
+    "#{self.address}, #{self.city}".titleize
   end
 
 end

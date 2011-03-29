@@ -73,7 +73,7 @@ Feature: Manage voter_lookups
   Scenario: Registered voter confirms info
     Given I am a registered voter
     Given I have submitted my name and birthday
-    Then I should be shown "You are currently registered at:\n\n123 Main St.\nMadison 53703"
+    Then I should be shown "You are currently registered at:\n\n123 Main St., Madison"
 
   Scenario: Address lookup failed
     Given I am a registered voter

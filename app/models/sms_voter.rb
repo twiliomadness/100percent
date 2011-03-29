@@ -159,8 +159,7 @@ class SmsVoter < Voter
         <<-eof
 You are currently registered at:
 
-#{address.titleize}
-#{self.city.titleize} #{self.zip}
+#{address.titleize}, #{self.city.titleize}
         eof
     end
 
