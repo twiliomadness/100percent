@@ -18,6 +18,7 @@ gem 'state_machine', '0.9.4'
 gem 'twiliolib', '2.0.7'
 gem 'web-app-theme'
 gem 'will_paginate'
+gem 'facebooker2'
 
 group :cucumber do
   gem 'capybara', '0.4.1.2'

@@ -22,7 +22,7 @@ class SmsMessagesController < ApplicationController
     end
 
     outgoing_text.each do |message|
-      m =  @sms_voter.outgoing_messages.create(:text => message)
+      @sms_voter.outgoing_messages.create(:text => message)
     end
 
     head 200
