@@ -2,15 +2,21 @@ require 'spec_helper'
 
 describe CountyClerk do
   describe "#self.get_clerk" do
-    it "should blah blah" do
-      filename = File.join(File.dirname(__FILE__), "clerk_information.html")
+    it "should find UPPERCASE county" do
+      filename = File.join(File.dirname(__FILE__), "address_information.html")
       content = File.new(filename).read()
-      result = CountyClerk.create_from_html(Nokogiri.HTML(content), "Dane")
-      expected = CountyClerk.new(:location_name => 'CITY-COUNTY BLDG RM 106A  210 MARTIN LUTHER KING JR BLVD', :city => 'MADISON', :zip => '53703')
+      result = CountyClerk.get_county_name_from_html(content)
+      expected = "Dane"
       
-      result.location_name.should == expected.location_name
-      result.city.should == expected.city
-      result.zip.should == expected.zip
+      result.should == expected
+    end
+    it "should find Title Case county" do
+      filename = File.join(File.dirname(__FILE__), "address_information_2.html")
+      content = File.new(filename).read()
+      result = CountyClerk.get_county_name_from_html(content)
+      expected = "Outagamie"
+      
+      result.should == expected
     end
   end
 end
