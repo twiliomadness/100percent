@@ -1,0 +1,8 @@
+global: &global
+  app_id: 204633089565502
+  secret: 3461a8da94bec462bfdb7f59362ac01a
+  api_key: eaec73f799ef8b0f89e1449362439d9c
+development:
+  <<: *global
+production:
+  <<: *global
