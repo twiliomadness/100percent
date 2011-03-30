@@ -28,7 +28,7 @@
               = voter.type
             %td
               = link_to "listen", voter.voice_recording_url, :target => "blank" if voter.voice_recording_url.present?
-            %td
+            %td{:class => voter.help_status == "pending_help_exit" ? "needs_help" : ""}
               = link_to voter.phone_number, admin_voter_path(voter)
             %td
               = link_to voter.first_name, admin_voter_path(voter)

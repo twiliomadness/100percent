@@ -11,6 +11,7 @@ class Voter < ActiveRecord::Base
   end
   
   scope :most_recent_first, :order => "created_at DESC"
+  scope :need_help, :conditions => "help_status = 'pending_help_exit'"
 
   def send_text_message_from_admin(message_text)
     # In the future, we should keep track which volunteer sent this

@@ -3,3 +3,5 @@
 #main-navigation ul li.first {
   margin-left: 0;
 }
+
+td.needs_help {background-color: red;}
