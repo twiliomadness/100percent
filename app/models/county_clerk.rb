@@ -19,18 +19,10 @@ class CountyClerk < ActiveRecord::Base
       #xpath 1.0 does not have upper case.  Gotta find a better way
       county_clerk_td_font_tag = address_info_html.xpath("//td/font[contains(text(), 'County Clerk')]")
     end
-
-    clerk_link = county_clerk_td_font_tag.first.parent.parent.search("td/font/a").first
-    url = clerk_link.get_attribute("href")
+    
     county_name = county_clerk_td_font_tag.first.parent.parent.search("td/font")[2].inner_text.gsub(" County", "")
-    next_page = mechanize_page.link_with(:href => url).click
-    county_clerk_html = Nokogiri.HTML(next_page.content)
-
-    county_clerk = CountyClerk.find_by_county(county_name)
-    if county_clerk.blank?
-      county_clerk = self.create_from_html(county_clerk_html, county_name)
-    end
-    county_clerk
+    
+    CountyClerk.find_by_county(county_name)
   end
 
   def self.create_from_html(page_html, county)
