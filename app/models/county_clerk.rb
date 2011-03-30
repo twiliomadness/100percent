@@ -15,18 +15,9 @@ class CountyClerk < ActiveRecord::Base
   end
 
   def self.get_county_name_from_html(page_html)
-    
-    address_info_html = Nokogiri.HTML(page_html)
-
-    county_clerk_td_font_tag = address_info_html.xpath("//td[contains(text(), 'COUNTY CLERK')]")
-    
-    if county_clerk_td_font_tag.first.nil?
-      #xpath 1.0 does not have upper case.  Gotta find a better way
-      county_clerk_td_font_tag = address_info_html.xpath("//td[contains(text(), 'County Clerk')]")
-    end
-    
-    county_name = county_clerk_td_font_tag.first.parent.search("td")[2].inner_text.gsub(" County", "")
-
+    pattern = /[\>\-]\s*([a-z ]+[a-z]) County/i
+    match = pattern.match(page_html)
+    match[1]
   end
 
   def sms_description
