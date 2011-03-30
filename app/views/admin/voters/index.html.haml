@@ -18,8 +18,10 @@
           %th
             Name
           %th
+            Status
+          %th
             = t("web-app-theme.created_at", :default => "Created at")
-          %th.last &nbsp;
+          
         - voters.each do |voter|
           %tr{:class => cycle("odd", "even")}
             %td
@@ -33,11 +35,9 @@
             %td
               = link_to voter.first_name, admin_voter_path(voter)
             %td
+              = voter.status
+            %td
               = voter.created_at.strftime("%A, %b %e at %I:%M %p")
-            %td.last
-              = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_voter_path(voter)
-              |
-              = link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_voter_path(voter)
       .actions-bar.wat-cf
         .actions
         = will_paginate voters
