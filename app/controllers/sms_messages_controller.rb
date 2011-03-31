@@ -20,6 +20,7 @@ class SmsMessagesController < ApplicationController
 
     outgoing_text.each do |message|
       m =  @sms_voter.outgoing_messages.create(:text => message)
+      sleep 1 if outgoing_text.size > 1
     end
 
     head 200
