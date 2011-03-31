@@ -19,6 +19,11 @@ describe VoterRecord do
       result = VoterRecord.find_by_name_and_date_of_birth('Scott', 'Walker', TextParser.parse_date('11/2/1968'))
       result.should be_nil
     end
+
+    it "looks up voter by name and default dob if not found" do
+      VoterRecord.should_receive(:do_name_and_date_of_birth_lookup).exactly(2).times
+      VoterRecord.find_by_name_and_date_of_birth('Scott', 'Walker', TextParser.parse_date('11/2/1968'))
+    end
     
   end
 
