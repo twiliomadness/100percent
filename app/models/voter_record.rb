@@ -95,6 +95,11 @@ class VoterRecord
   end
 
   def self.find_by_name_and_date_of_birth(first_name, last_name, date_of_birth)
+    record = self.do_name_and_date_of_birth_lookup(first_name, last_name, date_of_birth)
+    return record || self.do_name_and_date_of_birth_lookup(first_name, last_name, TextParser.parse_date("1/1/1900"))
+  end
+
+  def self.do_name_and_date_of_birth_lookup(first_name, last_name, date_of_birth)
     # TODO: Record all searches, use as cache, etc.
     agent = Mechanize.new
 
