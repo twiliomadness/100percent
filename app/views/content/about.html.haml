@@ -29,7 +29,7 @@
 
 
 %p
-  *think 100% = impossible? Much harder things 
+  *think 100% = impossible? Much harder things
   = link_to "have been done", "http://en.wikipedia.org/wiki/Smallpox"
 
 %h1
@@ -53,7 +53,7 @@
 %br
 %h1
   Your Privacy
-  
+
 %p
   We use your information to encourage and facilitate your current or future voting.
 
@@ -64,55 +64,54 @@
 
 %p
   We won’t keep any information about individuals under 14.
-  
+
 %h1
   Contact
 %p
-  You can contact us at 
+  You can contact us at
   = mail_to "info@votesimple.org", "info@votesimple.org"
-  
+
 
 %h1 Vote Simple Needs Your Support
 %p
   Right now, about $5 informs 10 voters
-%p
+  %br
   While we are volunteers, the services we use aren't free
 
-%p
-  Inform 10 Voters for $5!  
-  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-  <input type="hidden" name="cmd" value="_s-xclick">
-  <input type="hidden" name="hosted_button_id" value="PUS4SZBRJGUEG">
-  <input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-  <img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif" width="1" height="1">
-  </form>
+.donatations
+  .donate
+    %p
+      = "Inform 10 Voters for $5!"
+      %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post"}
+        %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}
+        %input{:name => "hosted_button_id", :type => "hidden", :value => "PUS4SZBRJGUEG"}
+        %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif", :type => "image"}
+        %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif", :width => "1"}
 
-%p
-  Inform 100 Voters for $50! - it'll impress your Mom
-  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-  <input type="hidden" name="cmd" value="_s-xclick">
-  <input type="hidden" name="hosted_button_id" value="AN662BLUWZJUJ">
-  <input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-  <img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif" width="1" height="1">
-  </form>
+  .donate
+    %p
+      = "Inform 100 Voters for $50! - it'll impress your Mom"
+      %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post"}
+        %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}
+        %input{:name => "hosted_button_id", :type => "hidden", :value => "AN662BLUWZJUJ"}
+        %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif", :type => "image"}
+        %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif", :width => "1"}
 
+  .donate
+    %p
+      = "Inform 1,000 Voters for $500! - it'll impress your friends!"
+      %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post"}
+        %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}
+        %input{:name => "hosted_button_id", :type => "hidden", :value => "AW7TK98VBYS7L"}
+        %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif", :type => "image"}
+        %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif", :width => "1"}
 
-%p
-  Inform 1,000 Voters for $500! - it'll impress your friends!
-  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-  <input type="hidden" name="cmd" value="_s-xclick">
-  <input type="hidden" name="hosted_button_id" value="AW7TK98VBYS7L">
-  <input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-  <img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif" width="1" height="1">
-  </form>
+  .donate
+    %p
+      = "Inform 10,000 Voters for $5,000! - it'll impress basically anyone!"
+      %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post"}
+        %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}
+        %input{:name => "hosted_button_id", :type => "hidden", :value => "RB8E4QSQNPB5W"}
+        %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif", :type => "image"}
+        %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif", :width => "1"}
 
-
-%p
-  Inform 10,000 Voters for $5,000! - it'll impress basically anyone!
-  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-  <input type="hidden" name="cmd" value="_s-xclick">
-  <input type="hidden" name="hosted_button_id" value="RB8E4QSQNPB5W">
-  <input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-  <img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif" width="1" height="1">
-  </form>
-%br

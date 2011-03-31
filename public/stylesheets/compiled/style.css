@@ -4,18 +4,32 @@ body {
 }
 
 /* line 4, ../../../app/stylesheets/style.sass */
+.donate {
+  margin-bottom: 1em;
+}
+/* line 7, ../../../app/stylesheets/style.sass */
+.donate form {
+  padding: 0;
+  margin: 0;
+}
+/* line 10, ../../../app/stylesheets/style.sass */
+.donate p {
+  margin: 0;
+}
+
+/* line 13, ../../../app/stylesheets/style.sass */
 .center {
   text-align: center;
 }
 
-/* line 7, ../../../app/stylesheets/style.sass */
+/* line 16, ../../../app/stylesheets/style.sass */
 #quotes {
   text-align: center;
   font-weight: bold;
   font-size: 150%;
   padding-top: 20px;
 }
-/* line 13, ../../../app/stylesheets/style.sass */
+/* line 22, ../../../app/stylesheets/style.sass */
 #quotes .quote_start {
   color: grey;
   font-size: 400%;
@@ -23,7 +37,7 @@ body {
   font-family: Georgia, Serif;
   margin-top: -25px;
 }
-/* line 20, ../../../app/stylesheets/style.sass */
+/* line 29, ../../../app/stylesheets/style.sass */
 #quotes .quote_end {
   color: grey;
   font-size: 400%;
@@ -32,52 +46,52 @@ body {
   margin-top: -30px;
   margin-right: -40px;
 }
-/* line 28, ../../../app/stylesheets/style.sass */
+/* line 37, ../../../app/stylesheets/style.sass */
 #quotes .quotecontent {
   font-style: italic;
   color: grey;
 }
-/* line 32, ../../../app/stylesheets/style.sass */
+/* line 41, ../../../app/stylesheets/style.sass */
 #quotes a {
   font-size: small;
 }
-/* line 35, ../../../app/stylesheets/style.sass */
+/* line 44, ../../../app/stylesheets/style.sass */
 #quotes .quoteauthor {
   color: grey;
 }
 
-/* line 39, ../../../app/stylesheets/style.sass */
+/* line 48, ../../../app/stylesheets/style.sass */
 .index h1 {
   text-transform: uppercase;
   margin-bottom: 30px;
 }
-/* line 42, ../../../app/stylesheets/style.sass */
+/* line 51, ../../../app/stylesheets/style.sass */
 .index h2 {
   font-weight: bold;
 }
 
-/* line 44, ../../../app/stylesheets/style.sass */
+/* line 53, ../../../app/stylesheets/style.sass */
 .big_logo {
   position: relative;
   left: 20px;
 }
 
-/* line 50, ../../../app/stylesheets/style.sass */
+/* line 59, ../../../app/stylesheets/style.sass */
 .about p, .about li {
   font-size: 150%;
 }
 
-/* line 53, ../../../app/stylesheets/style.sass */
+/* line 62, ../../../app/stylesheets/style.sass */
 .massive {
   font-size: 250%;
 }
 
-/* line 56, ../../../app/stylesheets/style.sass */
+/* line 65, ../../../app/stylesheets/style.sass */
 .tweet_button {
   text-align: right;
 }
 
-/* line 59, ../../../app/stylesheets/style.sass */
+/* line 68, ../../../app/stylesheets/style.sass */
 .like_button {
   position: relative;
   top: -4px;
