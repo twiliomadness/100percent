@@ -10,7 +10,6 @@
       %table.table
         %tr
           %th.first ID
-          %th Type
           %th
             Message
           %th
@@ -26,8 +25,6 @@
           %tr{:class => cycle("odd", "even")}
             %td
               = voter.id
-            %td
-              = voter.type
             %td
               = link_to "listen", voter.voice_recording_url, :target => "blank" if voter.voice_recording_url.present?
             %td{:class => voter.help_status == "pending_help_exit" ? "needs_help" : ""}
