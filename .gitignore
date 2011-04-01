@@ -6,4 +6,3 @@ config/heroku.yml
 db/*.sqlite3
 log/*.log
 tmp/
-db/*
