@@ -8,9 +8,10 @@ class SmsMessagesController < ApplicationController
     sms_city = params[:FromCity]
     sms_state = params[:FromState]
     sms_zip = params[:FromZip]
+    twilio_number = params[:To]
 
     @user = User.find_or_create_by_phone_number(phone_number)
-    @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter(:phone_number => phone_number, :sms_city => sms_city, :sms_state => sms_state, :sms_zip => sms_zip) : @user.sms_voter
+    @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter(:phone_number => phone_number, :twilio_number_used => twilio_number, :sms_city => sms_city, :sms_state => sms_state, :sms_zip => sms_zip) : @user.sms_voter
 
     outgoing_text = @sms_voter.process_message(incoming_text)
 
