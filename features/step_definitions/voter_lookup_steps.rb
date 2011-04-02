@@ -57,12 +57,17 @@ Given /^I have entered an address that is not found$/ do
 end
 
 Given /^I text "([^"]*)"$/ do |arg1|
-  unless @user
-    @user = User.new
-    @user.save(:validate => false)
-  end
-  @sms_voter ||= @user.create_sms_voter(:phone_number => @user.phone_number)
   post_text arg1
+end
+
+Given /^I have started the voter lookup conversation$/ do
+  create_sms_voter
+  post_text "vote"
+end
+
+Given /^I have stopped the voter lookup conversation$/ do
+  create_sms_voter
+  post_text "stop"
 end
 
 When /^I enter my city$/ do
@@ -83,6 +88,12 @@ end
 When /^I confirm my voter info$/ do
   @sms_voter.status = "pending_voter_info_confirmation"
   post_text("yes")
+end
+
+When /^I text any of the following$/ do |table|
+  table.raw.each do |text_content|
+    post_text(text_content[0])
+  end
 end
 
 Then /^I should be prompted to confirm my address$/ do
@@ -118,9 +129,24 @@ Then /^I should receive text "([^"]*)"$/ do |arg1|
   end
 end
 
+Then /^I should not receive a message$/ do
+  @sms_voter.last_summary.should be_blank
+  @sms_voter.last_prompt.should be_blank
+end
+
+Then /^I should receive a message$/ do
+  @sms_voter.last_summary.should_not be_blank
+  @sms_voter.last_prompt.should_not be_blank
+end
 
 def post_text(text_message) 
   get(sms_request_path, :From => @user.phone_number, :Body => text_message)
 end
 
-
+def create_sms_voter()
+  unless @user
+    @user = User.new
+    @user.save(:validate => false)
+  end
+  @sms_voter ||= @user.create_sms_voter(:phone_number => @user.phone_number)
+end
