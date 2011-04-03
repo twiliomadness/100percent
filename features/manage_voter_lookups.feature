@@ -151,7 +151,7 @@ Feature: Manage voter_lookups
       | Smith  |
       | 3/8/72 |
 
-  Scenario Outline: In the stopped state, the system responds to "reset" and "start over"
+  Scenario Outline: In the stopped state, the system responds to "help", "reset" and "start over"
     Given I have stopped the voter lookup conversation
     When I text "<text>"
     Then I should be prompted "<reply>"
