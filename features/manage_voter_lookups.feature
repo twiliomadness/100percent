@@ -2,7 +2,7 @@ Feature: Manage voter_lookups
   In order to get voter information about users
   As the system
   I want to lookup voter records on voter public access website
- 
+
   Scenario: Prompt new user for first name
 
   Scenario: Prompt for last name
@@ -151,14 +151,14 @@ Feature: Manage voter_lookups
       | Smith  |
       | 3/8/72 |
 
-  Scenario Outline: In the stopped state, the system responds to "help", "reset", and "start over" 
+  Scenario Outline: In the stopped state, the system responds to "reset" and "start over"
     Given I have stopped the voter lookup conversation
     When I text "<text>"
     Then I should be prompted "<reply>"
-    And my voter should not have status "stopped"
+    And my voter should have status "<status>"
     Examples:
-      | text       | reply                     |
-      | help       | Please describe the issue |
-      | reset      | Welcome!                  |
-      | so         | Welcome!                  |
-      | start over | Welcome!                  |
+      | text       | reply                     | status             |
+      | help       | Please describe the issue | stopped            |
+      | reset      | Welcome!                  | pending_first_name |
+      | so         | Welcome!                  | pending_first_name |
+      | start over | Welcome!                  | pending_first_name |

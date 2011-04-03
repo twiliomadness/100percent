@@ -7,6 +7,8 @@ class SmsVoter < Voter
   include SmsVoterLookupStateMachine
   include SmsVoterHelpStateMachine
 
+  FAKE_PHONE_NUMBER = "DONOTSEND"
+
   state_machine :conversation_status, :initial => :voter_lookup, :namespace => "conversation" do
     after_transition any => :help do |sms_user, transition|
       sms_user.user.asked_for_help
@@ -95,7 +97,7 @@ class SmsVoter < Voter
   def self.default_attributes(attrs = {})
     {:first_name => "John",
       :last_name => "Smith",
-      :phone_number => "+15555551111",
+      :phone_number => FAKE_PHONE_NUMBER,
       :date_of_birth => 20.years.ago}.merge(attrs)
   end
 

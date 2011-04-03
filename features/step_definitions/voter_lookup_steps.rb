@@ -28,13 +28,13 @@ end
 
 Given /^I confirm my name and birthday$/ do
   @sms_voter.status = "pending_voter_info_confirmation"
-  post_text ("yes")
+  post_text "yes"
 end
 
 Given /^I enter my street address$/ do
   @sms_voter.status = "pending_address_line_1"
   @sms_voter.fail_message = nil
-  post_text("123 Main St.")
+  post_text "123 Main St."
 end
 
 Given /^I have entered an address that is found for polling place "([^"]*)"$/ do |polling_place_name|
@@ -137,11 +137,6 @@ end
 Then /^my voter should have status "([^"]*)"$/ do |arg1|
   @sms_voter.reload
   @sms_voter.status.should == arg1
-end
-
-Then /^my voter should not have status "([^"]*)"$/ do |arg1|
-  @sms_voter.reload
-  @sms_voter.status.should_not == arg1
 end
 
 def post_text(text_message) 

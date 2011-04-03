@@ -18,6 +18,23 @@ class Admin::VotersController < AdminController
       end
     end
   end
+
+  def send_text_message_for_current_status
+    @voter = Voter.find_by_id(params[:voter_id])
+    outgoing_text = @voter.summary.kind_of?(Array) ? @voter.summary : "#{@voter.summary.strip}\n\n#{@voter.prompt.strip}"
+    if outgoing_text.kind_of?(String)
+      outgoing_text = [outgoing_text]
+    end
+
+    outgoing_text = outgoing_text.reject { |message| message.nil? || message.strip.blank? }
+
+    outgoing_text.each do |message|
+      m =  @voter.outgoing_messages.create(:text => message)
+      sleep 1 if outgoing_text.size > 1
+    end
+
+    redirect_to admin_voter_path(@voter)
+  end
   
   def send_text_message
     @voter = Voter.find_by_id(params[:voter_id])
@@ -27,6 +44,5 @@ class Admin::VotersController < AdminController
     @voter.send_text_message_from_admin(message_text)
     
     redirect_to admin_voter_path(@voter)
-    
   end
 end
