@@ -5,6 +5,7 @@ class OutgoingMessage < TextMessage
 
   def send_text
     # If a message is two returns, it is "valid", but we shouldn't send it.
+    # TODO: We shouldn't send messages in cucumber tests.
     if text.strip.length > 0
       twilio = Twilio::RestAccount.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
 

@@ -19,7 +19,7 @@ class SmsMessagesController < ApplicationController
       outgoing_text = [outgoing_text]
     end
 
-    outgoing_text = outgoing_text.reject { |message| message.nil? || message.strip.blank? || message.strip == '\n\n' }
+    outgoing_text = outgoing_text.reject { |message| message.nil? || message.strip.blank? }
 
     outgoing_text.each do |message|
       m =  @sms_voter.outgoing_messages.create(:text => message)

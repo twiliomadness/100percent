@@ -135,16 +135,30 @@ Feature: Manage voter_lookups
   Scenario: Sending stop halts the system
     Given I have started the voter lookup conversation
     When I text "stop"
-    Then I should not receive a message
+    Then my voter should have status "stopped"
+    And I should not receive a message after sending stop
 
-  Scenario: In the stopped state, the system only responds to "help", "reset", and "start over" 
+  Scenario Outline: In the stopped state, the system stops responding
     Given I have stopped the voter lookup conversation
-    When I text any of the following
-    | x    |
-    | vote |
-    Then I should not receive a message
-    When I text any of the following
-    | help       |
-    | reset      |
-    | start over |
-    Then I should receive a message
+    When I text "<text>"
+    Then I should not receive a message after sending stop
+    Examples:
+      | text   |
+      | yes    |
+      | no     |
+      | vote   |
+      | John   |
+      | Smith  |
+      | 3/8/72 |
+
+  Scenario Outline: In the stopped state, the system responds to "help", "reset", and "start over" 
+    Given I have stopped the voter lookup conversation
+    When I text "<text>"
+    Then I should be prompted "<reply>"
+    And my voter should not have status "stopped"
+    Examples:
+      | text       | reply                     |
+      | help       | Please describe the issue |
+      | reset      | Welcome!                  |
+      | so         | Welcome!                  |
+      | start over | Welcome!                  |

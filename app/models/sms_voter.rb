@@ -70,17 +70,6 @@ class SmsVoter < Voter
     end
   end
 
-  def reset_address!
-    self.address_line_1 = nil
-    self.address_line_2 = nil
-    self.city = nil
-    self.zip = nil
-    self.polling_place_id = nil
-    self.county_clerk_id = nil
-    self.status = "pending_address_line_1"
-    self.save!
-  end
-
   def reset_all!
     self.first_name = nil
     self.last_name = nil

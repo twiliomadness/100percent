@@ -1,6 +1,5 @@
 Given /^I have submitted my first and last name$/ do
-  @user ||= User.create!(User.default_attributes())
-  @sms_voter ||= @user.create_sms_voter(:phone_number => @user.phone_number)
+  create_sms_voter
   User.stub!(:find_or_create_by_phone_number).and_return(@user)
   post_text "hi"
   post_text "John"
@@ -13,6 +12,7 @@ Given /^I have submitted my name and birthday$/ do
 end
 
 Given /^I am a registered voter$/ do
+  create_sms_voter
   @voter_record = VoterRecord.new(VoterRecord.default_attributes())
   VoterRecord.stub!(:find_by_name_and_date_of_birth).and_return(@voter_record)
 end
@@ -72,27 +72,27 @@ end
 
 When /^I enter my city$/ do
   @sms_voter.status = "pending_city"
-  post_text("Madison")
+  post_text "Madison"
 end
 
 When /^I enter my zip$/ do
   @sms_voter.status = "pending_zip"
-  post_text("53798")
+  post_text "53798"
 end
 
 When /^I submit my birthday$/ do
   @sms_voter.status = "pending_date_of_birth"
-  post_text("6/12/1919")
+  post_text "6/12/1919"
 end
 
 When /^I confirm my voter info$/ do
   @sms_voter.status = "pending_voter_info_confirmation"
-  post_text("yes")
+  post_text "yes"
 end
 
 When /^I text any of the following$/ do |table|
   table.raw.each do |text_content|
-    post_text(text_content[0])
+    post_text text_content[0]
   end
 end
 
@@ -105,7 +105,7 @@ Then /^I should be in a status of "([^"]*)"$/ do |arg1|
 end
 
 Then /^I should be prompted "([^"]*)"$/ do |arg1|
-  OutgoingMessage.last.text =~ /arg1/
+  @sms_voter.outgoing_messages.last.text =~ /arg1/
 end
 
 Then /^I should be shown "([^"]*)"$/ do |arg1|
@@ -113,7 +113,7 @@ Then /^I should be shown "([^"]*)"$/ do |arg1|
 end
 
 Then /^I should receive texts:$/ do |table|
- messages = OutgoingMessage.all.collect{|m| m.text}
+ messages = @sms_voter.outgoing_messages.all.collect{|m| m.text}
   table.raw.each do |text_content|
    unless messages.collect{|m| m =~ /#{text_content[0]}/ ? true : false}.include? true
      messages.should include text_content[0]
@@ -122,21 +122,26 @@ Then /^I should receive texts:$/ do |table|
 end
 
 Then /^I should receive text "([^"]*)"$/ do |arg1|
-  messages = OutgoingMessage.all.collect{|m| m.text}
-  
+  messages = @sms_voter.outgoing_messages.collect{|m| m.text}
   unless messages.collect{|m| m =~ /arg1/ ? true : false}.include?(true)
     messages.should include arg1
   end
 end
 
-Then /^I should not receive a message$/ do
-  @sms_voter.last_summary.should be_blank
-  @sms_voter.last_prompt.should be_blank
+Then /^I should not receive a message after sending stop$/ do
+  stop_message = @sms_voter.incoming_messages.find_all { |m| m.text == 'stop' }.last
+  messages_after_stop = @sms_voter.outgoing_messages.find_all { |m| m.created_at > stop_message.created_at }
+  messages_after_stop.should be_empty
 end
 
-Then /^I should receive a message$/ do
-  @sms_voter.last_summary.should_not be_blank
-  @sms_voter.last_prompt.should_not be_blank
+Then /^my voter should have status "([^"]*)"$/ do |arg1|
+  @sms_voter.reload
+  @sms_voter.status.should == arg1
+end
+
+Then /^my voter should not have status "([^"]*)"$/ do |arg1|
+  @sms_voter.reload
+  @sms_voter.status.should_not == arg1
 end
 
 def post_text(text_message) 
@@ -144,9 +149,6 @@ def post_text(text_message)
 end
 
 def create_sms_voter()
-  unless @user
-    @user = User.new
-    @user.save(:validate => false)
-  end
+  @user ||= User.create!(User.default_attributes())
   @sms_voter ||= @user.create_sms_voter(:phone_number => @user.phone_number)
 end
