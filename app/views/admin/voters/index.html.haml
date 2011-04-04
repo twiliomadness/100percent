@@ -10,23 +10,34 @@
       %table.table
         %tr
           %th.first ID
+          %th Type
           %th
-            = t("activerecord.attributes.admin_user.phone_number", :default => t("activerecord.labels.phone_number", :default => "Phone Number"))
+            Message
+          %th
+            Number
+          %th
+            Name
+          %th
+            Status
           %th
             = t("web-app-theme.created_at", :default => "Created at")
-          %th.last &nbsp;
+          
         - voters.each do |voter|
           %tr{:class => cycle("odd", "even")}
             %td
               = voter.id
             %td
+              = voter.type
+            %td
+              = link_to "listen", voter.voice_recording_url, :target => "blank" if voter.voice_recording_url.present?
+            %td{:class => voter.help_status == "pending_help_exit" ? "needs_help" : ""}
               = link_to voter.phone_number, admin_voter_path(voter)
             %td
-              = voter.created_at
-            %td.last
-              = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_voter_path(voter)
-              |
-              = link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_voter_path(voter)
+              = link_to voter.first_name, admin_voter_path(voter)
+            %td
+              = voter.status
+            %td
+              = voter.created_at.strftime("%A, %b %e at %I:%M %p")
       .actions-bar.wat-cf
         .actions
         = will_paginate voters

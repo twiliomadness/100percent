@@ -1,6 +1,8 @@
 class VoterRecord
 
-  attr_accessor :address_line_1, :address_line_2, :city, :zip, :state_voter_id, :registration_date, :registration_status, :has_voted
+  attr_accessor :address_line_1, :address_line_2, :city, :zip, 
+  :state_voter_id, :registration_date, :registration_status, 
+  :has_voted
   
   def initialize(attrs = {})
     self.address_line_1 = attrs[:address_line_1]
@@ -25,6 +27,46 @@ class VoterRecord
     # More than the provider deciding what the caller's gonna get
   end
   
+  def self.get_address_link(address_line_1, page_content)
+    
+    result_page = Nokogiri.HTML(page_content)
+    
+    # The links we're looking for have this pattern
+    path = "//a[starts-with(@href, 'AddressDetailsScreen')]"
+
+    links = result_page.xpath(path)
+    
+    if links.empty?
+      return nil
+    end
+    
+    if links.size == 1
+      return links.first
+    end
+    
+    # Grab the <td> with Odd as content
+    link_row_path = "//td[text() = '#{self.house_number_odd_even(address_line_1).capitalize!}']"
+    td = result_page.xpath(link_row_path)
+    # the link is within the parent (the <tr>) of the selected <td>  like this:  <table><tr><td>Odd</td><td><a href="AddressDetailsScreen..."
+    
+    if td.present?
+      link = td.first.parent.search("td/a").first
+    else
+      # Otherwise the pattern is like this:  <table><tr><td>Both</td><td><a href="AddressDetailsScreen...>N. Butler
+      # We match on either N. or S.
+      if links[0].text[0] == self.street_name(address_line_1)[0]
+        link = links[0]
+      end
+      
+      if links[1].text[0] == self.street_name(address_line_1)[0]
+        link = links[1]
+      end
+    end
+    
+    link
+    
+  end
+  
   def self.get_address_details_page(address_line_1, city, zip)
     # TODO: Rename this to find_polling_place.  yo.
     agent = Mechanize.new
@@ -39,24 +81,9 @@ class VoterRecord
     
     page = form.click_button
     
-    result_page = Nokogiri.HTML(page.content)
-    
-    path = "//a[starts-with(@href, 'AddressDetailsScreen')]"
-
-    links = result_page.xpath(path)
-    
-    # If street is on border of district, two rows returned - Odd side and Even side
-    if links.size > 1
-      # Grab the <td> with Odd as content
-      link_row_path = "//td[text() = '#{self.house_number_odd_even(address_line_1).capitalize!}']"
-      td = result_page.xpath(link_row_path)
-      # the link is within the parent (the <tr>) of the selected <td>  like this:  <table><tr><td>Odd</td><td><a href="AddressDetailsScreen..."
-      link = td.first.parent.search("td/a").first
-    else
-      link = links.first
-    end
-    
-    if links.empty?
+    link = self.get_address_link(address_line_1, page.content)
+      
+    if link.nil?
       return nil
     end
     
@@ -68,6 +95,11 @@ class VoterRecord
   end
 
   def self.find_by_name_and_date_of_birth(first_name, last_name, date_of_birth)
+    record = self.do_name_and_date_of_birth_lookup(first_name, last_name, date_of_birth)
+    return record || self.do_name_and_date_of_birth_lookup(first_name, last_name, TextParser.parse_date("1/1/1900"))
+  end
+
+  def self.do_name_and_date_of_birth_lookup(first_name, last_name, date_of_birth)
     # TODO: Record all searches, use as cache, etc.
     agent = Mechanize.new
 
@@ -89,9 +121,11 @@ class VoterRecord
       return nil
     end
 
-    # TODO: Handle possibility of more than one record
     if links.size > 1
-      logger.warn("Found #{summary_links.size} for #{first_name} #{last_name} #{date_of_birth}")
+      params = {:first_name => first_name,
+        last_name: last_name,
+        date_of_birth: date_of_birth}
+      Exceptional.handle(Exception.new, "VoterRecord.find_by_name_and_date_of_birth found #{summary_links.size} links for params: #{params}")
     end
 
     link = links.first

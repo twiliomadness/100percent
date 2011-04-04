@@ -27,6 +27,7 @@ module SmsVoterLookupStateMachine
         
         # Couldn't find address, so loop back to the start
         transition :voter_address_not_found_in_gab => :pending_address_line_1
+        transition :voter_address_found => :happy_path_endpoint
       end
 
       event :branch_yes do
@@ -48,7 +49,7 @@ module SmsVoterLookupStateMachine
 
       state :welcome do
         def process_message_by_status(message)
-          self.outgoing_messages.create(:text => "Welcome")
+          self.outgoing_messages.create(:text => self.first_welcome_message)
           self.next_prompt
         end
         def summary
@@ -69,7 +70,7 @@ module SmsVoterLookupStateMachine
           end
         end
         def summary
-          "At any point you can text 'Reset' to start over. Also, if you get totally stuck, just text 'Help' and we'll give you a call."
+          "At any point just text 'Reset' to start over. If you get totally stuck, text 'Help' and we'll contact you."
         end
         def prompt
           "Ok, What is your full first name?"
@@ -107,11 +108,11 @@ module SmsVoterLookupStateMachine
         end
   
         def summary
-          "OK, #{self.full_name}"
+          "Great. To check if you're registered or can register, we need your date of birth. All info is kept confidential."
         end
   
         def prompt
-          "What is your date of birth (mm/dd/yyyy)?"
+          "What is your date of birth (mm/dd/yy)?"
         end
       end
       
@@ -130,7 +131,7 @@ module SmsVoterLookupStateMachine
           transition_branch_yes_no(message, :yes => :process_yes)
         end
         def process_yes
-          self.outgoing_messages.create :text => "Let's try again"
+          self.outgoing_messages.create :text => self.no_voter_record_found_but_voter_confirms_they_have_voted_message
           self.branch_yes
         end
 
@@ -238,7 +239,7 @@ module SmsVoterLookupStateMachine
           transition_branch_yes_no(message, :yes => :process_yes, :no => :process_no)
         end
         def process_yes
-          self.update_voter_address
+          self.update_voter_polling_place_clerk
           self.branch_yes
         end
 
@@ -257,6 +258,7 @@ module SmsVoterLookupStateMachine
  
       state :voter_address_found do
         def process_message_by_status(message)
+          self.next_prompt
         end
         def summary
           [self.happy_path_message_one, self.happy_path_message_two, self.happy_path_message_three]
@@ -265,6 +267,18 @@ module SmsVoterLookupStateMachine
           
         end
       end
+ 
+      state :happy_path_endpoint do
+        def process_message_by_status(message)
+        end
+        def summary
+          ""
+        end
+        def prompt
+          ""
+        end
+      end
+      
   
       state :need_help do
         def summary
@@ -304,7 +318,7 @@ module SmsVoterLookupStateMachine
   end
 
   def lookup_address
-    if self.update_voter_address 
+    if self.update_voter_polling_place_clerk 
       self.branch_yes
     else
       self.outgoing_messages :text => "We couldn't find that address. Lets try again, or 'HELP' to have a volunteer contact you."
@@ -313,9 +327,9 @@ module SmsVoterLookupStateMachine
   end
 
   def lookup_in_gab_by_voter_info
-    voter = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
-    if voter
-      self.update_attributes_from_voter(voter)
+    voter_record = VoterRecord.find_by_name_and_date_of_birth(self.first_name, self.last_name, self.date_of_birth)
+    if voter_record
+      self.update_attributes_from_voter_record(voter_record)
       self.save
       self.branch_yes
     else

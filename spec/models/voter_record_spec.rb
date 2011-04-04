@@ -19,7 +19,44 @@ describe VoterRecord do
       result = VoterRecord.find_by_name_and_date_of_birth('Scott', 'Walker', TextParser.parse_date('11/2/1968'))
       result.should be_nil
     end
+
+    it "looks up voter by name and default dob if not found" do
+      VoterRecord.should_receive(:do_name_and_date_of_birth_lookup).exactly(2).times
+      VoterRecord.find_by_name_and_date_of_birth('Scott', 'Walker', TextParser.parse_date('11/2/1968'))
+    end
     
   end
 
+  describe "#get_address_link fo bof" do
+    it "should get the correct link" do
+      filename = File.join(File.dirname(__FILE__), "multiple_addresses_both.html")
+      content = File.new(filename).read()
+      link = VoterRecord.get_address_link("12 N. Butler", content)
+      expected = "N BUTLER ST"
+      
+      link.text.should == expected
+    end
+  end
+
+  describe "#get_address_link fo odd even" do
+    it "should get the correct link" do
+      filename = File.join(File.dirname(__FILE__), "multiple_addresses_odd_even.html")
+      content = File.new(filename).read()
+      link = VoterRecord.get_address_link("2915 Stowell Ave", content)
+      expected = "AddressDetailsScreen.aspx?Language=en-us&AddressRangeID=24032440&DistrictComboID=100006468&JurisdictionID=1119"
+      
+      link.get_attribute("href").should == expected
+    end
+  end
+
+  describe "#get_address_link fo odd even" do
+    it "should get the correct link" do
+      filename = File.join(File.dirname(__FILE__), "single_address.html")
+      content = File.new(filename).read()
+      link = VoterRecord.get_address_link("1909 Madison St", content)
+      expected = "MADISON ST"
+      
+      link.text.should == expected
+    end
+  end
 end

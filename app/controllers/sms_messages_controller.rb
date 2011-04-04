@@ -1,11 +1,8 @@
 class SmsMessagesController < ApplicationController
 
+  before_filter :validate_request
+
   def incoming
-    signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
-    if !TwilioHelper.validateRequest(signature, request.url, request.post? ? params : {})
-      logger.error("Invalid request with signature #{signature} for url #{request.url} with params #{params}")
-      head 404 and return
-    end
     incoming_text = params[:Body]
     phone_number = params[:From]
     sms_city = params[:FromCity]
@@ -22,10 +19,21 @@ class SmsMessagesController < ApplicationController
     end
 
     outgoing_text.each do |message|
-      @sms_voter.outgoing_messages.create(:text => message)
+      m =  @sms_voter.outgoing_messages.create(:text => message)
+      sleep 1 if outgoing_text.size > 1
     end
 
     head 200
   end
+
+  private
+
+    def validate_request
+      signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
+      if !TwilioHelper.validateRequest(signature, request.url, request.post? ? params : {})
+        Exceptional.context(:environment => Rails.env)
+        raise "Invalid request with signature '#{signature}' for url '#{request.url}' with params: #{params}"
+      end
+    end
 
 end

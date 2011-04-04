@@ -18,4 +18,15 @@ class Admin::VotersController < AdminController
       end
     end
   end
+  
+  def send_text_message
+    @voter = Voter.find_by_id(params[:voter_id])
+    
+    message_text = params[:voter][:message_text]
+    
+    @voter.send_text_message_from_admin(message_text)
+    
+    redirect_to admin_voter_path(@voter)
+    
+  end
 end

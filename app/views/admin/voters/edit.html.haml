@@ -1,13 +1,13 @@
 .block
   .secondary-navigation
     %ul.wat-cf
-      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", admin_voters_path
-      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_voter_path
-      %li.active= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_voter_path
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", voters_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_voter_path
+      %li.active= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_voter_path
   .content
     %h2.title
       = t("web-app-theme.edit", :default => "Edit")
-      voter
+      Voter
     .inner
       = form_for voter, :url => admin_voter_path(voter), :html => { :class => :form } do |f|
         = render :partial => "form", :locals => {:f => f}

@@ -34,3 +34,10 @@ Feature: Manage sms help conversations
     When I text "help"
     Then I should be prompted "Please describe the issue"
 
+  Scenario: Text help at end of help dialog
+    Given I am a registered voter
+    And I text "help"
+    And I text "I'm stuck"
+    When I text "help"
+    Then I should be prompted "Sorry you are having trouble"
+

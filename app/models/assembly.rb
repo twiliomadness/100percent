@@ -1,0 +1,2 @@
+class Assembly < Jurisdiction
+end

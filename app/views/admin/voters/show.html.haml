@@ -1,36 +1,141 @@
 .block
   .secondary-navigation
     %ul.wat-cf
-      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", admin_voters_path
-      %li.active= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_voter_path
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", voters_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_voter_path
+      %li.active= link_to "#{t("web-app-theme.show", :default => "Show")}", voter_path
   .content
     .inner
       %p
         %b
-          = t("activerecord.attributes.admin_voter.phone_number", :default => t("activerecord.labels.phone_number", :default => "Phone number"))
+          = t("activerecord.attributes.voter.user_id", :default => t("activerecord.labels.user_id", :default => "User"))
+          \:
+        = voter.user_id
+      %p
+        %b
+          = t("activerecord.attributes.voter.type", :default => t("activerecord.labels.type", :default => "Type"))
+          \:
+        = voter.type
+      %p
+        %b
+          = t("activerecord.attributes.voter.phone_number", :default => t("activerecord.labels.phone_number", :default => "Phone number"))
           \:
         = voter.phone_number
       %p
         %b
-          = t("activerecord.attributes.admin_voter.first_name", :default => t("activerecord.labels.first_name", :default => "First name"))
+          = t("activerecord.attributes.voter.first_name", :default => t("activerecord.labels.first_name", :default => "First name"))
           \:
         = voter.first_name
       %p
         %b
-          = t("activerecord.attributes.admin_voter.last_name", :default => t("activerecord.labels.last_name", :default => "Last name"))
+          = t("activerecord.attributes.voter.last_name", :default => t("activerecord.labels.last_name", :default => "Last name"))
           \:
         = voter.last_name
       %p
         %b
-          = t("activerecord.attributes.admin_voter.city", :default => t("activerecord.labels.city", :default => "City"))
+          = t("activerecord.attributes.voter.city", :default => t("activerecord.labels.city", :default => "City"))
           \:
         = voter.city
       %p
         %b
-          = t("activerecord.attributes.admin_voter.status", :default => t("activerecord.labels.status", :default => "Status"))
+          = t("activerecord.attributes.voter.status", :default => t("activerecord.labels.status", :default => "Status"))
           \:
         = voter.status
+      %p
+        %b
+          = t("activerecord.attributes.voter.zip", :default => t("activerecord.labels.zip", :default => "Zip"))
+          \:
+        = voter.zip
+      %p
+        %b
+          = t("activerecord.attributes.voter.date_of_birth", :default => t("activerecord.labels.date_of_birth", :default => "Date of birth"))
+          \:
+        = voter.date_of_birth
+      %p
+        %b
+          = t("activerecord.attributes.voter.address_line_1", :default => t("activerecord.labels.address_line_1", :default => "Address line 1"))
+          \:
+        = voter.address_line_1
+      %p
+        %b
+          = t("activerecord.attributes.voter.address_line_2", :default => t("activerecord.labels.address_line_2", :default => "Address line 2"))
+          \:
+        = voter.address_line_2
+      %p
+        %b
+          = t("activerecord.attributes.voter.registration_date", :default => t("activerecord.labels.registration_date", :default => "Registration date"))
+          \:
+        = voter.registration_date
+      %p
+        %b
+          = t("activerecord.attributes.voter.registration_status", :default => t("activerecord.labels.registration_status", :default => "Registration status"))
+          \:
+        = voter.registration_status
+      %p
+        %b
+          = t("activerecord.attributes.voter.has_voted", :default => t("activerecord.labels.has_voted", :default => "Has voted"))
+          \:
+        = voter.has_voted
+      %p
+        %b
+          = t("activerecord.attributes.voter.voice_recording_url", :default => t("activerecord.labels.voice_recording_url", :default => "Voice recording url"))
+          \:
+        = voter.voice_recording_url
+      %p
+        %b
+          = t("activerecord.attributes.voter.state_voter_id", :default => t("activerecord.labels.state_voter_id", :default => "State voter"))
+          \:
+        = voter.state_voter_id
+      %p
+        %b
+          = t("activerecord.attributes.voter.help_status", :default => t("activerecord.labels.help_status", :default => "Help status"))
+          \:
+        = voter.help_status
+      %p
+        %b
+          = t("activerecord.attributes.voter.conversation_status", :default => t("activerecord.labels.conversation_status", :default => "Conversation status"))
+          \:
+        = voter.conversation_status
+      %p
+        %b
+          = t("activerecord.attributes.voter.county_clerk_id", :default => t("activerecord.labels.county_clerk_id", :default => "County clerk"))
+          \:
+        = voter.county_clerk_id
+      %p
+        %b
+          = t("activerecord.attributes.voter.polling_place_id", :default => t("activerecord.labels.polling_place_id", :default => "Polling place"))
+          \:
+        = voter.polling_place_id
+      %p
+        %b
+          = t("activerecord.attributes.voter.sms_city", :default => t("activerecord.labels.sms_city", :default => "Sms city"))
+          \:
+        = voter.sms_city
+      %p
+        %b
+          = t("activerecord.attributes.voter.sms_state", :default => t("activerecord.labels.sms_state", :default => "Sms state"))
+          \:
+        = voter.sms_state
+      %p
+        %b
+          = t("activerecord.attributes.voter.sms_zip", :default => t("activerecord.labels.sms_zip", :default => "Sms zip"))
+          \:
+        = voter.sms_zip
       .wat-cf
         = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_admin_voter_path(voter), :class => "button"
-        = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), admin_voter_path(voter), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
+        = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), voter_path(voter), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
 - content_for :sidebar, render(:partial => 'sidebar')
+
+- voter.text_messages.each do |message|
+  %p
+    = message.type
+    %br
+    = message.text
+    %br
+    = message.created_at
+    
+= form_for :voter, :url => admin_voter_send_text_message_path(voter), :html => { :class => :form } do |f|
+  = f.label "Message Text"
+  = f.text_field :message_text, :size => 100, :class => 'text_field', :maxlength => 160
+  = f.submit "Send Message", :class => 'button'
+

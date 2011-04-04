@@ -9,7 +9,7 @@ module SmsVoterHelpStateMachine
       event :transition do
         transition :initial_help_request => :pending_issue_description
         transition :pending_issue_description => :pending_help_exit
-        transition :pending_help_exit => :initial_help_request
+        transition :pending_help_exit => :pending_issue_description
       end
 
       event :reset do

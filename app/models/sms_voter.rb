@@ -1,7 +1,8 @@
 class SmsVoter < Voter
   before_create :assure_single_sms_voter
   
-  attr_accessor :last_summary, :last_prompt, :has_unrecognized_response, :include_summary_on_failure, :fail_message
+  attr_accessor :last_summary, :last_prompt, :has_unrecognized_response, 
+  :include_summary_on_failure, :fail_message
 
   include SmsVoterLookupStateMachine
   include SmsVoterHelpStateMachine
@@ -64,8 +65,7 @@ class SmsVoter < Voter
 
     return self.last_summary.kind_of?(Array) ? self.last_summary : "#{self.last_summary.strip}\n\n#{self.last_prompt}"
   end
-
-
+  
   def assure_single_sms_voter
     unless user.sms_voter.nil?
       user.sms_voter.update_attribute(:type => nil)
@@ -95,7 +95,6 @@ class SmsVoter < Voter
     self.county_clerk_id = nil
   end
 
-  
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
@@ -112,28 +111,20 @@ class SmsVoter < Voter
       :phone_number => "+15555551111",
       :date_of_birth => 20.years.ago}.merge(attrs)
   end
-
-  def update_attributes_from_voter(voter)
-    self.address_line_1 = voter.address_line_1
-    self.address_line_2 = voter.address_line_2
-    self.city = voter.city
-    self.zip = voter.zip
-    self.registration_date = voter.registration_date
-    self.registration_status = voter.registration_status
-  end
   
   def first_welcome_message
     # 126 Characters
-    "Welcome to VoteSimple.  We're going to help you vote in this election. This will take about 3 minutes and 5-10 text messages."
+    "Welcome!  This will take just a minute and 5-10 text messages.  All info you provide is kept strictly confidential."
   end
   
   def no_voter_record_found_but_voter_confirms_they_have_voted_message
     # 132 Characters
-    "Let's try again.  Make sure to use your full legal name as you would when voting.  Example: Gregory, not Greg.  Katherine, not Katy."
+    "Let's try again.  Make sure to use your full first name as you would when voting.  Example: Gregory, not Greg.  Katherine, not Katy."
   end
   
   def happy_path_message_one
     # These could approach the 160 character limit
+    # TODO: If county clerk is nil, log exceptional error
     if self.is_registered? 
       "You can absentee vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
     else
@@ -142,6 +133,7 @@ class SmsVoter < Voter
   end
   
   def happy_path_message_two
+    # TODO: If polling place is nil, log exceptional error
     if self.is_registered? 
       "On #{self.next_election_date} you can vote at #{self.polling_place.sms_description}"
     else
@@ -150,6 +142,7 @@ class SmsVoter < Voter
   end
   
   def happy_path_message_three
+    # TODO: If county clerk is nil, log exceptional error
     "More help? Call your county clerk @ #{self.county_clerk.phone_number} OR text back 'HELP' and we'll give you a call."
   end
   
@@ -166,8 +159,7 @@ class SmsVoter < Voter
         <<-eof
 You are currently registered at:
 
-#{address.titleize}
-#{self.city.titleize} #{self.zip}
+#{address.titleize}, #{self.city.titleize}
         eof
     end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110326172137) do
+ActiveRecord::Schema.define(:version => 20110327170246) do
 
   create_table "county_clerks", :force => true do |t|
     t.string   "location_name"
@@ -23,6 +23,24 @@ ActiveRecord::Schema.define(:version => 20110326172137) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "elections", :force => true do |t|
+    t.string   "name"
+    t.date     "date"
+    t.string   "type"
+    t.integer  "jurisdiction_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "jurisdictions", :force => true do |t|
+    t.string   "type"
+    t.integer  "district_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "jurisdictions", ["type", "district_id"], :name => "index_jurisdictions_on_type_and_district_id", :unique => true
 
   create_table "polling_places", :force => true do |t|
     t.string   "location_name"

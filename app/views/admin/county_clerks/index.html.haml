@@ -1,0 +1,33 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_county_clerks_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_county_clerk_path
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      CountyClerks
+    .inner
+      %table.table
+        %tr
+          %th.first ID
+          %th
+            = t("activerecord.attributes.admin_county_clerk.county", :default => t("activerecord.labels.county", :default => "County"))
+          %th= t("web-app-theme.created_at", :default => "Created at")
+          %th.last &nbsp;
+        - county_clerks.each do |county_clerk|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = county_clerk.id
+            %td
+              = link_to county_clerk.county, admin_county_clerk_path(county_clerk)
+            %td
+              = county_clerk.created_at
+            %td.last
+              = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_county_clerk_path(county_clerk)
+              |
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_county_clerk_path(county_clerk)} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_county_clerk_path(county_clerk), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+- content_for :sidebar, render(:partial => 'sidebar')
