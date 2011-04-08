@@ -1,13 +1,15 @@
 class SmsVoter < Voter
   before_create :assure_single_sms_voter
-  
-  attr_accessor :last_summary, :last_prompt, :has_unrecognized_response, 
+
+  attr_accessor :last_summary, :last_prompt, :has_unrecognized_response,
   :include_summary_on_failure, :fail_message
 
   include SmsVoterLookupStateMachine
   include SmsVoterHelpStateMachine
 
-  state_machine :conversation_status, :initial => :voter_lookup, :namespace => "conversation" do 
+  FAKE_PHONE_NUMBER = "DONOTSEND"
+
+  state_machine :conversation_status, :initial => :voter_lookup, :namespace => "conversation" do
     after_transition any => :help do |sms_user, transition|
       sms_user.user.asked_for_help
     end
@@ -29,14 +31,10 @@ class SmsVoter < Voter
   end
 
   def process_message(message)
-    # TODO: Somewhere we should have a begin/rescue block; ideally outermost and just say,
-    # "Oops, I did not understand that.  Can we try again"
-    # We need a "restate" global method.
-
     message.strip!
     save_message(message)
 
-    self.help_request_conversation if message.downcase == "help"    
+    self.help_request_conversation if message.downcase == "help"
 
     if ["reset", "start over", "so"].include? message.downcase
       self.voter_lookup_conversation
@@ -44,8 +42,10 @@ class SmsVoter < Voter
       self.reset
     end
 
+    self.stop if message.downcase == "stop"
+
     if self.conversation_status?(:help)
-      self.transition_help      
+      self.transition_help
       self.last_summary = self.help_summary.strip
       self.last_prompt = self.help_prompt
     else
@@ -65,24 +65,13 @@ class SmsVoter < Voter
 
     return self.last_summary.kind_of?(Array) ? self.last_summary : "#{self.last_summary.strip}\n\n#{self.last_prompt}"
   end
-  
+
   def assure_single_sms_voter
     unless user.sms_voter.nil?
       user.sms_voter.update_attribute(:type => nil)
     end
   end
 
-  def reset_address!
-    self.address_line_1 = nil
-    self.address_line_2 = nil
-    self.city = nil
-    self.zip = nil
-    self.polling_place_id = nil
-    self.county_clerk_id = nil
-    self.status = "pending_address_line_1"
-    self.save!
-  end
-  
   def reset_all!
     self.first_name = nil
     self.last_name = nil
@@ -98,7 +87,7 @@ class SmsVoter < Voter
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
-  
+
   def date_of_birth_friendly
     if date_of_birth
       date_of_birth.strftime('%B %d, %Y')
@@ -108,44 +97,44 @@ class SmsVoter < Voter
   def self.default_attributes(attrs = {})
     {:first_name => "John",
       :last_name => "Smith",
-      :phone_number => "+15555551111",
+      :phone_number => FAKE_PHONE_NUMBER,
       :date_of_birth => 20.years.ago}.merge(attrs)
   end
-  
+
   def first_welcome_message
     # 126 Characters
     "Welcome!  This will take just a minute and 5-10 text messages.  All info you provide is kept strictly confidential."
   end
-  
+
   def no_voter_record_found_but_voter_confirms_they_have_voted_message
     # 132 Characters
     "Let's try again.  Make sure to use your full first name as you would when voting.  Example: Gregory, not Greg.  Katherine, not Katy."
   end
-  
+
   def happy_path_message_one
     # These could approach the 160 character limit
     # TODO: If county clerk is nil, log exceptional error
-    if self.is_registered? 
+    if self.is_registered?
       "You can absentee vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
     else
       "You can register AND vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
     end
   end
-  
+
   def happy_path_message_two
     # TODO: If polling place is nil, log exceptional error
-    if self.is_registered? 
+    if self.is_registered?
       "On #{self.next_election_date} you can vote at #{self.polling_place.sms_description}"
     else
       "On #{self.next_election_date} you can register AND vote at #{self.polling_place.sms_description}"
     end
   end
-  
+
   def happy_path_message_three
     # TODO: If county clerk is nil, log exceptional error
     "More help? Call your county clerk @ #{self.county_clerk.phone_number} OR text back 'HELP' and we'll give you a call."
   end
-  
+
   def invite_a_friend_message
     # TODO: Send this after we find out they've submitted absentee ballot?  Or maybe a day after they get to the happy path end using a background process?
      "Invite your friends to use VoteSimple.  Just text us 'Invite' and their phone number and we'll send them a text. Thanks!"

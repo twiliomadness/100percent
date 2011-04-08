@@ -23,10 +23,19 @@
 
   .span-24.last.clear
     %p
-      = link_to 'About Vote Simple', about_path
-    %br
-    %p
       In Madison? Union Cab and Badger Cab are offering...
       %br
       = link_to "Free Rides to Polling Places April 5th", "http://www.unioncab.com/opencms/opencms/news/ElectionDay.html", :style => 'font-size: 20px'
+
+    .donate
+      %p
+        = "Inform 10 Voters for $5!"
+        %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post"}
+          %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}
+          %input{:name => "hosted_button_id", :type => "hidden", :value => "PUS4SZBRJGUEG"}
+          %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif", :type => "image"}
+          %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif", :width => "1"}
+
+    %p
+      = link_to 'About Vote Simple', about_path
 

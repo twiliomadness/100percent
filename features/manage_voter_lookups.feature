@@ -2,7 +2,7 @@ Feature: Manage voter_lookups
   In order to get voter information about users
   As the system
   I want to lookup voter records on voter public access website
- 
+
   Scenario: Prompt new user for first name
 
   Scenario: Prompt for last name
@@ -113,7 +113,7 @@ Feature: Manage voter_lookups
     When I text ""
     Then I should be shown "Sorry"
 
-  Scenario: Blank anwser to text question causes question to be repeated
+  Scenario: Blank answer to text question causes question to be repeated
     Given I am a registered voter
     And I have submitted my name and birthday
     And I enter my street address
@@ -131,3 +131,34 @@ Feature: Manage voter_lookups
     And I have submitted my first and last name
     And I text "not a valid date"
     Then I should be prompted "What is your date of birth?"
+
+  Scenario: Sending stop halts the system
+    Given I have started the voter lookup conversation
+    When I text "stop"
+    Then my voter should have status "stopped"
+    And I should not receive a message after sending stop
+
+  Scenario Outline: In the stopped state, the system stops responding
+    Given I have stopped the voter lookup conversation
+    When I text "<text>"
+    Then I should not receive a message after sending stop
+    Examples:
+      | text   |
+      | yes    |
+      | no     |
+      | vote   |
+      | John   |
+      | Smith  |
+      | 3/8/72 |
+
+  Scenario Outline: In the stopped state, the system responds to "help", "reset" and "start over"
+    Given I have stopped the voter lookup conversation
+    When I text "<text>"
+    Then I should be prompted "<reply>"
+    And my voter should have status "<status>"
+    Examples:
+      | text       | reply                     | status             |
+      | help       | Please describe the issue | stopped            |
+      | reset      | Welcome!                  | pending_first_name |
+      | so         | Welcome!                  | pending_first_name |
+      | start over | Welcome!                  | pending_first_name |
