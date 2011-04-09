@@ -13,6 +13,7 @@ class PollingPlace < ActiveRecord::Base
   # http://www.mail-archive.com/rubyonrails-talk@googlegroups.com/msg22522.html
   
   def self.get_polling_place(address_details_page)
+    polling_place = nil
     Exceptional.rescue do
       address_info_html = Nokogiri.HTML(address_details_page.content)
 
@@ -38,17 +39,10 @@ class PollingPlace < ActiveRecord::Base
         polling_place.vpa_polling_place_id = vpa_polling_place_id
         polling_place.save!
       end
-
-      polling_place
     end
+    polling_place
   end
-  
-  def self.create_from_html(page_html, county)
-    page_object = Nokogiri.HTML(page_html)
-    
-    
-  end
-  
+
   def sms_description
     "#{self.location_name}, #{self.address}, #{self.city}".titleize
   end
