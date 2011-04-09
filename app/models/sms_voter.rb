@@ -113,26 +113,36 @@ class SmsVoter < Voter
 
   def happy_path_message_one
     # These could approach the 160 character limit
-    # TODO: If county clerk is nil, log exceptional error
+    county_clerk_description = "Unable to find county clerk"
+    if self.county_clerk
+      county_clerk_description = self.county_clerk.sms_description
+    end
     if self.is_registered?
-      "You can absentee vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
+      "You can absentee vote any business day until #{self.next_election_date} at #{county_clerk_description}"
     else
-      "You can register AND vote any business day until #{self.next_election_date} at #{self.county_clerk.sms_description}"
+      "You can register AND vote any business day until #{self.next_election_date} at #{county_clerk_description}"
     end
   end
 
   def happy_path_message_two
-    # TODO: If polling place is nil, log exceptional error
+    # These could approach the 160 character limit
+    polling_place_description = "Unable to find polling place"
+    if self.polling_place
+      polling_place_description = self.polling_place.sms_description
+    end
     if self.is_registered?
-      "On #{self.next_election_date} you can vote at #{self.polling_place.sms_description}"
+      "On #{self.next_election_date} you can vote at #{polling_place_description}"
     else
-      "On #{self.next_election_date} you can register AND vote at #{self.polling_place.sms_description}"
+      "On #{self.next_election_date} you can register AND vote at #{polling_place_description}"
     end
   end
 
   def happy_path_message_three
-    # TODO: If county clerk is nil, log exceptional error
-    "More help? Call your county clerk @ #{self.county_clerk.phone_number} OR text back 'HELP' and we'll give you a call."
+    county_clerk_phone = "Phone not found"
+    if self.county_clerk && self.county_clerk.phone_number
+      county_clerk_phone = self.county_clerk.phone_number
+    end
+    "More help? Call your county clerk @ #{county_clerk_phone} OR text back 'HELP' and we'll give you a call."
   end
 
   def invite_a_friend_message
