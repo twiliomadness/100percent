@@ -336,7 +336,7 @@ module SmsVoterLookupStateMachine
     if self.update_voter_polling_place_clerk
       self.branch_yes
     else
-      self.outgoing_messages :text => "We couldn't find that address. Lets try again, or 'HELP' to have a volunteer contact you."
+      self.outgoing_messages.create :text => "We couldn't find that address. Lets try again, or 'HELP' to have a volunteer contact you."
       self.branch_no
     end
   end
