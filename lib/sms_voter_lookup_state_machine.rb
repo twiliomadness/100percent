@@ -243,8 +243,7 @@ module SmsVoterLookupStateMachine
           transition_branch_yes_no(message, :yes => :process_yes, :no => :process_no)
         end
         def process_yes
-          self.update_voter_polling_place_clerk
-          self.branch_yes
+          self.lookup_address
         end
 
         def process_no
