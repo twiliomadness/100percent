@@ -10,6 +10,7 @@ Gotv::Application.routes.draw do
     resources :users
     resources :voters do
       post 'send_text_message'
+      post 'send_text_message_for_current_status'
     end
   end
   resources :voters

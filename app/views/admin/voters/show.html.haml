@@ -133,9 +133,13 @@
     = message.text
     %br
     = message.created_at
+
+= form_for :voter, :url => admin_voter_send_text_message_for_current_status_path(voter), :html => { :class => :form } do |f|
+  = f.submit "Send Message for Current Status", :class => 'button'
+
+%hr
     
 = form_for :voter, :url => admin_voter_send_text_message_path(voter), :html => { :class => :form } do |f|
   = f.label "Message Text"
   = f.text_field :message_text, :size => 100, :class => 'text_field', :maxlength => 160
   = f.submit "Send Message", :class => 'button'
-

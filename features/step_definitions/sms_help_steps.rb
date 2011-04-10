@@ -23,5 +23,3 @@ end
 Then /^my user should have status "([^"]*)"$/ do |arg1|
   @sms_voter.user.status.should == arg1
 end
-
-
