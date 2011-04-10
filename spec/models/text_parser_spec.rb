@@ -89,6 +89,13 @@ describe TextParser do
       result.should == expected
     end
 
+    it "handles crazy court" do
+      address = "101 S MAIN C.T."
+      expected = "101 S MAIN"
+      result = TextParser.parse_address(address)
+      result.should == expected
+    end
+
     it "removes everything after secondary unit designator, including the designator" do
       address = "101 S MAIN ST APT 5"
       expected = "101 S MAIN"
