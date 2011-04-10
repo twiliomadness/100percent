@@ -17,6 +17,8 @@
           %th
             Name
           %th
+            Voter Status
+          %th
             Status
           %th
             = t("web-app-theme.created_at", :default => "Created at")
@@ -31,6 +33,9 @@
               = link_to voter.phone_number, admin_voter_path(voter)
             %td
               = link_to voter.first_name, admin_voter_path(voter)
+            %td
+              = voter.registration_status
+              = "(#{voter.registration_date})" if voter.registration_date.present?
             %td
               = voter.status
             %td
