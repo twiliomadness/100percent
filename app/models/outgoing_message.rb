@@ -8,9 +8,11 @@ class OutgoingMessage < TextMessage
     if text.strip.length > 0 && self.voter.phone_number != SmsVoter::FAKE_PHONE_NUMBER
 
       twilio = Twilio::RestAccount.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
-
+      
+      outgoing_number = self.voter.twilio_number_used.present? ? self.voter.twilio_number_used : APP_CONFIG[:TWILIO_CALLER_ID]
+      
       data = {
-        'From' => APP_CONFIG[:TWILIO_CALLER_ID],
+        'From' => outgoing_number,
         'To' => self.voter.phone_number,
         'Body' => text
       }
