@@ -53,4 +53,8 @@ class TextParser
   def self.normalize_whitespace(text)
     text.split.join(' ')
   end
+  
+  def self.remove_extra_lines(text)
+    text.split(/\n/).first
+  end
 end

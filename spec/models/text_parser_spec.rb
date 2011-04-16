@@ -1,7 +1,15 @@
 require 'spec_helper'
 
 describe TextParser do
-
+  
+  describe "#remove_extra_lines" do
+    it "handles text footers correctly" do
+      text = "Address\n- This is my footer!!! -"
+      result = TextParser.remove_extra_lines(text)
+      result.should == "Address"
+    end
+  end
+  
   describe "#parse_date" do
 
     it "handles canonical US date format (mm/dd/yyyy)" do
