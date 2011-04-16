@@ -367,7 +367,7 @@ module SmsVoterLookupStateMachine
     if result.success && result.all.size == 1
       self.city = self.sms_city
       self.zip = result.zip
-      self.state = "pending_zip"
+      self.status = "pending_zip"
       self.save
       self.next_prompt
     end
