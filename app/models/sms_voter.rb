@@ -31,10 +31,10 @@ class SmsVoter < Voter
   end
 
   def process_message(message)
-    message.strip!
     message = TextParser.remove_extra_lines(message)
     # This is a hack, but all hell breaks loose if message is null
     message = "" if message.blank?
+    message.strip!
     save_message(message)
 
     self.help_request_conversation if message.downcase == "help"
