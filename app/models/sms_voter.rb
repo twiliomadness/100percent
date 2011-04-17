@@ -35,6 +35,7 @@ class SmsVoter < Voter
     # This is a hack, but all hell breaks loose if message is null
     message = "" if message.blank?
     message.strip!
+    # Maybe we should saving the incoming message first?  
     save_message(message)
 
     self.help_request_conversation if message.downcase == "help"
