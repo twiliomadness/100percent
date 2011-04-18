@@ -5,6 +5,9 @@ Gotv::Application.routes.draw do
 
   get "admin" => "admin#index", :as => :admin
 
+  match '/auth/:provider/callback', :to => 'sessions#create'
+  match '/auth/failure', :to => 'sessions#fail'
+
   namespace :admin do
     resources :county_clerks
     resources :users
@@ -15,7 +18,7 @@ Gotv::Application.routes.draw do
   end
   resources :voters
   
-  devise_for :users, :skip => [:registrations, :sessions] do
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }, :skip => [:registrations, :sessions] do
     # devise/registrations
     get 'signup'         => 'devise/registrations#new',     :as => :new_user_registration
     post 'signup'         => 'devise/registrations#create', :as => :user_registration

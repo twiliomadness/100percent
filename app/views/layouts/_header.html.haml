@@ -1,3 +1,5 @@
 .center
   = link_to image_tag('vslogo.png', :class => 'big_logo'), root_path
 
+- unless user_signed_in?
+  =link_to image_tag("fb_login_button.png"), user_omniauth_authorize_path(:facebook)

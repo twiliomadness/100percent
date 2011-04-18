@@ -6,7 +6,7 @@ gem 'pg', '0.10.1'
 gem 'chronic', '0.3.0'
 gem 'compass', '0.10.6'
 gem 'decent_exposure'
-gem 'devise', '1.1.8'
+gem 'devise', '1.2.0'
 gem 'exceptional'
 gem 'formtastic'
 gem 'geokit'
@@ -18,6 +18,7 @@ gem 'nokogiri', '1.4.4'
 gem 'state_machine', '0.9.4'
 gem 'twiliolib', '2.0.7'
 gem 'will_paginate'
+gem "oa-oauth", :require => "omniauth/oauth"
 
 group :cucumber do
   gem 'capybara', '0.4.1.2'
