@@ -1,0 +1,18 @@
+election_1:
+  name: 2011 SPRING SPECIAL ELECTION
+  date: 5/3/2011
+  jurisdiction:
+    type: Assembly
+    district_id: 60
+election_2:
+  name: 2011 SPRING SPECIAL ELECTION
+  date: 5/3/2011
+  jurisdiction:
+    type: Assembly
+    district_id: 83
+election_3:
+  name: 2011 SPRING SPECIAL ELECTION
+  date: 5/3/2011
+  jurisdiction:
+    type: Assembly
+    district_id: 94
