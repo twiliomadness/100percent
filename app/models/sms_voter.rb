@@ -113,10 +113,14 @@ class SmsVoter < Voter
     # 132 Characters
     "Let's try again.  Make sure to use your full first name as you would when voting.  Example: Gregory, not Greg.  Katherine, not Katy."
   end
+  
+  def no_scheduled_elections
+    "Based on your address, there are no upcoming elections scheduled. We'll let you know in the future when there are. Thanks for using VoteSimple.  "
+  end
 
   def happy_path_message_one
     # These could approach the 160 character limit
-    county_clerk_description = "Unable to find county clerk"
+    county_clerk_description = "(County clerk not found)"
     if self.county_clerk
       county_clerk_description = self.county_clerk.sms_description
     end
@@ -129,7 +133,7 @@ class SmsVoter < Voter
 
   def happy_path_message_two
     # These could approach the 160 character limit
-    polling_place_description = "Unable to find polling place"
+    polling_place_description = "(Polling place not found)"
     if self.polling_place
       polling_place_description = self.polling_place.sms_description
     end

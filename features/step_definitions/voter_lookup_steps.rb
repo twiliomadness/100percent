@@ -49,6 +49,11 @@ Given /^I have entered an address that is found for polling place "([^"]*)"$/ do
   post_text "53719"
 end
 
+Given /^I have an upcoming election in my assembly district$/ do
+  @sms_voter.stub!(:next_election_date).and_return("April 5th, 2012")
+end
+
+
 Given /^I have entered an address that is not found$/ do
  VoterRecord.stub!(:get_address_details_page).and_return(nil)
   Given "I enter my street address"

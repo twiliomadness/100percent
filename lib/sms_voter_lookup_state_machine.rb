@@ -265,7 +265,11 @@ module SmsVoterLookupStateMachine
           self.next_prompt
         end
         def summary
-          [self.happy_path_message_one, self.happy_path_message_two, self.happy_path_message_three]
+          if self.next_election_date.blank?
+            self.no_scheduled_elections
+          else
+            [self.happy_path_message_one, self.happy_path_message_two, self.happy_path_message_three]
+          end
         end
         def prompt
 

@@ -1,0 +1,2 @@
+class Statewide < Jurisdiction
+end

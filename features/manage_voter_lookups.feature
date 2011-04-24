@@ -67,6 +67,7 @@ Feature: Manage voter_lookups
   Scenario: Show polling place info if address lookup is success
     Given I am not a registered voter
     And I have submitted my name and birthday
+    And I have an upcoming election in my assembly district
     And I have entered an address that is found for polling place "Poll 1"
     Then I should receive text "Poll 1"
 
