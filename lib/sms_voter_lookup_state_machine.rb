@@ -2,7 +2,6 @@ module SmsVoterLookupStateMachine
   def self.included(base)
     base.state_machine :status, :initial => :welcome do
       after_transition any => :pending_zip, :do => :lookup_address_via_geocode
-      after_transition any => :pending_city, :do => :geocode_address_using_sms_city
       after_transition any => :pending_gab_voter_info_lookup, :do => :lookup_in_gab_by_voter_info
       after_transition any => :pending_voter_address_lookup, :do => :lookup_address
       before_transition any => :welcome, :do => :reset_all!
@@ -78,7 +77,7 @@ module SmsVoterLookupStateMachine
           "At any point just text 'Reset' to start over. If you get totally stuck, text 'Help' and we'll contact you."
         end
         def prompt
-          "Ok, What is your full first name?"
+          "Ok, What is your first name?"
         end
       end
 
@@ -374,6 +373,9 @@ module SmsVoterLookupStateMachine
       self.status = "pending_zip"
       self.save
       self.next_prompt
+    else
+      self.status = "pending_city"
+      self.save
     end
   end
 
