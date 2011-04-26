@@ -4,7 +4,6 @@ class OutgoingMessage < TextMessage
   validates_length_of :text, :maximum => 160, :minimum => 1
 
   def send_text
-    return
     # If a message is two returns, it is "valid", but we shouldn't send it.
     if text.strip.length > 0 && self.voter.phone_number != SmsVoter::FAKE_PHONE_NUMBER
 
