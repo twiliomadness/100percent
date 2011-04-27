@@ -85,14 +85,14 @@ class Voter < ActiveRecord::Base
         self.update_attribute(:county_clerk_id, county_clerk.id)
       end
       
-      assembly_district = Voter.get_assembly_district_from_html(address_details_page)
+      assembly_district = Voter.get_assembly_district_from_html(address_details_page.content)
       if assembly_district.nil?
         Exceptional.handle(Exception.new, "Unable to find assembly district for params: #{params}")
       else
         self.update_attribute(:assembly_district, assembly_district.to_i)
       end
       
-      senate_district = Voter.get_senate_district_from_html(address_details_page)
+      senate_district = Voter.get_senate_district_from_html(address_details_page.content)
       if senate_district.nil?
         Exceptional.handle(Exception.new, "Unable to find senate district for params: #{params}")
       else
