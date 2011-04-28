@@ -32,6 +32,8 @@ Gotv::Application.routes.draw do
 
   get "/namedob" => 'content#namedob', :as => :namedob
   get "/about" => 'content#about', :as => :about
+  get "/contact" => 'content#contact', :as => :contact
+  get "/donate" => 'content#donate', :as => :donate
 
   root :to => "content#index"
 end

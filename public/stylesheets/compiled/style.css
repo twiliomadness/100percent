@@ -76,22 +76,22 @@ body {
   left: 20px;
 }
 
-/* line 59, ../../../app/stylesheets/style.sass */
-.about p, .about li {
+/* line 57, ../../../app/stylesheets/style.sass */
+p, li {
   font-size: 150%;
 }
 
-/* line 62, ../../../app/stylesheets/style.sass */
+/* line 60, ../../../app/stylesheets/style.sass */
 .massive {
   font-size: 250%;
 }
 
-/* line 65, ../../../app/stylesheets/style.sass */
+/* line 63, ../../../app/stylesheets/style.sass */
 .tweet_button {
   text-align: right;
 }
 
-/* line 68, ../../../app/stylesheets/style.sass */
+/* line 66, ../../../app/stylesheets/style.sass */
 .like_button {
   position: relative;
   top: -4px;
