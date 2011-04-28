@@ -125,9 +125,9 @@ class SmsVoter < Voter
       county_clerk_description = self.county_clerk.sms_description
     end
     if self.is_registered?
-      "You can absentee vote any business day until #{self.next_election_date} at #{county_clerk_description}"
+      "You can absentee vote any business day until #{self.friendly_election_day} at #{county_clerk_description}"
     else
-      "You can register AND vote any business day until #{self.next_election_date} at #{county_clerk_description}"
+      "You can register AND vote any business day until #{self.friendly_election_day} at #{county_clerk_description}"
     end
   end
 
@@ -138,9 +138,9 @@ class SmsVoter < Voter
       polling_place_description = self.polling_place.sms_description
     end
     if self.is_registered?
-      "On #{self.next_election_date} you can vote at #{polling_place_description}"
+      "On #{self.friendly_election_day} you can vote at #{polling_place_description}"
     else
-      "On #{self.next_election_date} you can register AND vote at #{polling_place_description}"
+      "On #{self.friendly_election_day} you can register AND vote at #{polling_place_description}"
     end
   end
 

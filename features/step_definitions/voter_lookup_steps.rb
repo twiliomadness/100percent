@@ -50,7 +50,7 @@ Given /^I have entered an address that is found for polling place "([^"]*)"$/ do
 end
 
 Given /^I have an upcoming election in my assembly district$/ do
-  @sms_voter.stub!(:next_election_date).and_return("April 5th, 2012")
+  @sms_voter.stub!(:next_election_date).and_return(5.days.from_now)
 end
 
 

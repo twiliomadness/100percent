@@ -30,6 +30,13 @@ class Voter < ActiveRecord::Base
     self.outgoing_messages.create(:text => message_text)
   end
   
+  def friendly_election_day
+    election_date = next_election_date
+    month = election_date.strftime("%b").capitalize
+    day = election_date.strftime("%d").to_i.ordinalize
+    month + " " + day
+  end
+  
   def next_election_date
     elections = []
     if assembly && assembly.elections.pending.any?
