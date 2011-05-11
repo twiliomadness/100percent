@@ -1,0 +1,4 @@
+class WebVoter < Voter
+
+
+end

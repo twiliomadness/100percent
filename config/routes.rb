@@ -30,10 +30,10 @@ Gotv::Application.routes.draw do
     get 'signout' => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
-  get "/namedob" => 'content#namedob', :as => :namedob
   get "/about" => 'content#about', :as => :about
   get "/contact" => 'content#contact', :as => :contact
   get "/donate" => 'content#donate', :as => :donate
+  get "/dashboard" => 'dashboard#index', :as => :dashboard
 
   root :to => "content#index"
 end
