@@ -1,0 +1,3 @@
+= render 'shared/error_messages', :target => @voter
+= form_for @voter do |f|
+  = render :partial => "form", :locals => {:f => f}

@@ -1,7 +1,7 @@
 module SmsVoterLookupStateMachine
   def self.included(base)
     base.state_machine :status, :initial => :welcome do
-      after_transition any => :pending_zip, :do => :lookup_address_via_geocode
+      after_transition any => :pending_zip, :do => :update_address_via_geocode
       after_transition any => :pending_gab_voter_info_lookup, :do => :lookup_in_gab_by_voter_info
       after_transition any => :pending_voter_address_lookup, :do => :lookup_address
       before_transition any => :welcome, :do => :reset_all!
@@ -356,8 +356,9 @@ module SmsVoterLookupStateMachine
     end
   end
 
-  def lookup_address_via_geocode
-    result = Geokit::Geocoders::GoogleGeocoder.geocode("#{self.address_line_1}, #{self.city}, WI")
+  def update_address_via_geocode
+    # TODO: Use the method in voter
+    result = self.lookup_address_via_geocode
     if result.success && result.all.size == 1
       self.zip = result.zip
       self.save

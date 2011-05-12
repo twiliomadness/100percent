@@ -63,9 +63,10 @@ GEM
     culerity (0.2.15)
     database_cleaner (0.6.6)
     decent_exposure (1.0.1)
-    devise (1.1.8)
+    devise (1.2.0)
       bcrypt-ruby (~> 2.1.2)
-      warden (~> 1.0.2)
+      orm_adapter (~> 0.0.3)
+      warden (~> 1.0.3)
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -104,6 +105,7 @@ GEM
       nokogiri (>= 1.2.1)
     mime-types (1.16)
     nokogiri (1.4.4)
+    orm_adapter (0.0.4)
     pg (0.10.1)
     polyglot (0.3.1)
     rack (1.2.2)
@@ -180,7 +182,7 @@ DEPENDENCIES
   cucumber-rails (= 0.3.2)
   database_cleaner (= 0.6.6)
   decent_exposure
-  devise (= 1.1.8)
+  devise (= 1.2)
   exceptional
   faker (= 0.9.5)
   formtastic

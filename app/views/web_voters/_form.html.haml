@@ -1,0 +1,22 @@
+
+.field
+  = f.label :first_name
+  = f.text_field :first_name
+- if @voter.last_name.present?
+  = f.label :last_name
+  = f.text_field :last_name
+- if @voter.date_of_birth.present?
+  = f.label :date_of_birth
+  = f.text_field :date_of_birth
+.field
+  = f.label :address_line_1
+  = f.text_field :address_line_1
+.field
+  = f.label :city
+  = f.text_field :city
+- if !(@voter.user.present? && @voter.user.email.blank?)
+  .field
+    %label email
+    %input{:name => 'email', :type => 'text'}
+.buttons
+  = f.submit "Update Info" 

@@ -96,3 +96,11 @@ p, li {
   position: relative;
   top: -4px;
 }
+
+/* Forms */
+/* line 71, ../../../app/stylesheets/style.sass */
+.field_with_errors {
+  display: inline;
+  border: 1 px solid red;
+  color: red;
+}

@@ -14,6 +14,7 @@ Gotv::Application.routes.draw do
     end
   end
   resources :voters
+  resources :web_voters
   
   devise_for :users, :skip => [:registrations, :sessions] do
     # devise/registrations
@@ -34,6 +35,8 @@ Gotv::Application.routes.draw do
   get "/contact" => 'content#contact', :as => :contact
   get "/donate" => 'content#donate', :as => :donate
   get "/dashboard" => 'dashboard#index', :as => :dashboard
+  get "/voter" => 'web_voters#new', :as => :voter_signup
+  get "/update_info" => 'web_voters#update_voting_info', :as => :update_voter_info
 
   root :to => "content#index"
 end
