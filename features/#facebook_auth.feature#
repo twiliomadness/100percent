@@ -1,0 +1,16 @@
+Feature: Authorize users against Facebook API
+  In order to make it easy to use the app
+  As a Facebook user
+  I want to be able to authenticate using my Facebook account
+
+  Scenario: Create a new user during Facebook auth
+    Given I am a new user that authorizes with Facebook
+    Then I should be logged into the app
+
+  Scenario: New facebook users gets Birthday added to account
+    Given I am a new user that authorizes with Facebook
+    Then I should have my birthday as part of my record
+
+  Scenario: Login an existing user with Facebook auth
+
+

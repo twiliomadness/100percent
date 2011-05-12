@@ -5,9 +5,6 @@ Gotv::Application.routes.draw do
 
   get "admin" => "admin#index", :as => :admin
 
-  match '/auth/:provider/callback', :to => 'sessions#create'
-  match '/auth/failure', :to => 'sessions#fail'
-
   namespace :admin do
     resources :county_clerks
     resources :users

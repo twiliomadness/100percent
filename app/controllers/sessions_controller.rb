@@ -5,6 +5,4 @@ class SessionsController < ApplicationController
 
   def fail
   end
-
-
 end
