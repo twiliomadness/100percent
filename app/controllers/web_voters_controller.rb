@@ -11,6 +11,7 @@ class WebVotersController < ApplicationController
     respond_to do |format|
       if @voter.save
         sign_in(@voter.user)
+        @voter.update_voting_information
         format.html { redirect_to dashboard_path }
         format.xml  { head :ok }
       else
