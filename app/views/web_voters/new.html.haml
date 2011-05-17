@@ -1,2 +1,2 @@
-= form_for @voter do |f|
+= form_for @voter, :url => voter_signup_path do |f|
   = render :partial => "form", :locals => {:f => f}

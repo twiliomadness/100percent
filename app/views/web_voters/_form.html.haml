@@ -2,21 +2,18 @@
 .field
   = f.label :first_name
   = f.text_field :first_name
-- if @voter.last_name.present?
+.field
   = f.label :last_name
   = f.text_field :last_name
-- if @voter.date_of_birth.present?
-  = f.label :date_of_birth
-  = f.text_field :date_of_birth
 .field
   = f.label :address_line_1
   = f.text_field :address_line_1
 .field
   = f.label :city
   = f.text_field :city
-- if !(@voter.user.present? && @voter.user.email.blank?)
-  .field
-    %label email
-    %input{:name => 'email', :type => 'text'}
+  = f.fields_for :user, @voter.build_user do |uf|
+    .field
+      = uf.label :email
+      = uf.text_field :email
 .buttons
-  = f.submit "Update Info" 
+  = f.submit "Let's Do This!"

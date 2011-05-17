@@ -1,1 +1,13 @@
-= current_user.email
+%h1 
+  Hello
+  = @voter.first_name
+%p
+  Your Senate District
+  = @voter.senate_district
+%p
+  Your Assembly District
+  = @voter.assembly_district
+  
+- if @voter.date_of_birth.blank?
+  %p Provide your Date of Birth and we can help you register to vote.
+  

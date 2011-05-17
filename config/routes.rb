@@ -36,6 +36,7 @@ Gotv::Application.routes.draw do
   get "/donate" => 'content#donate', :as => :donate
   get "/dashboard" => 'dashboard#index', :as => :dashboard
   get "/voter" => 'web_voters#new', :as => :voter_signup
+  post "/voter" => 'web_voters#create'
   get "/update_info" => 'web_voters#update_voting_info', :as => :update_voter_info
 
   root :to => "content#index"

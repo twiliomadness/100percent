@@ -43,7 +43,6 @@ class User < ActiveRecord::Base
 
     state :needs_help
   end
-
 protected
   def email_required?
     false 
