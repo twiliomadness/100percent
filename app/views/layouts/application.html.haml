@@ -1,5 +1,6 @@
 !!! 5
 = render :partial => 'layouts/head'
+= render :partial => 'layouts/javascripts'
 %body{ :lang => 'en', :class => "#{controller.controller_name} #{controller.action_name}" }
   #wrapper
     = render :partial => 'layouts/header'
@@ -14,5 +15,5 @@
     #footer
       = render :partial => 'layouts/footer'
   -# Javascript at the bottom for fast page loading
-  = render :partial => 'layouts/javascripts'
+  
 

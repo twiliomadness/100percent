@@ -327,9 +327,9 @@ ul.nav li ul.submenu li a
 {
 	display :block;
 	float: left;
-	width: 155px;
-	height: 55px;
-	margin: 25px 0 25px 35px;
+	width: 206px;
+	height: 72px;
+	margin: 15px 0 15px 35px;
 }
 
 #content_wrapper
@@ -895,7 +895,7 @@ ul.nav li ul.submenu li a
 	background: transparent url('../images/caption_bg.png') repeat-x top;
 	border-bottom: 1px solid #ddd;
 	width: 959px;
-	height: 140px;
+	height: 90px;
 	margin: auto;
 }
 
@@ -1727,4 +1727,4 @@ a.cs-prev:hover, a.cs-next:hover
 
 /*  Dude's changes */
 
-.inner_wrapper p {margin-bottom: 10px;}
+.inner_wrapper p {margin-bottom: 10px; font-size: 13px;}

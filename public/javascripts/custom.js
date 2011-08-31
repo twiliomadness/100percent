@@ -120,34 +120,10 @@ $(document).ready(function(){
 
 	$('input[title!=""]').hint();
 	
-	$('#content_slider').coinslider({ width: 920, height: 360, opacity: 0.9, navigation: true, titleSpeed: 800 , delay: 5000, sDelay: 10 });
+	$('#content_slider').coinslider({ width: 920, height: 360, opacity: 0.9, navigation: true, titleSpeed: 800 , delay: 8000, sDelay: 10 });
 	
 	$('#content_slider_slide').pSlider({ nav: '#slider_nav', navWrapper: '.slider_nav_btn', fadeSpeed: 800, delay: 5000 });
-	
-	$('.portfolio_vimeo').fancybox({ 
-		padding: 10,
-		overlayColor: '#fff', 
-		overlayOpacity: .7
-	});
-	
-	$('.portfolio_youtube').fancybox({ 
-		padding: 10,
-		overlayColor: '#fff', 
-		overlayOpacity: .7
-	});
-	
-	$('.portfolio_image').fancybox({ 
-		padding: 10,
-		overlayColor: '#fff', 
-		overlayOpacity: .7
-	});
-	
-	$('#skins_nav').fancybox({ 
-		padding: 0,
-		overlayColor: '#fff', 
-		overlayOpacity: .7
-	});
-	
+
 	$('.two_third').hover(function(){  
  			$(this).find('.gallery1_hover').css({ 'top': '-411px', 'visibility': 'visible', 'opacity': 0.8 }).fadeIn(400);
  			

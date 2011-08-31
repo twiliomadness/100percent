@@ -1,35 +1,45 @@
-.page_caption
-  %h1.cufon VoteSimple
-  %p.cufon
-    Learn when, where, and how to vote in Wisconsin
+
 .inner_wrapper
-  %br
-  %br
-  %h1
-    Text "Vote" to
-    =# Get this from IP geocode lookup to determine what area code to display.  715, 920, 414, 608.
-    = APP_CONFIG[:TWILIO_CALLER_ID]
+#content_slider
+  %a{:href => ""}
+    <img src="images/your_vote_counts.jpg" alt="What We Do" class="shadow"/>
+    %span.left
+      %strong.header Learn when, where, and how to vote in Wisconsin
+      %span
+        We help you find your polling location, whether you are registered, and how to become registered.
+      
+  %a{:href => ""}
+    <img src="images/your_vote_counts.jpg" alt="Your Vote Counts" class="shadow"/>
+    %span.left
+      %strong.header
+        Your Vote Counts
+      %span
+        We're a group of volunteers, ready to help answer your questions about voting in Wisconsin.
+      
+  %a{:href => ""}
+    <img src="images/your_vote_counts.jpg" alt="Try It Out" class="shadow"/>
+    %span.left
+      %strong.header
+        Text "Vote" to
+        %br
+        =# Get this from IP geocode lookup to determine what area code to display.  715, 920, 414, 608.
+        = APP_CONFIG[:TWILIO_CALLER_ID]
+      %span
+        Your personal information is kept entirely confidential.  Our sophisticated software will lead you through the process to help get you to the polls and 
+        %b vote.
+  
+#home_tagline
+  .left_tagline
+    %h2
+      A non-partisan effort to improve voter turnout in Wisconsin
+  .right_tagline
+    %a{:href => about_path, :class => "big_button"} 
+      %span Learn More
+
+
+
 
   %br
-
-  #quotes.span-24.clear.last
-    .span-12.tweet_button
-      %a.twitter-share-button{"data-count" => "horizontal", "data-text" => "Learn when, where, and how to vote in Wisconsin", "data-via" => "votesimpleorg", :href => "http://twitter.com/share"} Tweet
-      %script{:src => "http://platform.twitter.com/widgets.js", :type => "text/javascript"}
-    .span-12.last.like_button
-      %script{:src => "http://connect.facebook.net/en_US/all.js#xfbml=1"}
-      %fb:like{:font => "", :href => "www.votesimple.org", :layout => "button_count", :show_faces => "true", :width => "450"}
-
-    .span-24.last.clear
-
-      .donate
-        %p
-          = "Inform 10 Voters for $5!"
-          %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post"}
-            %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}
-            %input{:name => "hosted_button_id", :type => "hidden", :value => "PUS4SZBRJGUEG"}
-            %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif", :type => "image"}
-            %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif", :width => "1"}
 
 
 %br.clear
