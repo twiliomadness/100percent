@@ -2,7 +2,7 @@
 {
 	width: 20px;
 	height: 47px;
-	background: transparent url('../../images/skins/blue/left_nav_bg.png') no-repeat top;
+	background: transparent url('/images/skins/blue/left_nav_bg.png') no-repeat top;
 	float: left;
 }
 
@@ -10,13 +10,13 @@
 {
 	width: 20px;
 	height: 47px;
-	background: transparent url('../../images/skins/blue/right_nav_bg.png') no-repeat top;
+	background: transparent url('/images/skins/blue/right_nav_bg.png') no-repeat top;
 	float: right;
 }
 
 #menu_wrapper
 {
-	background: transparent url('../../images/skins/blue/nav_bg.png') repeat-x top;
+	background: transparent url('/images/skins/blue/nav_bg.png') repeat-x top;
 }
 
 ul.nav li
@@ -28,7 +28,7 @@ ul.nav li
 
 ul.nav li.current_page_item, ul.nav li:hover
 {
-	background: #175f9d url('../../images/skins/blue/active_nav_bg.png') repeat-x bottom;
+	background: #175f9d url('/images/skins/blue/active_nav_bg.png') repeat-x bottom;
 }
 
 ul.nav li:first-child
@@ -44,29 +44,29 @@ ul.nav li:first-child a
 a.big_button, a.big_button:hover
 {
 	color: #fff;
-	background: transparent url("../../images/skins/blue/big_btn_bg.png") no-repeat top;
+	background: transparent url("/images/skins/blue/big_btn_bg.png") no-repeat top;
 }
 
 a.button, a.button:hover
 {
 	color: #fff;
-	background: transparent url("../../images/skins/blue/btn_bg.png") no-repeat top;
+	background: transparent url("/images/skins/blue/btn_bg.png") no-repeat top;
 }
 
 a.long_button, a.long_button:hover
 {
 	color: #fff;
-	background: transparent url("../../images/skins/blue/long_btn_bg.png") no-repeat top;
+	background: transparent url("/images/skins/blue/long_btn_bg.png") no-repeat top;
 }
 
 #content_wrapper .inner #content_slider_slide
 {
-	background: transparent url("../../images/blue_slide_bg.png") repeat-x top;
+	background: transparent url("/images/skins/blue/blue_slide_bg.png") repeat-x top;
 }
 
 #logo
 {
-	background: transparent url("../../images/skins/dark_logo.png") no-repeat top left;
+	background: transparent url("/images/skins/blue/dark_logo.png") no-repeat top left;
 }
 
 .cs-title strong.header
@@ -86,7 +86,7 @@ a.long_button, a.long_button:hover
 
 .pricing_box.large .header
 {
-	background: transparent url('../../images/skins/blue/nav_bg.png') repeat-x top;
+	background: transparent url('/images/skins/blue/nav_bg.png') repeat-x top;
 	color: #fff;
 	text-shadow: 0 0 0 #fff;
 }

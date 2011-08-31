@@ -5,14 +5,14 @@
 .inner_wrapper
   .sidebar_content
     %p
-      Send us a text to test the system:  
+      Use the system by sending a text to:  
       = APP_CONFIG[:TWILIO_CALLER_ID]
     %p
-      You can email us at
+      Email:
       = mail_to "info@votesimple.org", "info@votesimple.org"
   
     %p
-      On Twitter at
+      Twitter:
       = link_to "VoteSimpleOrg", "https://twitter.com/votesimpleorg"
   .sidebar_wrapper
     .sidebar
@@ -21,4 +21,3 @@
         %p VoteSimple is a collection of volunteers working to improve the voter turnout rate in Wisconsin.  
         %p We're #{link_to 'non-partisan', about_path} and our sole interest is in increasing citizen involvement in the election process.
         
-%br.clear
