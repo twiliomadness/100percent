@@ -1,13 +1,17 @@
 !!! 5
 = render :partial => 'layouts/head'
 %body{ :lang => 'en', :class => "#{controller.controller_name} #{controller.action_name}" }
-  .container#container
-    %header#header
-      = render :partial => 'layouts/header'
-    #main{ :role => 'main' }
-      = render :partial => 'layouts/flashes'
-      = yield
-    %footer#footer
+  #wrapper
+    = render :partial => 'layouts/header'
+    %br.clear
+    #content_wrapper
+      .top
+      .inner
+        = render :partial => 'layouts/flashes'
+        = yield
+      .bottom
+    %br.clear
+    #footer
       = render :partial => 'layouts/footer'
   -# Javascript at the bottom for fast page loading
   = render :partial => 'layouts/javascripts'

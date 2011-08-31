@@ -1,0 +1,393 @@
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 960px;
+}
+.grid_1, .grid_2, .grid_3, .grid_4, .grid_5, .grid_6, .grid_7, .grid_8, .grid_9, .grid_10, .grid_11, .grid_12, .grid_13, .grid_14, .grid_15, .grid_16, .grid_17, .grid_18, .grid_19, .grid_20, .grid_21, .grid_22, .grid_23, .grid_24 {
+    display: inline;
+    float: left;
+    margin-left: 5px;
+    margin-right: 5px;
+    position: relative;
+}
+.alpha {
+    margin-left: 0;
+}
+.omega {
+    margin-right: 0;
+}
+.container .grid_1 {
+    width: 30px;
+}
+.container .grid_2 {
+    width: 70px;
+}
+.container .grid_3 {
+    width: 110px;
+}
+.container .grid_4 {
+    width: 150px;
+}
+.container .grid_5 {
+    width: 190px;
+}
+.container .grid_6 {
+    width: 230px;
+}
+.container .grid_7 {
+    width: 270px;
+}
+.container .grid_8 {
+    width: 310px;
+}
+.container .grid_9 {
+    width: 350px;
+}
+.container .grid_10 {
+    width: 390px;
+}
+.container .grid_11 {
+    width: 430px;
+}
+.container .grid_12 {
+    width: 470px;
+}
+.container .grid_13 {
+    width: 510px;
+}
+.container .grid_14 {
+    width: 550px;
+}
+.container .grid_15 {
+    width: 590px;
+}
+.container .grid_16 {
+    width: 630px;
+}
+.container .grid_17 {
+    width: 670px;
+}
+.container .grid_18 {
+    width: 710px;
+}
+.container .grid_19 {
+    width: 750px;
+}
+.container .grid_20 {
+    width: 790px;
+}
+.container .grid_21 {
+    width: 830px;
+}
+.container .grid_22 {
+    width: 870px;
+}
+.container .grid_23 {
+    width: 910px;
+}
+.container .grid_24 {
+    width: 950px;
+}
+.container .prefix_1 {
+    padding-left: 40px;
+}
+.container .prefix_2 {
+    padding-left: 80px;
+}
+.container .prefix_3 {
+    padding-left: 120px;
+}
+.container .prefix_4 {
+    padding-left: 160px;
+}
+.container .prefix_5 {
+    padding-left: 200px;
+}
+.container .prefix_6 {
+    padding-left: 240px;
+}
+.container .prefix_7 {
+    padding-left: 280px;
+}
+.container .prefix_8 {
+    padding-left: 320px;
+}
+.container .prefix_9 {
+    padding-left: 360px;
+}
+.container .prefix_10 {
+    padding-left: 400px;
+}
+.container .prefix_11 {
+    padding-left: 440px;
+}
+.container .prefix_12 {
+    padding-left: 480px;
+}
+.container .prefix_13 {
+    padding-left: 520px;
+}
+.container .prefix_14 {
+    padding-left: 560px;
+}
+.container .prefix_15 {
+    padding-left: 600px;
+}
+.container .prefix_16 {
+    padding-left: 640px;
+}
+.container .prefix_17 {
+    padding-left: 680px;
+}
+.container .prefix_18 {
+    padding-left: 720px;
+}
+.container .prefix_19 {
+    padding-left: 760px;
+}
+.container .prefix_20 {
+    padding-left: 800px;
+}
+.container .prefix_21 {
+    padding-left: 840px;
+}
+.container .prefix_22 {
+    padding-left: 880px;
+}
+.container .prefix_23 {
+    padding-left: 920px;
+}
+.container .suffix_1 {
+    padding-right: 40px;
+}
+.container .suffix_2 {
+    padding-right: 80px;
+}
+.container .suffix_3 {
+    padding-right: 120px;
+}
+.container .suffix_4 {
+    padding-right: 160px;
+}
+.container .suffix_5 {
+    padding-right: 200px;
+}
+.container .suffix_6 {
+    padding-right: 240px;
+}
+.container .suffix_7 {
+    padding-right: 280px;
+}
+.container .suffix_8 {
+    padding-right: 320px;
+}
+.container .suffix_9 {
+    padding-right: 360px;
+}
+.container .suffix_10 {
+    padding-right: 400px;
+}
+.container .suffix_11 {
+    padding-right: 440px;
+}
+.container .suffix_12 {
+    padding-right: 480px;
+}
+.container .suffix_13 {
+    padding-right: 520px;
+}
+.container .suffix_14 {
+    padding-right: 560px;
+}
+.container .suffix_15 {
+    padding-right: 600px;
+}
+.container .suffix_16 {
+    padding-right: 640px;
+}
+.container .suffix_17 {
+    padding-right: 680px;
+}
+.container .suffix_18 {
+    padding-right: 720px;
+}
+.container .suffix_19 {
+    padding-right: 760px;
+}
+.container .suffix_20 {
+    padding-right: 800px;
+}
+.container .suffix_21 {
+    padding-right: 840px;
+}
+.container .suffix_22 {
+    padding-right: 880px;
+}
+.container .suffix_23 {
+    padding-right: 920px;
+}
+.container .push_1 {
+    left: 40px;
+}
+.container .push_2 {
+    left: 80px;
+}
+.container .push_3 {
+    left: 120px;
+}
+.container .push_4 {
+    left: 160px;
+}
+.container .push_5 {
+    left: 200px;
+}
+.container .push_6 {
+    left: 240px;
+}
+.container .push_7 {
+    left: 280px;
+}
+.container .push_8 {
+    left: 320px;
+}
+.container .push_9 {
+    left: 360px;
+}
+.container .push_10 {
+    left: 400px;
+}
+.container .push_11 {
+    left: 440px;
+}
+.container .push_12 {
+    left: 480px;
+}
+.container .push_13 {
+    left: 520px;
+}
+.container .push_14 {
+    left: 560px;
+}
+.container .push_15 {
+    left: 600px;
+}
+.container .push_16 {
+    left: 640px;
+}
+.container .push_17 {
+    left: 680px;
+}
+.container .push_18 {
+    left: 720px;
+}
+.container .push_19 {
+    left: 760px;
+}
+.container .push_20 {
+    left: 800px;
+}
+.container .push_21 {
+    left: 840px;
+}
+.container .push_22 {
+    left: 880px;
+}
+.container .push_23 {
+    left: 920px;
+}
+.container .pull_1 {
+    left: -40px;
+}
+.container .pull_2 {
+    left: -80px;
+}
+.container .pull_3 {
+    left: -120px;
+}
+.container .pull_4 {
+    left: -160px;
+}
+.container .pull_5 {
+    left: -200px;
+}
+.container .pull_6 {
+    left: -240px;
+}
+.container .pull_7 {
+    left: -280px;
+}
+.container .pull_8 {
+    left: -320px;
+}
+.container .pull_9 {
+    left: -360px;
+}
+.container .pull_10 {
+    left: -400px;
+}
+.container .pull_11 {
+    left: -440px;
+}
+.container .pull_12 {
+    left: -480px;
+}
+.container .pull_13 {
+    left: -520px;
+}
+.container .pull_14 {
+    left: -560px;
+}
+.container .pull_15 {
+    left: -600px;
+}
+.container .pull_16 {
+    left: -640px;
+}
+.container .pull_17 {
+    left: -680px;
+}
+.container .pull_18 {
+    left: -720px;
+}
+.container .pull_19 {
+    left: -760px;
+}
+.container .pull_20 {
+    left: -800px;
+}
+.container .pull_21 {
+    left: -840px;
+}
+.container .pull_22 {
+    left: -880px;
+}
+.container .pull_23 {
+    left: -920px;
+}
+.clear {
+    clear: both;
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+}
+.clearfix:after {
+    clear: both;
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    width: 0;
+}
+.clearfix {
+    display: inline-block;
+}
+* html .clearfix {
+    height: 1%;
+}
+.clearfix {
+    display: block;
+}

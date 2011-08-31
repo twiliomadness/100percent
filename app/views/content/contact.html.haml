@@ -1,9 +1,26 @@
-%h1
-  Contact
-%p
-  You can contact us at
-  = mail_to "info@votesimple.org", "info@votesimple.org"
+.page_caption
+  %h1.cufon Contact
+  %p.cufon
+    Please get in touch!  We're continually looking for partners, volunteers, and anyone interested in helping out.
+.inner_wrapper
+  .sidebar_content
+    %p
+      Send us a text to test the system:  
+      = APP_CONFIG[:TWILIO_CALLER_ID]
+    %p
+      You can email us at
+      = mail_to "info@votesimple.org", "info@votesimple.org"
   
-%p
-  On Twitter at
-  = link_to "VoteSimpleOrg", "https://twitter.com/votesimpleorg"
+    %p
+      On Twitter at
+      = link_to "VoteSimpleOrg", "https://twitter.com/votesimpleorg"
+  .sidebar_wrapper
+    .sidebar
+      .content
+        %h5
+          VoteSimple
+        %br
+        %p VoteSimple is a collection of volunteers working to improve the voter turnout rate in Wisconsin.  
+        %p We're non-partisan and not aligned with any political party.
+        
+%br.clear
