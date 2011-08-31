@@ -6,6 +6,9 @@ class ContentController < ApplicationController
     end
   end
 
+  def how_works
+  end
+
   def about
   end
   

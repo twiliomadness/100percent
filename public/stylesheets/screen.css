@@ -129,7 +129,7 @@ img.frame
  	float: left;
  	margin: 0 20px 10px 0;
  	text-align: center;
- 	background: transparent url('../images/caption_bg.png') repeat-x bottom;
+ 	background: transparent url('/images/caption_bg.png') repeat-x bottom;
 }
 
 .frame_left .caption, .frame_right .caption, .frame_center .caption
@@ -150,7 +150,7 @@ img.frame
  	float: right;
  	margin: 0 0 10px 20px;
  	text-align: center;
- 	background: transparent url('../images/caption_bg.png') repeat-x bottom;
+ 	background: transparent url('/images/caption_bg.png') repeat-x bottom;
 }
 
 .frame_center
@@ -165,7 +165,7 @@ img.frame
 	margin-bottom: 20px;
  	text-align: center;
  	clear: both;
- 	background: transparent url('../images/caption_bg.png') repeat-x bottom;
+ 	background: transparent url('/images/caption_bg.png') repeat-x bottom;
 }
 
 .with_bg
@@ -190,7 +190,7 @@ blockquote
 {
 	padding-left: 60px;
 	width: 90%;
-	background: transparent url("../images/quote_bg.png") no-repeat top left;
+	background: transparent url("/images/quote_bg.png") no-repeat top left;
 	min-height: 50px;
 	margin: 0 0 10px 0;
 }
@@ -259,7 +259,7 @@ ul.nav li ul
 {
 	display: none;
 	list-style: none;
-	background: #fff url('../images/submenu_bg.png') repeat-x bottom;
+	background: #fff url('/images/submenu_bg.png') repeat-x bottom;
 	position:absolute;
 	top: 40px;
 	float: none;
@@ -290,7 +290,7 @@ ul.nav li ul.submenu li:hover
 {
 	float: none;
 	border: 0;
-	background: transparent url('../images/submenu_hover_bg.png') repeat-x bottom;
+	background: transparent url('/images/submenu_hover_bg.png') repeat-x bottom;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
@@ -309,7 +309,7 @@ ul.nav li ul.submenu li a
 	float: right;
 	width: 140px;
 	height: 20px;
-	background: transparent url('../images/search_bg.png') no-repeat top;
+	background: transparent url('/images/search_bg.png') no-repeat top;
 	margin: 10px 0 0 0;
 }
 
@@ -342,20 +342,20 @@ ul.nav li ul.submenu li a
 {
 	width: 973px;
 	height: 25px;
-	background: transparent url('../images/content_top_bg.png') no-repeat top;
+	background: transparent url('/images/content_top_bg.png') no-repeat top;
 }
 
 #content_wrapper .bottom
 {
 	width: 973px;
 	height: 25px;
-	background: transparent url('../images/content_bottom_bg.png') no-repeat top;
+	background: transparent url('/images/content_bottom_bg.png') no-repeat top;
 }
 
 #content_wrapper .inner
 {
 	width: 973px;
-	background: transparent url('../images/content_bg.png') repeat-y top;
+	background: transparent url('/images/content_bg.png') repeat-y top;
 }
 
 #content_wrapper .inner .inner_wrapper
@@ -383,7 +383,7 @@ ul.nav li ul.submenu li a
 	float: right;
 	margin-top: -28px;
 	min-height: 300px;
-	background: transparent url('../images/sidebar_bg.png') repeat-y top left;
+	background: transparent url('/images/sidebar_bg.png') repeat-y top left;
 }
 
 #content_wrapper .inner .inner_wrapper .sidebar_wrapper .sidebar .content
@@ -397,7 +397,7 @@ ul.nav li ul.submenu li a
 	width: 250px;
 	float: right;
 	height: 100px;
-	background: transparent url('../images/sidebar_bottom_bg.png') repeat-y top left;
+	background: transparent url('/images/sidebar_bottom_bg.png') repeat-y top left;
 }
 
 #content_wrapper .inner #content_slider, #content_wrapper .inner #content_slider_slide
@@ -466,7 +466,7 @@ ul.nav li ul.submenu li a
 {
 	width: 507px;
 	height: 432px;
-	background: transparent url('../images/imac_bg.png') no-repeat top;
+	background: transparent url('/images/imac_bg.png') no-repeat top;
 	float: right;
 	margin: -70px 30px 0 0;
 }
@@ -487,7 +487,7 @@ ul.nav li ul.submenu li a
 {
 	width: 986px;
 	height: 58px;
-	background: transparent url('../images/slider_nav_bg.png') no-repeat top;
+	background: transparent url('/images/slider_nav_bg.png') no-repeat top;
 	margin-left: -7px;
 }
 
@@ -495,7 +495,7 @@ ul.nav li ul.submenu li a
 {
 	width: 986px;
 	height: 58px;
-	background: transparent url('../images/slider_nav_bg.png') no-repeat top;
+	background: transparent url('/images/slider_nav_bg.png') no-repeat top;
 	margin-left: -7px;
 	font-size: 11px;
 	word-spacing: 1px;
@@ -536,7 +536,7 @@ ul.nav li ul.submenu li a
 
 #content_wrapper .inner #slider_nav .slider_nav_btn a.active
 {
-	background: transparent url('../images/active_slide_bg.png') repeat-x top;
+	background: transparent url('/images/active_slide_bg.png') repeat-x top;
 	border-left: 1px solid #ebebeb;
 	border-right: 1px solid #ebebeb;
 }
@@ -559,7 +559,7 @@ ul.nav li ul.submenu li a
 	width: 959px;
 	margin: auto;
 	height: 100px;
-	background: transparent url('../images/home_tagline_bg.png') repeat-x top;
+	background: transparent url('/images/home_tagline_bg.png') repeat-x top;
 	border-bottom: 1px solid #ddd;
 }
 
@@ -892,7 +892,7 @@ ul.nav li ul.submenu li a
 
 .page_caption
 {
-	background: transparent url('../images/caption_bg.png') repeat-x top;
+	background: transparent url('/images/caption_bg.png') repeat-x top;
 	border-bottom: 1px solid #ddd;
 	width: 959px;
 	height: 90px;
@@ -901,7 +901,7 @@ ul.nav li ul.submenu li a
 
 .page_no_caption
 {
-	background: transparent url('../images/no_caption_bg.png') repeat-x top;
+	background: transparent url('/images/no_caption_bg.png') repeat-x top;
 	border-bottom: 1px solid #ddd;
 	width: 959px;
 	height: 80px;
@@ -920,7 +920,7 @@ ul.nav li ul.submenu li a
 {
 	display: block;
 	font-size: 16px;
-	color: #999;
+	color: #666;
 	margin: 7px 25px 0 30px;
 	text-shadow: 0 1px 1px #fff;
 	width: 90%;
@@ -1004,18 +1004,18 @@ ul.nav li ul.submenu li a
 
 .pricing_box.shadow_right
 {
-	background: #f9f9f9 url('../images/shadow_right.png') repeat-y top right;
+	background: #f9f9f9 url('/images/shadow_right.png') repeat-y top right;
 }
 
 .pricing_box.shadow_left
 {
-	background: #f9f9f9 url('../images/shadow_left.png') repeat-y top left;
+	background: #f9f9f9 url('/images/shadow_left.png') repeat-y top left;
 } 
 
 #content_wrapper ul
 {
 	margin-left: 20px;
-	list-style-image:url("../images/arrow_li.png");
+	list-style-image:url("/images/arrow_li.png");
 }
 
 #content_wrapper ul li
@@ -1057,7 +1057,7 @@ ul.nav li ul.submenu li a
 #content_wrapper table tr th
 {
 	font-weight: bold;
-	background: #cccccc url("../images/bt_g.png") repeat-x center;
+	background: #cccccc url("/images/bt_g.png") repeat-x center;
 	text-align: left;
 	text-shadow: 0 1px 1px #fff;
 }
@@ -1207,7 +1207,7 @@ label.error
 	-moz-box-shadow: 0 1px 3px #ebebeb;
  	-webkit-box-shadow: 0 1px 3px #ebebeb;
  	box-shadow: 0px 1px 3px #ebebeb;
- 	background: #cccccc url("../images/bt_g.png") repeat-x top;
+ 	background: #cccccc url("/images/bt_g.png") repeat-x top;
 	text-align: left;
 	text-shadow: 0 1px 1px #fff;
 	border: 1px solid #ccc;
@@ -1283,7 +1283,7 @@ label.error
 
 #content_wrapper .sidebar .content .sidebar_widget li ul.twitter li
 {
-	background: url("../images/icon_twitter3.png") no-repeat 10px top;
+	background: url("/images/icon_twitter3.png") no-repeat 10px top;
 	padding: 0 0 0 35px;
 }
 
@@ -1310,7 +1310,7 @@ label.error
 #about_the_author .header
 {
 	font-weight: bold;
-	background: transparent url("../images/bt_g.png") repeat-x center;
+	background: transparent url("/images/bt_g.png") repeat-x center;
 	text-shadow: 0 1px 1px #fff;
 }
 
@@ -1446,7 +1446,7 @@ input[type=text], input[type=password], select
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	background: #f9f9f9 url('../images/bg_ip.png') repeat-x top;
+	background: #f9f9f9 url('/images/bg_ip.png') repeat-x top;
 	font-family: "helvetica neue",Helvetica,Arial,Verdana,sans-serif;
 }
 
@@ -1469,7 +1469,7 @@ textarea
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	background: #f9f9f9 url('../images/bg_ip.png') repeat-x top;
+	background: #f9f9f9 url('/images/bg_ip.png') repeat-x top;
 	font-family: "helvetica neue",Helvetica,Arial,Verdana,sans-serif;
 }
 
@@ -1489,12 +1489,12 @@ input[type=submit], input[type=button]
 	color: #fff;
 	text-transform: uppercase;
 	font-weight: bold;
-	background: transparent url("../images/bg_button.png") no-repeat bottom;
+	background: transparent url("/images/bg_button.png") no-repeat bottom;
 }
 
 input[type=submit]:hover, input[type=button]:hover
 {
-	background: transparent url("../images/bg_button_hover.png") no-repeat bottom;
+	background: transparent url("/images/bg_button_hover.png") no-repeat bottom;
 }
 
 input[type=submit]:active, input[type=button]:active
@@ -1511,7 +1511,7 @@ input[type=button].silver, input[type=submit].silver
 	height: 44px;
 	color: #333;
 	font-size: 13px;
-	background: transparent url("../images/bg_header_button.png") no-repeat bottom;
+	background: transparent url("/images/bg_header_button.png") no-repeat bottom;
 }
 
 input[type=button].silver:active, input[type=submit].silver:active
@@ -1611,7 +1611,7 @@ a.big_button:active, a.button:active, a.long_button:active
 {
 	width: 986px;
 	height: 58px;
-	background: transparent url('../images/slider_nav_bg.png') no-repeat top;
+	background: transparent url('/images/slider_nav_bg.png') no-repeat top;
 	margin-top: 20px;
 	margin-left: -7px;
 	text-align: center;
@@ -1628,7 +1628,7 @@ a.big_button:active, a.button:active, a.long_button:active
 
 #cs-buttons-content_slider a.cs-active
 {
-	background: transparent url('../images/active_slide_bg.png') repeat-x top;
+	background: transparent url('/images/active_slide_bg.png') repeat-x top;
 	border-left: 1px solid #ebebeb;
 	border-right: 1px solid #ebebeb;
 }
@@ -1701,7 +1701,7 @@ a.cs-prev:hover, a.cs-next:hover
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
  	margin: 0 0 0 3px;
- 	background: #cccccc url("../images/bt_g.png") repeat-x center;
+ 	background: #cccccc url("/images/bt_g.png") repeat-x center;
 	border: 1px solid #ccc;
 	color: #999;
 	text-shadow: 0 1px 1px #fff;
@@ -1712,7 +1712,7 @@ a.cs-prev:hover, a.cs-next:hover
  	-webkit-box-shadow: 0 1px 3px #ccc;
  	box-shadow: 0px 1px 3px #ccc;
  	border: 1px solid #999;
-	background: #999999 url("../images/bt_gh.png") repeat-x center;
+	background: #999999 url("/images/bt_gh.png") repeat-x center;
 }
 
 .pagination a:active, .pagination a.active {
@@ -1721,7 +1721,7 @@ a.cs-prev:hover, a.cs-next:hover
 	-moz-box-shadow: 0 1px 3px #ccc;
  	-webkit-box-shadow: 0 1px 3px #ccc;
  	box-shadow: 0px 1px 3px #ccc;
-	background: #999999 url("../images/bt_ga.png") repeat-x center;
+	background: #999999 url("/images/bt_ga.png") repeat-x center;
 	text-shadow: 0px 0px 0px transparent;
 }
 
