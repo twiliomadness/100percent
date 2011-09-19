@@ -64,11 +64,6 @@ a.long_button, a.long_button:hover
 	background: transparent url("/images/skins/blue/blue_slide_bg.png") repeat-x top;
 }
 
-#logo
-{
-	background: transparent url("/images/skins/blue/dark_logo.png") no-repeat top left;
-}
-
 .cs-title strong.header
 {
 	color: #074b87;
