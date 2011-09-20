@@ -12,7 +12,7 @@ class SmsMessagesController < ApplicationController
 
     @user = User.find_or_create_by_phone_number(phone_number)
     @user.sms_voter.update_attribute(:twilio_number_used, twilio_number_used) if @user.sms_voter.present?
-    @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter(:phone_number => phone_number, :twilio_number_used => twilio_number, :sms_city => sms_city, :sms_state => sms_state, :sms_zip => sms_zip) : @user.sms_voter
+    @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter(:phone_number => phone_number, :twilio_number_used => twilio_number_used, :sms_city => sms_city, :sms_state => sms_state, :sms_zip => sms_zip) : @user.sms_voter
     
     outgoing_text = @sms_voter.process_message(incoming_text)
 
