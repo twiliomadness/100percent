@@ -344,7 +344,7 @@ var Cufon = (function() {
 
 		this.family = face['font-family'].toLowerCase();
 		this.weight = face['font-weight'];
-		this.style = face['font-style'] || 'normal';
+		this.style = face['font-style'] || 'bold';
 
 		this.viewBox = (function () {
 			var parts = face.bbox.split(/\s+/);

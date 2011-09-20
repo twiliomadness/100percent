@@ -1134,6 +1134,7 @@ ul.nav li ul.submenu li a
 {
 	margin: 15px;
 }
+label {display: inline-block; width: 180px;}
 
 label.error
 {
@@ -1471,30 +1472,6 @@ textarea
 	border-radius: 5px;
 	background: #f9f9f9 url('/images/bg_ip.png') repeat-x top;
 	font-family: "helvetica neue",Helvetica,Arial,Verdana,sans-serif;
-}
-
-input[type=text]:hover, input[type=password]:hover, textarea:hover
-{
-	border: 1px solid #ccc;
-	-moz-box-shadow: 0 1px 3px #ebebeb;
- 	-webkit-box-shadow: 0 1px 3px #ebebeb;
- 	box-shadow: 0px 1px 3px #ebebeb;
-}
-
-input[type=submit], input[type=button]
-{
-	width: 152px;
-	height: 39px;
-	border: 0;
-	color: #fff;
-	text-transform: uppercase;
-	font-weight: bold;
-	background: transparent url("/images/bg_button.png") no-repeat bottom;
-}
-
-input[type=submit]:hover, input[type=button]:hover
-{
-	background: transparent url("/images/bg_button_hover.png") no-repeat bottom;
 }
 
 input[type=submit]:active, input[type=button]:active
