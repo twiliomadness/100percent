@@ -1,45 +1,40 @@
-
-.inner_wrapper
-#content_slider
-  %a{:href => ""}
-    <img src="images/your_vote_counts.jpg" alt="What We Do" class="shadow"/>
-    %span.left
-      %strong.header Learn when, where, and how to vote in Wisconsin
-      %p
-        We help you find your polling location, whether you are registered, and how to become registered.
       
-  %a{:href => ""}
-    <img src="images/your_vote_counts.jpg" alt="Your Vote Counts" class="shadow"/>
-    %span.left
-      %strong.header
-        Your Vote Counts
-      %p
-        We're a group of volunteers, ready to help answer your questions about voting in Wisconsin.
-      
-  %a{:href => ""}
-    <img src="images/your_vote_counts.jpg" alt="Try It Out" class="shadow"/>
-    %span.left
-      %strong.header
+.hero-unit{:style => 'margin-top: -40px;'}
+  %h1
+    = image_tag("logo_horizontal.png")
+  %p Learn when, where, and how to vote in Wisconsin
+  %p
+    We help you find your polling location, whether you are registered, and how to become registered.
+  %a{:href => how_works_path, :class => "btn primary large"} 
+    How It Works &#187;
+  %a{:href => how_works_path, :class => "btn success large"} 
+    Who We Are &#187;
+.row
+  .span-one-third
+    %h2
+      Why Is This Needed?
+    %p
+      With the recent changes in election laws in Wisconsin (<b>VoterID</b>),
+      now more than ever, us citizens need to help our neighbors register and participate.
+  .span-one-third
+    %h2
+      Try It Out
+    %p
+      %b
         Text "Vote" to
-        %br
         =# Get this from IP geocode lookup to determine what area code to display.  715, 920, 414, 608.
         = APP_CONFIG[:TWILIO_CALLER_ID]
-      %p
-        Your personal information is kept entirely confidential.  Our sophisticated software will lead you through the process to help get you to the polls and 
-        %b vote.
-  
-#home_tagline
-  .left_tagline
-    %h2
-      A non-partisan effort to improve voter turnout in Wisconsin
-  .right_tagline
-    %a{:href => how_works_path, :class => "big_button"} 
-      %span Learn More
+    %p
+      Your personal information is kept entirely confidential.  Our sophisticated software will lead you through the process to help get you to the polls and 
+      %b vote.
+
+  .span-one-third
+    %h2 
+      Support VoteSimple
+    %p
+      Donate, volunteer to program, more...
+    %a{:href => support_path} 
+      How you can help &#187;
+      
 
 
-
-
-  %br
-
-
-%br.clear

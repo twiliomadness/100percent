@@ -12,7 +12,7 @@ class ContentController < ApplicationController
   def about
   end
   
-  def donate
+  def support
   end
   
   def contact

@@ -33,7 +33,7 @@ Gotv::Application.routes.draw do
 
   get "/about" => 'content#about', :as => :about
   get "/contact" => 'content#contact', :as => :contact
-  get "/donate" => 'content#donate', :as => :donate
+  get "/support" => 'content#support', :as => :support
   get "/how_works" => 'content#how_works', :as => :how_works
   get "/dashboard" => 'dashboard#index', :as => :dashboard
   get "/voter" => 'web_voters#new', :as => :voter_signup

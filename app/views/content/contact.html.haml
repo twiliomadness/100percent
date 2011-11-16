@@ -1,23 +1,16 @@
-.page_caption
-  %h1.cufon Contact
-  %p.cufon
-    Please get in touch!  We're continually looking for partners, volunteers, and anyone interested in helping out.
-.inner_wrapper
-  .sidebar_content
-    %p
-      Use the system by sending a text to:  
-      = APP_CONFIG[:TWILIO_CALLER_ID]
-    %p
-      Email:
-      = mail_to "info@votesimple.org", "info@votesimple.org"
-  
-    %p
-      Twitter:
-      = link_to "VoteSimpleOrg", "https://twitter.com/votesimpleorg"
-  .sidebar_wrapper
-    .sidebar
-      .content
-        %br
-        %p VoteSimple is a collection of volunteers working to improve the voter turnout rate in Wisconsin.  
-        %p We're #{link_to 'non-partisan', about_path} and our sole interest is in increasing citizen involvement in the election process.
-        
+.page-header
+  %h1 Contact
+
+%p
+  Email:
+  = mail_to "info@votesimple.org", "info@votesimple.org"
+
+%p
+  Twitter:
+  = link_to "VoteSimpleOrg", "https://twitter.com/votesimpleorg"
+
+%p 
+  VoteSimple is a collection of 
+  %b volunteers 
+  working to improve the voter turnout rate in Wisconsin.  
+%p We're #{link_to 'non-partisan', about_path} and our sole interest is in increasing citizen involvement in the election process.

@@ -1,19 +1,15 @@
-#header_wrapper
-  #top_bar
-    .wrapper
-      .left_nav
-      #menu_wrapper
-        %ul#main_menu.nav
-          %li{:class => "#{current_page?(:controller => '/content', :action => 'index') ? 'current_page_item' : ''}"}
-            %a{:href => root_path}
-              = image_tag "/images/nav/icon_home.png", :class => "mid_align"
-              Home
-          %li{:class => "#{current_page?(:controller => '/content', :action => 'contact') ? 'current_page_item' : ''}"}
-            = link_to "Contact", contact_path
-          %li{:class => "#{current_page?(:controller => '/content', :action => 'about') ? 'current_page_item' : ''}"}
-            = link_to "About", about_path
-          %li{:class => "#{current_page?(:controller => '/content', :action => 'donate') ? 'current_page_item' : ''}"}
-            = link_to "Donate", donate_path
-      .right_nav
-      %br.clear
-      = link_to image_tag('logo_horizontal.png', :id => 'logo'), root_path
+
+.topbar
+  .fill
+    .container
+      %a.brand{:href => "/"} VoteSimple
+      %ul.nav
+        %li{:class => "#{current_page?(:controller => '/content', :action => 'index') ? 'active' : ''}"}
+          = link_to "Home", "/"
+        %li{:class => "#{current_page?(:controller => '/content', :action => 'contact') ? 'active' : ''}"}
+          = link_to "Contact", contact_path
+        %li{:class => "#{current_page?(:controller => '/content', :action => 'about') ? 'active' : ''}"}
+          = link_to "About", about_path
+        %li{:class => "#{current_page?(:controller => '/content', :action => 'support') ? 'active' : ''}"}
+          = link_to "Help Out", support_path
+          
