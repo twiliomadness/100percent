@@ -18,5 +18,13 @@ class VotersController < ApplicationController
     end
   end
   
+  def address_lookup
+    voter = Voter.new(:address_line_1 => params[:street], :city => params[:city], :zip => params[:zip])
+    voter.senate_district = voter.get_senate_district
+    voter.assembly_district = voter.get_assembly_district
+    
+    render :json => voter.to_json
+  end
+  
 end
 

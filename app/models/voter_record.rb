@@ -68,18 +68,23 @@ class VoterRecord
   end
   
   def self.get_address_details_page(address_line_1, city, zip)
-    # TODO: Rename this to find_polling_place.  yo.
     agent = Mechanize.new
 
     page = agent.get(APP_CONFIG[:ADDRESS_SEARCH_URL])
 
-    form = page.form_with(:name => 'Form1')
-    form.txtHouseNum = house_number(address_line_1)
-    form.txtStreetName = street_name(address_line_1)
-    form.txtCity = city
-    form.txtZipcode = zip
+    form = page.form_with(:action => 'AddressSearchScreen.aspx')
+    form.field_with(:name => "ctl00$ContentPlaceHolder1$txtHouseNum").value = house_number(address_line_1)
+    form.field_with(:name => "ctl00$ContentPlaceHolder1$txtStreetName").value = street_name(address_line_1)
+    form.field_with(:name => "ctl00$ContentPlaceHolder1$txtCity").value = city
+    form.field_with(:name => "ctl00$ContentPlaceHolder1$txtZipcode").value = zip
     
     page = form.click_button
+    
+    #vpa might futz with the data and require another form submit
+    if page.content.include?("Suffix")
+      form = page.form_with(:action => 'AddressSearchScreen.aspx')
+      page = form.click_button
+    end
     
     link = self.get_address_link(address_line_1, page.content)
       

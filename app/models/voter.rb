@@ -73,10 +73,24 @@ class Voter < ActiveRecord::Base
     self.registration_date = voter_record.registration_date
     self.registration_status = voter_record.registration_status
   end
+  
+  def get_assembly_district
+    if address_details_page.present?
+      Voter.get_assembly_district_from_html(self.address_details_page.content)
+    end
+  end
+  
+  def get_senate_district
+    if address_details_page.present?
+      Voter.get_senate_district_from_html(self.address_details_page.content)
+    end
+  end
+  
+  def address_details_page
+    @address_details_page ||= VoterRecord.get_address_details_page(self.address_line_1, self.city, self.zip)
+  end
 
   def update_voter_polling_place_clerk
-    # The name of this method probably needs updating.
-    address_details_page = VoterRecord.get_address_details_page(self.address_line_1, self.city, self.zip)
     params = {:address_line_1 => self.address_line_1,
       :city => self.city,
       :zip => self.zip}
@@ -96,14 +110,14 @@ class Voter < ActiveRecord::Base
         self.update_attribute(:county_clerk_id, county_clerk.id)
       end
 
-      assembly_district = Voter.get_assembly_district_from_html(address_details_page.content)
+      assembly_district = get_assembly_district
       if assembly_district.nil?
         Exceptional.handle(Exception.new, "Unable to find assembly district for params: #{params}")
       else
         self.update_attribute(:assembly_district, assembly_district.to_i)
       end
 
-      senate_district = Voter.get_senate_district_from_html(address_details_page.content)
+      senate_district = get_senate_district
       if senate_district.nil?
         Exceptional.handle(Exception.new, "Unable to find senate district for params: #{params}")
       else

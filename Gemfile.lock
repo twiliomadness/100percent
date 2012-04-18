@@ -86,7 +86,7 @@ GEM
     haml (3.0.25)
     heroku (1.18.3)
       launchy (~> 0.3.2)
-      rest-client (< 1.7.0, >= 1.4.0)
+      rest-client (>= 1.4.0, < 1.7.0)
     hpricot (0.8.4)
     html5-boilerplate (0.3.2)
       compass (>= 0.10.0)

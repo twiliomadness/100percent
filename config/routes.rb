@@ -39,6 +39,7 @@ Gotv::Application.routes.draw do
   get "/voter" => 'web_voters#new', :as => :voter_signup
   post "/voter" => 'web_voters#create'
   get "/update_info" => 'web_voters#update_voting_info', :as => :update_voter_info
+  get "/voter/address_lookup" => 'voters#address_lookup'
 
   root :to => "content#index"
 end
