@@ -188,7 +188,7 @@ DEPENDENCIES
   formtastic
   geokit
   haml (= 3.0.25)
-  heroku (= 1.18.3)
+  heroku
   hpricot
   html5-boilerplate
   launchy (= 0.3.7)
