@@ -110,10 +110,10 @@ class VoterRecord
 
     page = agent.get(APP_CONFIG[:VOTER_SEARCH_URL])
 
-    form = page.form_with(:name => 'Form1')
-    form.txtLastName = last_name
-    form.txtFirstName = first_name
-    form.txtDateOfBirth = date_of_birth.strftime("%m/%d/%Y")
+    form = page.form_with(:action => 'VoterSearchScreen.aspx')
+    form.field_with(:name => "ctl00$ContentPlaceHolder1$txtLastName").value = last_name
+    form.field_with(:name => "ctl00$ContentPlaceHolder1$txtFirstName").value = first_name
+    form.field_with(:name => "ctl00$ContentPlaceHolder1$txtDateOfBirth").value = date_of_birth.strftime("%m/%d/%Y")
     
     page = form.click_button
     
@@ -139,15 +139,15 @@ class VoterRecord
     next_page = page.link_with(:href => url).click
     voter_info = Nokogiri.HTML(next_page.content)
 
-    address_line_1 = voter_info.xpath("//input[@id = 'txtAddressLine1']").first.get_attribute("value")
-    address_line_2 = voter_info.xpath("//input[@id = 'txtAddressline2']").first.get_attribute("value")
-    city = voter_info.xpath("//input[@id = 'txtCity']").first.get_attribute("value")
-    zip = voter_info.xpath("//input[@id = 'txtZipcode']").first.get_attribute("value")
+    address_line_1 = voter_info.xpath("//input[@id = 'ContentPlaceHolder1_txtAddressLine1']").first.get_attribute("value")
+    address_line_2 = voter_info.xpath("//input[@id = 'ContentPlaceHolder1_txtAddressline2']").first.get_attribute("value")
+    city = voter_info.xpath("//input[@id = 'ContentPlaceHolder1_txtCity']").first.get_attribute("value")
+    zip = voter_info.xpath("//input[@id = 'ContentPlaceHolder1_txtZipcode']").first.get_attribute("value")
     
-    registration_date = voter_info.xpath("//input[@id = 'txtRegDate']").first.get_attribute("value")
-    registration_status = voter_info.xpath("//input[@id = 'txtVoterStatus']").first.get_attribute("value")
+    registration_date = voter_info.xpath("//input[@id = 'ContentPlaceHolder1_txtRegDate']").first.get_attribute("value")
+    registration_status = voter_info.xpath("//input[@id = 'ContentPlaceHolder1_txtVoterStatus']").first.get_attribute("value")
 
-    VoterRecord.new(:address_line_1 => address_line_1, :address_line_2 => address_line_2, :city => city, :zip => zip, :registration_date => registration_date, :registration_status => registration_status)
+    VoterRecord.new(:address_line_1 => address_line_1, :address_line_2 => address_line_2, :city => city, :zip => zip[0..4], :registration_date => registration_date, :registration_status => registration_status)
 
   end
   
