@@ -22,11 +22,11 @@ class PollingPlace < ActiveRecord::Base
         raise 'Polling Place Not Yet Defined'
       end
 
-      polling_place_name = address_info_html.xpath("//input[@id = 'PollingPlaceSummarySection1_txtName']").first.get_attribute("value")
-      polling_place_address_line_a = address_info_html.xpath("//input[@id = 'PollingPlaceSummarySection1_txtAddressLineA']").first.get_attribute("value")
-      polling_place_city = address_info_html.xpath("//input[@id = 'PollingPlaceSummarySection1_txtAddressLineB']").first.get_attribute("value")
-      polling_place_zip = address_info_html.xpath("//input[@id = 'PollingPlaceSummarySection1_txtAddressLineC']").first.get_attribute("value")
-      polling_place_hours = address_info_html.xpath("//input[@id = 'PollingPlaceSummarySection1_txtHours']").first.get_attribute("value")
+      polling_place_name = address_info_html.xpath("//input[@id = 'ContentPlaceHolder1_PollingPlaceSummarySection1_txtName']").first.get_attribute("value")
+      polling_place_address_line_a = address_info_html.xpath("//input[@id = 'ContentPlaceHolder1_PollingPlaceSummarySection1_txtAddressLineA']").first.get_attribute("value")
+      polling_place_city = address_info_html.xpath("//input[@id = 'ContentPlaceHolder1_PollingPlaceSummarySection1_txtAddressLineB']").first.get_attribute("value")
+      polling_place_zip = address_info_html.xpath("//input[@id = 'ContentPlaceHolder1_PollingPlaceSummarySection1_txtAddressLineC']").first.get_attribute("value")
+      polling_place_hours = address_info_html.xpath("//input[@id = 'ContentPlaceHolder1_PollingPlaceSummarySection1_txtHours']").first.get_attribute("value")
 
       polling_place_link = address_info_html.xpath("//a[starts-with(@href, 'PollingPlaceAccessibilityPage')]").first.get_attribute("href")
       vpa_polling_place_id = PollingPlace.polling_place_id_from_link(polling_place_link)
