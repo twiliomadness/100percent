@@ -2,15 +2,18 @@
 .hero-unit{:style => 'margin-top: -40px;'}
   %h1
     = image_tag("logo_horizontal.png")
-  %h2
-    414-263-9294
-  %p Learn when, where, and how to vote in Wisconsin
+  = image_tag("wisconsin_state_flag_map.png", :align => "right", :height => "150px")
+  %h2 Learn when, where, and how to vote in Wisconsin
   %p
-    We help you find your polling location, whether you are registered, and how to become registered.
+    We help you find your polling location, determine whether you are registered, how to become registered, and how to vote early.
   %a{:href => how_works_path, :class => "btn primary large"} 
     How It Works &#187;
   %a{:href => about_path, :class => "btn success large"} 
     Who We Are &#187;
+  %br
+  %br
+  %h2
+    = APP_CONFIG[:TWILIO_CALLER_ID]
 .row
   .span-one-third
     %h2

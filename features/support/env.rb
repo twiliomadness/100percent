@@ -61,9 +61,9 @@ end
 end
 
 Before do
-  @twilio_client = Twilio::RestAccount.new('id','password')
+  @twilio_client = Twilio::REST::Client.new('id','password')
   @twilio_response = mock('twilio_response', :code => "200", :body => "success", :error! => false)
   @twilio_client.stub!(:request).and_return(@twilio_response)
-  Twilio::RestAccount.stub!(:new).and_return(@twilio_client)
+  Twilio::REST::Client.stub!(:new).and_return(@twilio_client)
   TwilioHelper.stub!(:validateRequest).and_return(true)
 end
