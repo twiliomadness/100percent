@@ -13,7 +13,7 @@ class OutgoingMessage < TextMessage
       
       @client.account.sms.messages.create(
         :from => outgoing_number,
-        :to => outgoing_number,
+        :to => self.voter.phone_number,
         :body => text
       )
 
