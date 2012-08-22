@@ -12,7 +12,7 @@ class VoiceMessagesController < ApplicationController
       end
     end
 
-    render :xml => @response.respond
+    render :xml => @response
 
     # do you want to log the fact that you’re doing this step?
     # logging.info(FIXME - report that the caller called)
