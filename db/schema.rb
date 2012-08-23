@@ -10,7 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110422182138) do
+ActiveRecord::Schema.define(:version => 20120823000715) do
+
+  create_table "conferences", :force => true do |t|
+    t.integer  "user_incoming"
+    t.integer  "user_outgoing"
+    t.text     "transcript"
+    t.string   "audio_link"
+    t.integer  "rating"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "county_clerks", :force => true do |t|
     t.string   "location_name"

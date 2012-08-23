@@ -5,14 +5,16 @@ class VoiceMessagesController < ApplicationController
     # Limit the length of recordings
     record_length = 360  # six minutes
     phone_number = params[:Caller]
-    @response = Twilio::TwiML::Response.new do |r|
+    conference = Conference.create
+    response = Twilio::TwiML::Response.new do |r|
       r.Say 'Hi, welcome to Vote Simple. Please hold while we try to connect you with a volunteer.', :voice => 'woman'
       r.Dial do |d|
-        d.Conference 'myconfroom'
+        d.Conference conference.id
       end
     end
+    
 
-    render :xml => @response
+    render :xml => response.text
 
     # do you want to log the fact that you’re doing this step?
     # logging.info(FIXME - report that the caller called)
