@@ -16,6 +16,7 @@ Gotv::Application.routes.draw do
   end
   resources :voters
   resources :web_voters
+  resources :conferences
   
   devise_for :users, :skip => [:registrations, :sessions] do
     # devise/registrations

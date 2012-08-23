@@ -5,8 +5,12 @@ class VoiceMessagesController < ApplicationController
     record_length = 360
     phone_number = params[:Caller]
     if User.users_available_for_conference.present?
-    
+      
       conference = Conference.create
+      
+      @client = Twilio::REST::Client.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
+      @client.account.calls.create({:from => APP_CONFIG[:TWILIO_CALLER_ID], :to => User.users_available_for_conference.first.phone_number, :url => "http://wigotv-staging.heroku.com/#{conference.id}"})
+    
       response = Twilio::TwiML::Response.new do |r|
         r.Say 'Hi, welcome to Vote Simple. Please hold while we try to connect you with a volunteer.', :voice => 'woman'
         r.Dial do |d|
@@ -15,7 +19,7 @@ class VoiceMessagesController < ApplicationController
       end
     else
       response = Twilio::TwiML::Response.new do |r|
-        r.Say 'Hi, welcome to Vote Simple. For help in voting and registering to vote, please leave your question and a volunteer will call you back shortly."', :voice => 'woman'
+        r.Say 'Hi, welcome to Vote Simple. For help voting in Wisconsin, please leave your question and a volunteer will call you back shortly."', :voice => 'woman'
         r.Record :action => voice_messages_recording_url, :maxLength => record_length
       end
       

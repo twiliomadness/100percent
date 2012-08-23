@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   
   def self.users_available_for_conference
     # TODO: max calls per hour, etc
-    User.has_phone_number.find_by_on_call(true)
+    User.has_phone_number.find_all_by_on_call(true)
     
   end
   
