@@ -9,7 +9,7 @@ class VoiceMessagesController < ApplicationController
       conference = Conference.create
       
       @client = Twilio::REST::Client.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
-      @client.account.calls.create({:from => APP_CONFIG[:TWILIO_CALLER_ID], :to => User.users_available_for_conference.first.phone_number, :url => "http://wigotv-staging.heroku.com/#{conference.id}"})
+      @client.account.calls.create({:from => APP_CONFIG[:TWILIO_CALLER_ID], :to => User.users_available_for_conference.first.phone_number, :url => "http://wigotv-staging.heroku.com/conferences/#{conference.id}"})
     
       response = Twilio::TwiML::Response.new do |r|
         r.Say 'Hi, welcome to Vote Simple. Please hold while we try to connect you with a volunteer.', :voice => 'woman'
