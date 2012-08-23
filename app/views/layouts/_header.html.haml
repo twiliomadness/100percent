@@ -1,6 +1,5 @@
-
-.topbar
-  .fill
+.navbar.navbar-fixed-top.navbar-inverse
+  .navbar-inner
     .container
       %a.brand{:href => "/"} VoteSimple
       %ul.nav
@@ -12,4 +11,3 @@
           = link_to "About", about_path
         %li{:class => "#{current_page?(:controller => '/content', :action => 'support') ? 'active' : ''}"}
           = link_to "Help Out", support_path
-          

@@ -2,17 +2,24 @@ class VoiceMessagesController < ApplicationController
  # this is the handler for the initial phone call call and should correspond to the endpoint
  # configured in the Twilio dashboard for the app
   def incoming
-    # Limit the length of recordings
-    record_length = 360  # six minutes
+    record_length = 360
     phone_number = params[:Caller]
-    conference = Conference.create
-    response = Twilio::TwiML::Response.new do |r|
-      r.Say 'Hi, welcome to Vote Simple. Please hold while we try to connect you with a volunteer.', :voice => 'woman'
-      r.Dial do |d|
-        d.Conference conference.id
-      end
-    end
+    if User.users_available_for_conference.present?
     
+      conference = Conference.create
+      response = Twilio::TwiML::Response.new do |r|
+        r.Say 'Hi, welcome to Vote Simple. Please hold while we try to connect you with a volunteer.', :voice => 'woman'
+        r.Dial do |d|
+          d.Conference conference.id
+        end
+      end
+    else
+      response = Twilio::TwiML::Response.new do |r|
+        r.Say 'Hi, welcome to Vote Simple. For help in voting and registering to vote, please leave your question and a volunteer will call you back shortly."', :voice => 'woman'
+        r.Record :action => voice_messages_recording_url, :maxLength => record_length
+      end
+      
+    end
 
     render :xml => response.text
 

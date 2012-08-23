@@ -2,26 +2,26 @@
 .hero-unit{:style => 'margin-top: -40px;'}
   %h1
     = image_tag("logo_horizontal.png")
-  = image_tag("wisconsin_state_flag_map.png", :align => "right", :height => "150px")
+  =# image_tag("wisconsin_state_flag_map.png", :align => "right", :height => "150px")
   %h2 Learn when, where, and how to vote in Wisconsin
   %p
     We help you find your polling location, determine whether you are registered, how to become registered, and how to vote early.
-  %a{:href => how_works_path, :class => "btn primary large"} 
+  %a{:href => how_works_path, :class => "btn btn-primary btn-large"} 
     How It Works &#187;
-  %a{:href => about_path, :class => "btn success large"} 
+  %a{:href => about_path, :class => "btn btn-success btn-large"} 
     Who We Are &#187;
   %br
   %br
   %h2
     = APP_CONFIG[:TWILIO_CALLER_ID]
 .row
-  .span-one-third
+  .span4
     %h2
       Why Is This Needed?
     %p
       With the recent changes in election laws in Wisconsin (<b>VoterID</b>),
       now more than ever, us citizens need to help our neighbors register and participate.
-  .span-one-third
+  .span4
     %h2
       Try It Out
     %p
@@ -33,7 +33,7 @@
       Your personal information is kept entirely confidential.  Our sophisticated software will lead you through the process to help get you to the polls and 
       %b vote.
 
-  .span-one-third
+  .span4
     %h2 
       Support VoteSimple
     %p

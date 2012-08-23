@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_one :web_voter, :conditions => {:type => 'WebVoter'}
 
   scope :has_email, :conditions => "length(email) > 0"
+  scope :has_phone_number , :conditions => "length(phone_number) > 0"
 
   def self.default_attributes(attrs = {})
     {:first_name => "John",
@@ -43,6 +44,13 @@ class User < ActiveRecord::Base
 
     state :needs_help
   end
+  
+  def self.users_available_for_conference
+    # TODO: max calls per hour, etc
+    User.has_phone_number.find_by_on_call(true)
+    
+  end
+  
 protected
   def email_required?
     false 

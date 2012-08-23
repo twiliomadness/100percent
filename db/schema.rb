@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823000715) do
+ActiveRecord::Schema.define(:version => 20120823125515) do
 
   create_table "conferences", :force => true do |t|
     t.integer  "user_incoming"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20120823000715) do
     t.string   "status"
     t.string   "phone_number"
     t.boolean  "admin"
+    t.boolean  "on_call"
   end
 
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
