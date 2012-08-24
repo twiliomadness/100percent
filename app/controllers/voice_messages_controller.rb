@@ -7,16 +7,16 @@ class VoiceMessagesController < ApplicationController
     if User.users_available_for_conference.present?
       
       conference = Conference.create
-      
-      @client = Twilio::REST::Client.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
-      @client.account.calls.create({:from => APP_CONFIG[:TWILIO_CALLER_ID], :to => User.users_available_for_conference.first.phone_number, :url => "http://wigotv-staging.heroku.com/conferences/#{conference.id}.xml"})
-    
       response = Twilio::TwiML::Response.new do |r|
         r.Say 'Hi, welcome to Vote Simple. Please hold while we try to connect you with a volunteer.', :voice => 'woman'
         r.Dial do |d|
           d.Conference conference.id
         end
       end
+      
+      @client = Twilio::REST::Client.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
+      @client.account.calls.create({:from => APP_CONFIG[:TWILIO_CALLER_ID], :to => User.users_available_for_conference.first.phone_number, :url => "http://wigotv-staging.heroku.com/conferences/#{conference.id}.xml"})
+    
     else
       response = Twilio::TwiML::Response.new do |r|
         r.Say 'Hi, welcome to Vote Simple. For help voting in Wisconsin, please leave your question and a volunteer will call you back shortly."', :voice => 'woman'
