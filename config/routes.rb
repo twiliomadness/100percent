@@ -17,6 +17,7 @@ Gotv::Application.routes.draw do
   resources :voters
   resources :web_voters
   resources :conferences
+  match 'conferences/:id' => 'conferences#show', :via => [:get, :post]
   
   devise_for :users, :skip => [:registrations, :sessions] do
     # devise/registrations
