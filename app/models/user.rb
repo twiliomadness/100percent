@@ -1,9 +1,27 @@
 class User < ActiveRecord::Base
-  devise :database_authenticatable, :registerable,
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, 
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, 
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
+  devise :database_authenticatable, 
          :recoverable, :rememberable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :phone_number
+  attr_accessible :email, :password, :password_confirmation, :remember_me, 
+      :phone_number, :volunteer, :on_call
+      
 
   # TODO: Add :token_authenticatable, then re-enable this:
   # before_save :reset_authentication_token

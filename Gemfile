@@ -1,31 +1,29 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.5'
-gem 'pg', '0.10.1'
+gem 'rails', '3.2.1'
+gem 'pg'
 
-gem 'chronic', '0.3.0'
-gem 'compass', '0.10.6'
+gem 'compass'
 gem 'decent_exposure'
-gem 'devise', '1.2'
+gem 'devise'
 gem 'exceptional'
-gem 'formtastic'
 gem 'geokit'
-gem 'haml', '3.0.25'
+gem 'haml'
 gem 'heroku'
 gem 'html5-boilerplate'
-gem 'mechanize', '1.0.0'
-gem 'nokogiri', '1.4.4'
+gem 'mechanize'
+gem 'nokogiri'
 gem 'state_machine', '0.9.4'
 gem 'twilio-ruby'
-gem 'will_paginate'
+gem 'sass-rails'
 gem 'activeadmin'
 
 group :cucumber do
-  gem 'capybara', '0.4.1.2'
-  gem 'cucumber', '0.10.0'
-  gem 'cucumber-rails', '0.3.2'
-  gem 'database_cleaner', '0.6.6'
-  gem 'launchy', '0.3.7'
+  gem 'capybara'
+  gem 'cucumber'
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
+  gem 'launchy'
 end
 
 group :cucumber, :development, :test do
@@ -38,7 +36,6 @@ group :cucumber, :development, :test do
 end
 
 group :development do
-  gem 'web-app-theme'
   gem 'ruby_parser'
   gem 'hpricot'
 end

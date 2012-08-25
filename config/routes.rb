@@ -1,4 +1,8 @@
 Gotv::Application.routes.draw do
+  ActiveAdmin.routes(self)
+
+  devise_for :users, ActiveAdmin::Devise.config
+
   get "sms_messages/incoming", :as => 'sms_request'
   post "voice_messages/incoming"
   post "voice_messages/recording"
