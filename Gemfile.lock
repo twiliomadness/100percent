@@ -1,7 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    ZenTest (4.8.2)
+    ZenTest (4.6.0)
     actionmailer (3.2.1)
       actionpack (= 3.2.1)
       mail (~> 2.4.0)
@@ -251,6 +251,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ZenTest (= 4.6.0)
   activeadmin
   autotest
   autotest-notification

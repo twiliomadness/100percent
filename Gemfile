@@ -17,6 +17,7 @@ gem 'state_machine', '0.9.4'
 gem 'twilio-ruby'
 gem 'sass-rails'
 gem 'activeadmin'
+gem "ZenTest", "4.6.0"
 
 group :cucumber do
   gem 'capybara'
