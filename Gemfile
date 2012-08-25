@@ -18,6 +18,7 @@ gem 'nokogiri', '1.4.4'
 gem 'state_machine', '0.9.4'
 gem 'twilio-ruby'
 gem 'will_paginate'
+gem 'activeadmin'
 
 group :cucumber do
   gem 'capybara', '0.4.1.2'
