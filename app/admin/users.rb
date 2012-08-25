@@ -1,6 +1,7 @@
 ActiveAdmin.register User do
   index do
     column :email
+    column :phone_number
     column :first_name
     column :last_name
     column :status
