@@ -1,15 +1,13 @@
-.page_caption
-  %h1.cufon Forgot your password?
-  %p.cufon
-.inner_wrapper
-  = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
-    = devise_error_messages!
+%h1 Forgot your password?
+%p
+= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
+  = devise_error_messages!
 
-    %p
-      = f.label :email
-      = f.text_field :email
+  %p
+    = f.label :email
+    = f.text_field :email
 
-    %p
-      = f.submit "Send me reset password instructions"
+  %p
+    = f.submit "Send me reset password instructions"
 
-  = render :partial => "devise/shared/links"
+= render :partial => "devise/shared/links"

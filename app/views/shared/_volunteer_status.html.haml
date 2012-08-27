@@ -1,0 +1,11 @@
+- if current_user.volunteer
+  .on_call_status.alert
+    %h2 Your Volunteer Status
+    - if current_user.on_call
+      %p 
+        You are currently <b>on call</b>.
+        = link_to "Set to OFF", "/volunteer_off"
+    - else
+      %p 
+        You are currently <b>NOT on call</b>.
+        = link_to "Set to ON", "/volunteer_on"

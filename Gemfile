@@ -18,6 +18,7 @@ gem 'twilio-ruby'
 gem 'sass-rails'
 gem 'activeadmin'
 gem "ZenTest", "4.6.0"
+gem 'localtunnel'
 
 group :cucumber do
   gem 'capybara'

@@ -10,7 +10,7 @@ class VoiceMessagesController < ApplicationController
       response = Twilio::TwiML::Response.new do |r|
         r.Say 'Hi, welcome to Vote Simple. Please hold while we try to connect you with a volunteer.'
         r.Dial(:record => true) do |d|
-          d.Conference conference.id, :waitUrl => "http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica"
+          d.Conference conference.id
         end
       end
       

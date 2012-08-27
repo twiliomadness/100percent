@@ -29,7 +29,6 @@ class User < ActiveRecord::Base
 
   has_many :voters
   has_one :sms_voter, :conditions => {:type => 'SmsVoter'}
-  has_one :voice_voter, :conditions => {:type => 'VoiceVoter'}
   has_one :web_voter, :conditions => {:type => 'WebVoter'}
 
   scope :has_email, :conditions => "length(email) > 0"
@@ -66,7 +65,25 @@ class User < ActiveRecord::Base
   def self.users_available_for_conference
     # TODO: max calls per hour, etc
     User.has_phone_number.find_all_by_on_call(true)
-    
+  end
+  
+  def set_volunteer_status(message)
+    if message.present? && message.strip.downcase == "on"
+      self.set_on_call
+      "You are now on call"
+    end
+    if message.present? && message.strip.downcase == "off"
+      self.set_to_not_on_call 
+      "You are no longer on call"
+    end
+  end
+  
+  def set_on_call
+    self.update_attribute(:on_call, true)
+  end
+  
+  def set_to_not_on_call
+    self.update_attribute(:on_call, false)
   end
   
 protected

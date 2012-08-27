@@ -42,11 +42,14 @@ Gotv::Application.routes.draw do
   get "/contact" => 'content#contact', :as => :contact
   get "/support" => 'content#support', :as => :support
   get "/how_works" => 'content#how_works', :as => :how_works
-  get "/dashboard" => 'dashboard#index', :as => :dashboard
+  get "/dashboard" => 'users#dashboard', :as => :dashboard
   get "/voter" => 'web_voters#new', :as => :voter_signup
   post "/voter" => 'web_voters#create'
   get "/update_info" => 'web_voters#update_voting_info', :as => :update_voter_info
   get "/voter/address_lookup" => 'voters#address_lookup'
+  
+  get "/volunteer_off" => 'users#volunteer_off'
+  get "/volunteer_on" => 'users#volunteer_on'
 
   root :to => "content#index"
 end

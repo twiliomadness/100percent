@@ -6,10 +6,6 @@ class Voter < ActiveRecord::Base
   belongs_to :county_clerk
   has_many :text_messages
   
-  validates :address_line_1, :presence => {:if => Proc.new {|v| v.type == 'WebVoter'}}
-  validates :first_name, :presence => {:if => Proc.new {|v| v.type == 'WebVoter'}}
-  validates :city, :presence => {:if => Proc.new {|v| v.type == 'WebVoter'}}
-
   before_validation do
     self.zip = self.zip[0..4] unless self.zip.nil?
   end

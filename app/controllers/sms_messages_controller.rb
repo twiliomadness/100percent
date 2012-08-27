@@ -14,7 +14,11 @@ class SmsMessagesController < ApplicationController
     @user.sms_voter.update_attribute(:twilio_number_used, twilio_number_used) if @user.sms_voter.present?
     @sms_voter = @user.sms_voter.nil? ? @user.create_sms_voter(:phone_number => phone_number, :twilio_number_used => twilio_number_used, :sms_city => sms_city, :sms_state => sms_state, :sms_zip => sms_zip) : @user.sms_voter
     
-    outgoing_text = @sms_voter.process_message(incoming_text)
+    if @user.volunteer && ["on", "off"].include?(incoming_text.downcase)
+      outgoing_text = @user.set_volunteer_status(incoming_text)
+    else
+      outgoing_text = @sms_voter.process_message(incoming_text)
+    end
 
     if outgoing_text.kind_of?(String)
       outgoing_text = [outgoing_text]
@@ -34,7 +38,7 @@ class SmsMessagesController < ApplicationController
 
     def validate_request
       signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
-      if !TwilioHelper.validateRequest(signature, request.url, request.post? ? params : {})
+      if Rails.env != "development" && !TwilioHelper.validateRequest(signature, request.url, request.post? ? params : {})
         Exceptional.context(:environment => Rails.env)
         raise "Invalid request with signature '#{signature}' for url '#{request.url}' with params: #{params}"
       end

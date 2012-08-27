@@ -7,9 +7,9 @@ ActiveAdmin::Dashboards.build do
   # == Simple Dashboard Section
   # Here is an example of a simple dashboard section
   #
-     section "Helpful Docs" do
+     section "Helpful Links" do
        ul do
-         li "first link (todo)"
+         li= link_to "Regular Person Dashboard", dashboard_path
        end
      end
   
