@@ -5,7 +5,7 @@ class OutgoingMessage < TextMessage
 
   def send_text
     # If a message is two returns, it is "valid", but we shouldn't send it.
-    if text.strip.length > 0 && self.voter.phone_number != SmsVoter::FAKE_PHONE_NUMBER
+    if text.strip.length > 0 && self.voter.user.phone_number
 
       @client = Twilio::REST::Client.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
       
@@ -13,7 +13,7 @@ class OutgoingMessage < TextMessage
       
       @client.account.sms.messages.create(
         :from => outgoing_number,
-        :to => self.voter.phone_number,
+        :to => self.voter.user.phone_number,
         :body => text
       )
 
