@@ -27,9 +27,8 @@ class User < ActiveRecord::Base
   # before_save :reset_authentication_token
   before_validation :create_password
 
-  has_many :voters
-  has_one :sms_voter, :conditions => {:type => 'SmsVoter'}
-  has_one :web_voter, :conditions => {:type => 'WebVoter'}
+  # Hopefully this is temporary. :)
+  has_one :voter
 
   scope :has_email, :conditions => "length(email) > 0"
   scope :has_phone_number , :conditions => "length(phone_number) > 0"

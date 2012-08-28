@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def dashboard
-    @voter = current_user.web_voter ||= current_user.create_web_voter
+    @voter = current_user.voter ||= current_user.create_voter
   end
   
   def volunteer_on

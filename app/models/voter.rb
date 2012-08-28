@@ -161,6 +161,4 @@ class Voter < ActiveRecord::Base
       self.update_voter_polling_place_clerk
     end
   end
-  
-
 end
