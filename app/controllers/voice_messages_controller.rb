@@ -9,13 +9,20 @@ class VoiceMessagesController < ApplicationController
       conference = Conference.create
       response = Twilio::TwiML::Response.new do |r|
         r.Say 'Hi, welcome to Vote Simple. Please hold while we try to connect you with a volunteer.'
-        r.Dial(:record => true) do |d|
+        r.Dial do |d|
           d.Conference conference.id
         end
       end
       
       @client = Twilio::REST::Client.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
-      @client.account.calls.create({:from => APP_CONFIG[:TWILIO_CALLER_ID], :to => User.users_available_for_conference.first.phone_number, :url => "http://wigotv-staging.heroku.com/conferences/#{conference.id}.xml"})
+      outgoing_call = PhoneCall.new(:user => User.users_available_for_conference.first.id)
+      #TODO: This is where we create the call to the volunteer. 
+      @client.account.calls.create({:record => true, :from => APP_CONFIG[:TWILIO_CALLER_ID], 
+        :to => User.users_available_for_conference.first.phone_number, 
+        :url => "http://#{request.host}/conferences/#{conference.id}.xml",
+        :IfMachine => "Hangup",
+        :StatusCallbackMethod => "GET",
+        :StatusCallback => "http://#{request.host}/phone_calls/#{outgoing_call.id}/response"})
     
     else
       response = Twilio::TwiML::Response.new do |r|

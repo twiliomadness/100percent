@@ -21,7 +21,9 @@ Gotv::Application.routes.draw do
   resources :voters
   resources :web_voters
   resources :conferences
+  resources :phone_calls
   match 'conferences/:id' => 'conferences#show', :via => [:get, :post]
+  match 'phone_calls/:id/twilio_response' => "phone_calls#twilio_response"
   
   devise_for :users, :skip => [:registrations, :sessions] do
     # devise/registrations

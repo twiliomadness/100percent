@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120828011614) do
+ActiveRecord::Schema.define(:version => 20120829135149) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -67,6 +67,15 @@ ActiveRecord::Schema.define(:version => 20120828011614) do
   end
 
   add_index "jurisdictions", ["type", "district_id"], :name => "index_jurisdictions_on_type_and_district_id", :unique => true
+
+  create_table "phone_calls", :force => true do |t|
+    t.string   "callSID"
+    t.string   "type"
+    t.string   "status"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "user_id"
+  end
 
   create_table "polling_places", :force => true do |t|
     t.string   "location_name"
