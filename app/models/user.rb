@@ -29,6 +29,8 @@ class User < ActiveRecord::Base
 
   # Hopefully this is temporary. :)
   has_one :voter
+  
+  has_many :phone_calls
 
   scope :has_email, :conditions => "length(email) > 0"
   scope :has_phone_number , :conditions => "length(phone_number) > 0"
