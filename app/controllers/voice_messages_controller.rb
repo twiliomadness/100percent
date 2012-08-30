@@ -15,11 +15,12 @@ class VoiceMessagesController < ApplicationController
       end
       
       @client = Twilio::REST::Client.new(APP_CONFIG[:TWILIO_ACCOUNT_SID], APP_CONFIG[:TWILIO_ACCOUNT_TOKEN])
-      outgoing_call = PhoneCall.new(:user => User.users_available_for_conference.first)
+      outgoing_call = PhoneCall.create(:user => User.users_available_for_conference.first)
       #TODO: This is where we create the call to the volunteer. 
       @client.account.calls.create({:record => true, :from => APP_CONFIG[:TWILIO_CALLER_ID], 
         :to => User.users_available_for_conference.first.phone_number, 
         :url => "http://#{request.host}/conferences/#{conference.id}.xml",
+        :Timeout => "15" #seconds before trying someone else
         :IfMachine => "Hangup",
         :StatusCallbackMethod => "GET",
         :StatusCallback => "http://#{request.host}/phone_calls/#{outgoing_call.id}/response"})

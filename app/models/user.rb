@@ -72,8 +72,7 @@ class User < ActiveRecord::Base
     if message.present? && message.strip.downcase == "on"
       self.set_on_call
       "You are now on call"
-    end
-    if message.present? && message.strip.downcase == "off"
+    elsif message.present? && message.strip.downcase == "off"
       self.set_to_not_on_call 
       "You are no longer on call"
     end

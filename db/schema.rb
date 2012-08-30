@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120829135149) do
+ActiveRecord::Schema.define(:version => 20120830181412) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -70,11 +70,12 @@ ActiveRecord::Schema.define(:version => 20120829135149) do
 
   create_table "phone_calls", :force => true do |t|
     t.string   "callSID"
-    t.string   "type"
+    t.string   "call_type"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.integer  "user_id"
+    t.string   "answered_by"
   end
 
   create_table "polling_places", :force => true do |t|
