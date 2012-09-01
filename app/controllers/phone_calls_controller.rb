@@ -9,6 +9,7 @@ class PhoneCallsController < ApplicationController
     @phone_call.update_attribute(:callSID, params[:CallSid])
     @phone_call.update_attribute(:answered_by, params[:AnsweredBy])
     
+    head 200
   end
   
 end

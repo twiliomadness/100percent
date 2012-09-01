@@ -13,12 +13,12 @@ gem 'heroku'
 gem 'html5-boilerplate'
 gem 'mechanize'
 gem 'nokogiri'
-gem 'state_machine', '0.9.4'
+gem 'state_machine'
 gem 'twilio-ruby'
 gem 'sass-rails'
 gem 'activeadmin'
 gem "ZenTest", "4.6.0"
-gem 'localtunnel'
+gem 'httparty'
 
 group :cucumber do
   gem 'capybara'
@@ -40,6 +40,7 @@ end
 group :development do
   gem 'ruby_parser'
   gem 'hpricot'
+  gem 'localtunnel'
 end
 
 group :test do
