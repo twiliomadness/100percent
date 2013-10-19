@@ -17,7 +17,7 @@ gem 'state_machine'
 gem 'twilio-ruby'
 gem 'sass-rails'
 gem 'activeadmin'
-gem "ZenTest", "4.6.0"
+gem 'ZenTest', '4.6.0'
 gem 'httparty'
 
 group :cucumber do
