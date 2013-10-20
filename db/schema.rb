@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(:version => 20120831132914) do
     t.integer  "author_id"
     t.string   "author_type"
     t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "namespace"
   end
 
@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(:version => 20120831132914) do
     t.text     "transcript"
     t.string   "audio_link"
     t.integer  "rating"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "sid"
   end
 
@@ -47,8 +47,8 @@ ActiveRecord::Schema.define(:version => 20120831132914) do
     t.string   "county"
     t.string   "phone_number"
     t.string   "email_address"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "elections", :force => true do |t|
@@ -56,15 +56,15 @@ ActiveRecord::Schema.define(:version => 20120831132914) do
     t.date     "date"
     t.string   "election_type"
     t.integer  "jurisdiction_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "jurisdictions", :force => true do |t|
     t.string   "type"
     t.integer  "district_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   add_index "jurisdictions", ["type", "district_id"], :name => "index_jurisdictions_on_type_and_district_id", :unique => true
@@ -87,32 +87,32 @@ ActiveRecord::Schema.define(:version => 20120831132914) do
     t.string   "zip"
     t.string   "hours"
     t.integer  "vpa_polling_place_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
   create_table "text_messages", :force => true do |t|
     t.integer  "voter_id",   :null => false
     t.string   "text",       :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "type"
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                               :default => "", :null => false
-    t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
-    t.string   "remember_token"
+    t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                       :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.string   "authentication_token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "city"
@@ -136,8 +136,8 @@ ActiveRecord::Schema.define(:version => 20120831132914) do
     t.date     "date_of_birth"
     t.string   "address_line_1"
     t.string   "address_line_2"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.date     "registration_date"
     t.string   "registration_status"
     t.boolean  "has_voted"

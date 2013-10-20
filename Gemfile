@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.1'
+gem 'rails', '3.2.15'
 gem 'pg'
 
 gem 'compass'
@@ -17,7 +17,7 @@ gem 'state_machine'
 gem 'twilio-ruby'
 gem 'sass-rails'
 gem 'activeadmin'
-gem "ZenTest", "4.6.0"
+gem 'ZenTest', '4.6.0'
 gem 'httparty'
 
 group :cucumber do
@@ -46,4 +46,3 @@ end
 group :test do
   gem 'shoulda', '2.11.3'
 end
-
