@@ -1,18 +1,17 @@
-      
-.hero-unit{:style => 'margin-top: -40px;'}
-  %h1
-    = image_tag("logo_horizontal.png")
+
+.jumbotron
+  .right
+    = image_tag("logo_horizontal.png", :align => "right")
   =# image_tag("wisconsin_state_flag_map.png", :align => "right", :height => "150px")
-  %h2 Learn when, where, and how to vote in Wisconsin
-  %p
-    We help you find your polling location, determine whether you are registered, how to become registered, and how to vote early.
-  %a{:href => how_works_path, :class => "btn btn-primary btn-large"} 
-    How It Works &#187;
-  %a{:href => about_path, :class => "btn btn-success btn-large"} 
-    Who We Are &#187;
-  %br
-  %br
-  %h2
+  .left{style: 'width: 50%'}
+    %h2 Learn when, where, and how to vote in Wisconsin
+    %p
+      We help you find your polling location, determine whether you are registered, how to become registered, and how to vote early.
+    %a{:href => how_works_path, :class => "btn btn-primary btn-large"}
+      How It Works &#187;
+    %a{:href => about_path, :class => "btn btn-success btn-large"}
+      Who We Are &#187;
+  %h2{style: 'clear:both'}
     = APP_CONFIG[:TWILIO_CALLER_ID]
 .row
   .span4
@@ -30,16 +29,16 @@
         =# Get this from IP geocode lookup to determine what area code to display.  715, 920, 414, 608.
         = APP_CONFIG[:TWILIO_CALLER_ID]
     %p
-      Your personal information is kept entirely confidential.  Our sophisticated software will lead you through the process to help get you to the polls and 
+      Your personal information is kept entirely confidential.  Our sophisticated software will lead you through the process to help get you to the polls and
       %b vote.
 
   .span4
-    %h2 
+    %h2
       Support VoteSimple
     %p
       Donate, volunteer to program, more...
-    %a{:href => support_path} 
+    %a{:href => support_path}
       How you can help &#187;
-      
+
 
 

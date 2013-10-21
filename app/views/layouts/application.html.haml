@@ -1,6 +1,5 @@
 !!! 5
 = render :partial => 'layouts/head'
-= render :partial => 'layouts/javascripts'
 %body
   = render :partial => 'layouts/header'
   .container
@@ -9,5 +8,6 @@
     %footer
       = render :partial => 'layouts/footer'
 -# Javascript at the bottom for fast page loading
-  
+= render :partial => 'layouts/javascripts'
+
 

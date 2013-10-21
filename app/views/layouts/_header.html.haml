@@ -1,8 +1,13 @@
 .navbar.navbar-fixed-top.navbar-inverse
-  .navbar-inner
-    .container
-      %a.brand{:href => "/"} VoteSimple
-      %ul.nav
+  .container
+    .navbar-header
+      %button.navbar-toggle{type: 'button', data: {toggle: 'collapse', target: '.navbar-collapse'}}
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.navbar-brand{href: '/'} VoteSimple
+    .navbar-collapse.collapse
+      %ul.nav.navbar-nav
         %li{:class => "#{current_page?(:controller => '/content', :action => 'index') ? 'active' : ''}"}
           = link_to "Home", "/"
         %li{:class => "#{current_page?(:controller => '/content', :action => 'contact') ? 'active' : ''}"}
@@ -11,3 +16,4 @@
           = link_to "About", about_path
         %li{:class => "#{current_page?(:controller => '/content', :action => 'support') ? 'active' : ''}"}
           = link_to "Support This Effort", support_path
+
